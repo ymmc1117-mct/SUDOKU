@@ -1,0 +1,1310 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#4f46e5">
+  <meta name="description" content="シンプルで楽しい数独ゲームアプリ">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="数独ゲーム">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="shortcut icon" href="icon-192.png">
+  <title>数独ゲーム</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    
+    .container {
+      max-width: 600px;
+      width: 100%;
+      background: white;
+      border-radius: 1rem;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      padding: 1.5rem;
+    }
+    
+    .title {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    
+    .title h1 {
+      font-size: 3rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.8; }
+    }
+    
+    .subtitle {
+      color: #6b7280;
+      font-size: 0.875rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      margin-top: 0.5rem;
+    }
+    
+    .tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .tab {
+      flex: 1;
+      padding: 0.75rem 1rem;
+      border: none;
+      border-radius: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      background: #f3f4f6;
+      color: #4b5563;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+    
+    .tab:hover {
+      background: #e5e7eb;
+    }
+    
+    .tab.active {
+      background: #4f46e5;
+      color: white;
+      box-shadow: 0 4px 14px rgba(79, 70, 229, 0.3);
+    }
+    
+    .section {
+      display: none;
+    }
+    
+    .section.active {
+      display: block;
+    }
+    
+    .level-list h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 1rem;
+    }
+    
+    .level-btn {
+      width: 100%;
+      padding: 1rem;
+      margin-bottom: 0.75rem;
+      border: none;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      background: #4f46e5;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .level-btn:hover {
+      background: #4338ca;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+    }
+    
+    .history-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    
+    .clear-btn {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 0.75rem;
+      background: #fef2f2;
+      color: #ef4444;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.875rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s ease;
+      border: 1px solid #fecaca;
+    }
+    
+    .clear-btn:hover {
+      background: #fee2e2;
+      transform: translateY(-1px);
+    }
+    
+    .clear-btn:active {
+      transform: translateY(0);
+    }
+    
+    .empty-history {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: #6b7280;
+      background: #f9fafb;
+      border-radius: 0.75rem;
+      border: 1px dashed #e5e7eb;
+      margin: 1rem 0;
+      font-size: 1rem;
+    }
+    
+    .history-list {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+    
+    .history-item {
+      background: #ffffff;
+      border-radius: 0.75rem;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 0.75rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.2s ease;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.1);
+      border: 1px solid #e5e7eb;
+    }
+    
+    .history-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+    
+    .history-info {
+      flex: 1;
+    }
+    
+    .history-level {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: #1f2937;
+      margin-bottom: 0.25rem;
+    }
+    
+    .history-date {
+      font-size: 0.875rem;
+      color: #6b7280;
+    }
+    
+    .history-time {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #4f46e5;
+      font-family: 'Roboto Mono', monospace;
+      letter-spacing: -0.5px;
+    }
+    
+    .game-screen {
+      display: none;
+    }
+    
+    .game-screen.active {
+      display: block;
+    }
+    
+    .countdown-screen {
+      text-align: center;
+      padding: 5rem 0;
+    }
+    
+    .countdown-number {
+      font-size: 6rem;
+      font-weight: 700;
+      color: #667eea;
+      animation: pulse 1s infinite;
+    }
+    
+    .countdown-level {
+      font-size: 1.25rem;
+      color: #6b7280;
+      margin-top: 1rem;
+    }
+    
+    .game-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    
+    .back-btn, .timer, .level-name {
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      font-weight: 600;
+    }
+    
+    .back-btn {
+      background: none;
+      border: none;
+      color: #4f46e5;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+      transition: all 0.2s;
+    }
+    
+    .back-btn:hover {
+      background-color: rgba(79, 70, 229, 0.1);
+    }
+    
+    .timer {
+      color: #667eea;
+      font-size: 1.25rem;
+    }
+    
+    .level-name {
+      color: #4b5563;
+      font-size: 0.875rem;
+    }
+    
+    .board-container {
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto 1rem;
+    }
+    
+    .sudoku-board {
+      display: grid;
+      grid-template-columns: repeat(9, 1fr);
+      gap: 0;
+      background: white;
+      border: 2px solid #1f2937;
+      border-radius: 0.5rem;
+      overflow: hidden;
+      aspect-ratio: 1;
+    }
+    
+    .cell {
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s;
+      position: relative;
+    }
+    
+    .cell.initial {
+      background: #f3f4f6;
+      color: #1f2937;
+      cursor: default;
+    }
+    
+    .cell.editable {
+      background: white;
+      color: #667eea;
+    }
+    
+    .cell.editable:hover {
+      background: #eef2ff;
+    }
+    
+    .cell.selected {
+      box-shadow: inset 0 0 0 4px #667eea;
+      z-index: 10;
+    }
+    
+    .cell.wrong {
+      background: #fee2e2;
+      color: #ef4444;
+    }
+    
+    .memo-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      width: 100%;
+      height: 100%;
+      padding: 2px;
+      font-size: 0.625rem;
+      color: #9ca3af;
+    }
+    
+    .memo-cell {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .controls {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    
+    .control-btn {
+      padding: 0.625rem 1rem;
+      border: none;
+      border-radius: 0.75rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      background: #ffffff;
+      color: #4b5563;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.1);
+      border: 1px solid #e5e7eb;
+    }
+    
+    .control-btn:hover {
+      background: #f9fafb;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+    
+    .control-btn:active {
+      transform: translateY(0);
+    }
+    
+    .control-btn i {
+      font-size: 1.25rem;
+    }
+    
+    .error-btn {
+      background: #e5e7eb;
+      color: #374151;
+    }
+    
+    .error-btn.active {
+      background: #ef4444;
+      color: white;
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+    }
+    
+    .back-btn {
+      background: #f3f4f6;
+      color: #4b5563;
+      padding: 0.5rem 1rem;
+      border-radius: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .memo-btn.active {
+      background: #a855f7;
+      color: white;
+      box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);
+    }
+    
+    .back-btn {
+      background: #f3f4f6;
+      color: #4b5563;
+    }
+    
+    .error-btn {
+      background: #fef2f2;
+      color: #ef4444;
+    }
+    
+    .memo-btn {
+      background: #eff6ff;
+      color: #3b82f6;
+    }
+    
+    .pause-btn {
+      background: #f3f4f6;
+      color: #4b5563;
+    }
+    
+    .hint-btn {
+      background: #f0fdf4;
+      color: #10b981;
+    }
+    
+    .reset-btn {
+      background: #fef2f2;
+      color: #ef4444;
+    }
+    
+    .number-pad {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0.5rem;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+    
+    .number-btn {
+      aspect-ratio: 1;
+      border: none;
+      border-radius: 0.75rem;
+      background: #4f46e5;
+      color: white;
+      font-size: 1.25rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 4px rgba(79, 70, 229, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .number-btn:hover {
+      background: #4338ca;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(79, 70, 229, 0.25);
+    }
+    
+    .number-btn:active {
+      transform: translateY(0);
+    }
+    
+    .delete-btn {
+      background: #6b7280;
+      font-size: 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .delete-btn i {
+      font-size: 1.5rem;
+    }
+    
+    .delete-btn:hover {
+      background: #6b7280;
+    }
+    
+    .clear-screen {
+      display: none;
+    }
+    
+    .clear-screen.active {
+      display: block;
+    }
+    
+    .clear-emoji {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    
+    .clear-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #667eea;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    
+    .clear-message {
+      color: #6b7280;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+    
+    .clear-stats {
+      background: linear-gradient(135deg, #eef2ff, #f3e8ff);
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .clear-time-label {
+      font-size: 0.875rem;
+      color: #6b7280;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    
+    .clear-time {
+      font-size: 3rem;
+      font-weight: 700;
+      color: #667eea;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    
+    .clear-level {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: #374151;
+      text-align: center;
+    }
+    
+    .clear-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    
+    .action-btn {
+      width: 100%;
+      padding: 1rem;
+      border: none;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    
+    .primary-btn {
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      color: white;
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+    }
+    
+    .primary-btn:hover {
+      background: linear-gradient(135deg, #4338ca, #6d28d9);
+    }
+    
+    .secondary-btn {
+      background: #f3f4f6;
+      color: #4b5563;
+      border: 1px solid #e5e7eb;
+    }
+    
+    .secondary-btn:hover {
+      background: #e5e7eb;
+    }
+    
+    #board.paused {
+      opacity: 0.7;
+      pointer-events: none;
+    }
+    
+    @media (max-width: 640px) {
+      .container {
+        padding: 1rem;
+      }
+      
+      .title h1 {
+        font-size: 2rem;
+      }
+      
+      .cell {
+        font-size: 1rem;
+      }
+      
+      .number-btn {
+        font-size: 1.25rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div id="menu-screen">
+      <div class="title">
+        <h1>SUDOKU</h1>
+        <div class="subtitle">数独パズルゲーム</div>
+      </div>
+      
+      <div class="tabs">
+        <button class="tab active" onclick="showTab('game')">
+          <i class="material-icons-round" style="font-size: 1.1rem;">sports_esports</i>
+          <span>新しいゲーム</span>
+        </button>
+        <button class="tab" onclick="showTab('history')">
+          <i class="material-icons-round" style="font-size: 1.1rem;">history</i>
+          <span>履歴</span>
+        </button>
+      </div>
+      
+      <div id="game-tab" class="section active">
+        <div class="level-list">
+          <h2>難易度を選択</h2>
+          <button class="level-btn" onclick="startGame(0)">超簡単</button>
+          <button class="level-btn" onclick="startGame(1)">簡単</button>
+          <button class="level-btn" onclick="startGame(2)">普通</button>
+          <button class="level-btn" onclick="startGame(3)">難しい</button>
+          <button class="level-btn" onclick="startGame(4)">超難しい</button>
+          <button class="level-btn" onclick="startGame(5)">極悪</button>
+        </div>
+      </div>
+      
+      <div id="history-tab" class="section">
+        <div class="history-header">
+          <h2>クリア履歴</h2>
+          <button class="clear-btn" onclick="clearHistory()" id="clear-history-btn" style="display:none">全て削除</button>
+        </div>
+        <div id="history-content"></div>
+      </div>
+    </div>
+    
+    <div id="game-screen" class="game-screen" style="display:none">
+      <div id="countdown-screen" class="countdown-screen" style="display:none"></div>
+      
+      <div id="play-screen" style="display:none">
+        <div class="game-header">
+          <button class="back-btn" onclick="backToMenu()">
+          <i class="material-icons-round" style="font-size: 1.25rem;">arrow_back</i>
+          <span>戻る</span>
+        </button>
+          <div class="timer" id="timer">0:00</div>
+          <div class="level-name" id="level-name"></div>
+        </div>
+        
+        <div class="board-container">
+          <div class="sudoku-board" id="board"></div>
+        </div>
+        
+        <div class="controls">
+          <button class="control-btn error-btn" id="error-btn" onclick="toggleErrors()">
+          <i class="material-icons-round">error_outline</i>
+          <span>間違い表示</span>
+        </button>
+          <button class="control-btn memo-btn" id="memo-btn" onclick="toggleMemo()">
+          <i class="material-icons-round">edit_note</i>
+          <span>メモ</span>
+        </button>
+          <button class="control-btn pause-btn" id="pause-btn" onclick="togglePause()">
+          <i class="material-icons-round">pause</i>
+          <span>一時停止</span>
+        </button>
+          <button class="control-btn hint-btn" onclick="getHint()">
+          <i class="material-icons-round">lightbulb</i>
+          <span>ヒント</span>
+        </button>
+          <button class="control-btn reset-btn" onclick="resetGame()">
+          <i class="material-icons-round">refresh</i>
+          <span>リセット</span>
+        </button>
+      </div>
+        
+        <div class="number-pad" id="number-pad"></div>
+      </div>
+    </div>
+    
+    <div id="clear-screen" class="clear-screen">
+      <div class="clear-emoji">🎉</div>
+      <div class="clear-title">クリア!</div>
+      <div class="clear-message">おめでとうございます!</div>
+      
+      <div class="clear-stats">
+        <div class="clear-time-label">クリアタイム</div>
+        <div class="clear-time" id="clear-time">0:00</div>
+        <div class="clear-level" id="clear-level"></div>
+      </div>
+      
+      <div class="clear-actions">
+        <button class="action-btn primary-btn" onclick="backToMenu()">
+        <i class="material-icons-round" style="font-size: 1.25rem;">home</i>
+        <span>メニューに戻る</span>
+      </button>
+        <button class="action-btn secondary-btn" onclick="retryGame()">
+        <i class="material-icons-round" style="font-size: 1.25rem;">replay</i>
+        <span>同じ難易度で再挑戦</span>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    const LEVELS = [
+    { name: '超簡単', clues: 60 },
+    { name: '簡単', clues: 36 },
+    { name: '普通', clues: 30 },
+    { name: '難しい', clues: 25 },
+    { name: '超難しい', clues: 20 },
+    { name: '極悪', clues: 17 }
+  ];
+    
+    let currentLevel = null;
+    let timerInterval = null;
+    let isPaused = false;
+    let board = null;
+    let solution = null;
+    let initialBoard = null;
+    let selectedCell = null;
+    let memoMode = false;
+    let memos = {};
+    let time = 0;
+    let clearTime = null;
+    let showErrors = false;
+    
+    function showTab(tab) {
+      const tabs = document.querySelectorAll('.tab');
+      const sections = document.querySelectorAll('.section');
+      
+      tabs.forEach(t => t.classList.remove('active'));
+      sections.forEach(s => s.classList.remove('active'));
+      
+      if (tab === 'game') {
+        document.getElementById('menu-screen').classList.add('active');
+        document.querySelector('.tab[onclick*="game"]').classList.add('active');
+        document.getElementById('game-tab').classList.add('active');
+      } else {
+        document.getElementById('menu-screen').classList.add('active');
+        document.querySelector('.tab[onclick*="history"]').classList.add('active');
+        document.getElementById('history-tab').classList.add('active');
+        loadHistory();
+      }
+    }
+    
+    function isValid(board, row, col, num) {
+      for (let x = 0; x < 9; x++) {
+        if (board[row][x] === num) return false;
+      }
+      
+      for (let x = 0; x < 9; x++) {
+        if (board[x][col] === num) return false;
+      }
+      
+      const startRow = row - row % 3;
+      const startCol = col - col % 3;
+      for (let i = 0; i < 3; i++) {
+        for (let j = 0; j < 3; j++) {
+          if (board[i + startRow][j + startCol] === num) return false;
+        }
+      }
+      
+      return true;
+    }
+    
+    function solveSudoku(board) {
+      for (let row = 0; row < 9; row++) {
+        for (let col = 0; col < 9; col++) {
+          if (board[row][col] === 0) {
+            for (let num = 1; num <= 9; num++) {
+              if (isValid(board, row, col, num)) {
+                board[row][col] = num;
+                if (solveSudoku(board)) {
+                  return true;
+                }
+                board[row][col] = 0;
+              }
+            }
+            return false;
+          }
+        }
+      }
+      return true;
+    }
+    
+    function generateSudoku(clues) {
+      const board = Array(9).fill(0).map(() => Array(9).fill(0));
+      
+      const diagonalBoxes = [0, 4, 8];
+      for (let box of diagonalBoxes) {
+        const nums = [1, 2, 3, 4, 5, 6, 7, 8, 9].sort(() => Math.random() - 0.5);
+        let idx = 0;
+        const startRow = Math.floor(box / 3) * 3;
+        const startCol = (box % 3) * 3;
+        for (let i = 0; i < 3; i++) {
+          for (let j = 0; j < 3; j++) {
+            board[startRow + i][startCol + j] = nums[idx++];
+          }
+        }
+      }
+      
+      solveSudoku(board);
+      
+      const solution = board.map(row => [...row]);
+      
+      const cells = [];
+      for (let i = 0; i < 9; i++) {
+        for (let j = 0; j < 9; j++) {
+          cells.push([i, j]);
+        }
+      }
+      
+      for (let i = cells.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [cells[i], cells[j]] = [cells[j], cells[i]];
+      }
+      
+      const cellsToRemove = 81 - clues;
+      for (let i = 0; i < cellsToRemove && i < cells.length; i++) {
+        const [row, col] = cells[i];
+        board[row][col] = 0;
+      }
+      
+      return { puzzle: board, solution };
+    }
+    
+    function startGame(levelIndex) {
+      currentLevel = levelIndex;
+      const { puzzle, solution: sol } = generateSudoku(LEVELS[levelIndex].clues);
+      board = puzzle.map(row => [...row]);
+      solution = sol;
+      initialBoard = puzzle.map(row => [...row]);
+      selectedCell = null;
+      memos = {};
+      time = 0;
+      clearTime = null;
+      showErrors = false;
+      memoMode = false;
+      isPaused = false;
+      
+      // メニューを非表示にし、ゲーム画面を表示
+      document.getElementById('menu-screen').style.display = 'none';
+      document.getElementById('game-screen').style.display = 'block';
+      document.getElementById('clear-screen').style.display = 'none';
+      document.getElementById('level-name').textContent = LEVELS[levelIndex].name;
+      
+      startCountdown();
+    }
+    
+    function startCountdown() {
+      let count = 3;
+      const countdownEl = document.getElementById('countdown-screen');
+      countdownEl.style.display = 'block';
+      document.getElementById('play-screen').style.display = 'none';
+      
+      function updateCountdown() {
+        if (count > 0) {
+          countdownEl.innerHTML = `
+            <div class="countdown-number">${count}</div>
+            <div class="countdown-level">${LEVELS[currentLevel].name}</div>
+          `;
+          count--;
+          setTimeout(updateCountdown, 1000);
+        } else {
+          countdownEl.innerHTML = `
+            <div class="countdown-number">START!</div>
+            <div class="countdown-level">${LEVELS[currentLevel].name}</div>
+          `;
+          setTimeout(() => {
+            countdownEl.style.display = 'none';
+            document.getElementById('play-screen').style.display = 'block';
+            startTimer();
+            renderBoard();
+            renderNumberPad();
+          }, 1000);
+        }
+      }
+      
+      updateCountdown();
+    }
+    
+    function startTimer() {
+      if (timerInterval) clearInterval(timerInterval);
+      if (isPaused) return;
+      
+      time = clearTime || time;
+      updateTimer();
+      
+      timerInterval = setInterval(() => {
+        if (!isPaused) {
+          time++;
+          updateTimer();
+        }
+      }, 1000);
+    }
+    
+    function stopTimer() {
+      if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
+    }
+    
+    function togglePause() {
+      isPaused = !isPaused;
+      const pauseBtn = document.getElementById('pause-btn');
+      const board = document.getElementById('board');
+      
+      if (isPaused) {
+        // 一時停止時の処理
+        pauseBtn.textContent = '▶️ 再開';
+        pauseBtn.classList.add('active');
+        board.classList.add('paused');
+      } else {
+        // 再開時の処理
+        pauseBtn.textContent = '⏸️ 一時停止';
+        pauseBtn.classList.remove('active');
+        board.classList.remove('paused');
+        startTimer();
+      }
+    }
+    
+    function updateTimer() {
+      const mins = Math.floor(time / 60);
+      const secs = time % 60;
+      document.getElementById('timer').textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+    }
+    
+    function renderBoard() {
+      const boardEl = document.getElementById('board');
+      const currentBoard = boardEl.innerHTML !== ''; // ボードが既に描画されているか
+      
+      // ボード全体を再描画する必要があるかどうか
+      if (!currentBoard) {
+        boardEl.innerHTML = '';
+        
+        for (let i = 0; i < 9; i++) {
+          for (let j = 0; j < 9; j++) {
+            const cell = document.createElement('div');
+            cell.className = 'cell';
+            cell.dataset.row = i;
+            cell.dataset.col = j;
+            
+            // セルのスタイルとイベントリスナーを設定
+            updateCellStyle(cell, i, j);
+            cell.onclick = () => handleCellClick(i, j);
+            
+            boardEl.appendChild(cell);
+          }
+        }
+      }
+      
+      // セルの内容を更新
+      const cells = boardEl.querySelectorAll('.cell');
+      cells.forEach(cell => {
+        const row = parseInt(cell.dataset.row);
+        const col = parseInt(cell.dataset.col);
+        
+        // セルの内容をクリア
+        cell.textContent = '';
+        cell.innerHTML = '';
+        
+        // セルの値を設定
+        if (board[row][col] !== 0) {
+          cell.textContent = board[row][col];
+        } else {
+          // メモを表示
+          const memo = memos[`${row}-${col}`] || [];
+          if (memo.length > 0) {
+            const memoGrid = document.createElement('div');
+            memoGrid.className = 'memo-grid';
+            for (let n = 1; n <= 9; n++) {
+              const memoCell = document.createElement('div');
+              memoCell.className = 'memo-cell';
+              memoCell.textContent = memo.includes(n) ? n : '';
+              memoGrid.appendChild(memoCell);
+            }
+            cell.appendChild(memoGrid);
+          }
+        }
+        
+        // セルのスタイルを更新
+        updateCellStyle(cell, row, col);
+      });
+    }
+    
+    // セルのスタイルを更新するヘルパー関数
+    function updateCellStyle(cell, row, col) {
+      // クラスをリセット
+      cell.className = 'cell';
+      
+      // 初期値かどうか
+      const isInitial = initialBoard[row][col] !== 0;
+      if (isInitial) {
+        cell.classList.add('initial');
+      } else {
+        cell.classList.add('editable');
+      }
+      
+      // 選択中かどうか
+      if (selectedCell && selectedCell.row === row && selectedCell.col === col) {
+        cell.classList.add('selected');
+      }
+      
+      // 間違いがあるかどうか
+      if (!isInitial && showErrors && board[row][col] !== 0 && board[row][col] !== solution[row][col]) {
+        cell.classList.add('wrong');
+      }
+      
+      // ボーダースタイルを設定
+      let borderRight = '1px solid #e5e7eb';
+      let borderBottom = '1px solid #e5e7eb';
+      
+      if (col === 2 || col === 5) borderRight = '2px solid #9ca3af';
+      if (col === 8) borderRight = 'none';
+      
+      if (row === 2 || row === 5) borderBottom = '2px solid #9ca3af';
+      if (row === 8) borderBottom = 'none';
+      
+      cell.style.borderRight = borderRight;
+      cell.style.borderBottom = borderBottom;
+    }
+    
+    function renderNumberPad() {
+      const padEl = document.getElementById('number-pad');
+      padEl.innerHTML = '';
+      
+      for (let i = 1; i <= 9; i++) {
+        const btn = document.createElement('button');
+        btn.className = 'number-btn';
+        btn.textContent = i;
+        btn.onclick = () => handleNumberInput(i);
+        padEl.appendChild(btn);
+      }
+      
+      const deleteBtn = document.createElement('button');
+      deleteBtn.className = 'number-btn delete-btn';
+      deleteBtn.textContent = '消去';
+      deleteBtn.onclick = () => handleNumberInput(0);
+      padEl.appendChild(deleteBtn);
+    }
+    
+    function handleCellClick(row, col) {
+      if (clearTime !== null || isPaused) return;
+      if (initialBoard[row][col] !== 0) return;
+      selectedCell = { row, col };
+      renderBoard();
+    }
+    
+    function handleNumberInput(num) {
+      if (clearTime !== null || isPaused) return;
+      if (!selectedCell) return;
+      
+      const { row, col } = selectedCell;
+      if (initialBoard[row][col] !== 0) return;
+      
+      const key = `${row}-${col}`;
+      
+      if (memoMode) {
+        // メモモードの場合
+        const current = memos[key] || [];
+        
+        if (current.includes(num)) {
+          // 既にメモされている数字の場合は削除
+          memos[key] = current.filter(n => n !== num);
+        } else {
+          // 新しい数字を追加してソート
+          memos[key] = [...current, num].sort((a, b) => a - b);
+        }
+        
+        // メモが空の場合はキーを削除
+        if (memos[key] && memos[key].length === 0) {
+          delete memos[key];
+        }
+      } else {
+        // 通常モードの場合
+        if (board[row][col] === num) {
+          // 同じ数字を2回押した場合はセルをクリア
+          board[row][col] = 0;
+        } else {
+          // 新しい数字を設定
+          board[row][col] = num;
+        }
+        
+        // メモをクリア
+        if (memos[key]) {
+          delete memos[key];
+        }
+        
+        // クリアチェック
+        if (checkWin()) {
+          stopTimer();
+          clearTime = time;
+          showClearScreen();
+          saveHistory();
+        }
+      }
+      
+      renderBoard();
+    }
+    
+    function checkWin() {
+      for (let i = 0; i < 9; i++) {
+        for (let j = 0; j < 9; j++) {
+          if (board[i][j] === 0) return false;
+          if (board[i][j] !== solution[i][j]) return false;
+        }
+      }
+      return true;
+    }
+    
+    function toggleErrors() {
+      showErrors = !showErrors;
+      document.getElementById('error-btn').classList.toggle('active');
+      renderBoard();
+    }
+    
+    function toggleMemo() {
+      memoMode = !memoMode;
+      document.getElementById('memo-btn').classList.toggle('active');
+    }
+    
+    function getHint() {
+      if (clearTime !== null) return;
+      
+      const emptyCells = [];
+      for (let i = 0; i < 9; i++) {
+        for (let j = 0; j < 9; j++) {
+          if (board[i][j] === 0 && initialBoard[i][j] === 0) {
+            emptyCells.push({ row: i, col: j });
+          }
+        }
+      }
+      
+      if (emptyCells.length === 0) return;
+      
+      const randomCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+      board[randomCell.row][randomCell.col] = solution[randomCell.row][randomCell.col];
+      selectedCell = null;
+      
+      if (checkWin()) {
+        stopTimer();
+        clearTime = time;
+        showClearScreen();
+        saveHistory();
+      }
+      
+      renderBoard();
+    }
+    
+    function resetGame() {
+      if (!confirm('記入した数字を全てクリアしますか？')) return;
+      
+      // 初期状態のコピーを作成
+      for (let i = 0; i < 9; i++) {
+        for (let j = 0; j < 9; j++) {
+          if (initialBoard[i][j] === 0) { // ユーザーが入力したセルのみクリア
+            board[i][j] = 0;
+          }
+        }
+      }
+      memos = {}; // メモもクリア
+      selectedCell = null;
+      renderBoard();
+      renderNumberPad();
+    }
+    
+    function backToMenu() {
+      if (clearTime === null && !confirm('ゲームを終了してメニューに戻りますか?')) return;
+      
+      stopTimer();
+      document.getElementById('menu-screen').style.display = 'block'; // メニューを表示
+      document.getElementById('game-screen').style.display = 'none';  // ゲーム画面を非表示
+      document.getElementById('clear-screen').style.display = 'none';
+      document.getElementById('play-screen').style.display = 'none';  // プレイ画面も非表示
+    }
+    
+    function retryGame() {
+      document.getElementById('clear-screen').style.display = 'none';
+      startGame(currentLevel);
+    }
+    
+    function showClearScreen() {
+      document.getElementById('menu-screen').style.display = 'none';
+      document.getElementById('play-screen').style.display = 'none';
+      document.getElementById('clear-screen').style.display = 'block';
+      
+      const mins = Math.floor(clearTime / 60);
+      const secs = clearTime % 60;
+      document.getElementById('clear-time').textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+      document.getElementById('clear-level').textContent = `難易度: ${LEVELS[currentLevel].name}`;
+    }
+    
+    function saveHistory() {
+      const history = getHistory();
+      const record = {
+        level: LEVELS[currentLevel].name,
+        time: clearTime,
+        date: new Date().toISOString()
+      };
+      history.unshift(record);
+      if (history.length > 50) history.pop();
+      localStorage.setItem('sudokuHistory', JSON.stringify(history));
+    }
+    
+    function getHistory() {
+      try {
+        const saved = localStorage.getItem('sudokuHistory');
+        return saved ? JSON.parse(saved) : [];
+      } catch {
+        return [];
+      }
+    }
+    
+    function loadHistory() {
+      const history = getHistory();
+      const contentEl = document.getElementById('history-content');
+      const clearBtn = document.getElementById('clear-history-btn');
+      
+      if (history.length === 0) {
+        contentEl.innerHTML = '<div class="empty-history">まだクリア履歴がありません</div>';
+        clearBtn.style.display = 'none';
+      } else {
+        clearBtn.style.display = 'block';
+        const listHtml = history.map(record => {
+          const date = new Date(record.date);
+          const dateStr = date.toLocaleString('ja-JP', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit'
+          });
+          const mins = Math.floor(record.time / 60);
+          const secs = record.time % 60;
+          const timeStr = `${mins}:${secs.toString().padStart(2, '0')}`;
+          
+          return `
+            <div class="history-item">
+              <div class="history-info">
+                <div class="history-level">${record.level}</div>
+                <div class="history-date">${dateStr}</div>
+              </div>
+              <div class="history-time">${timeStr}</div>
+            </div>
+          `;
+        }).join('');
+        
+        contentEl.innerHTML = `<div class="history-list">${listHtml}</div>`;
+      }
+    }
+    
+    function clearHistory() {
+      if (!confirm('クリア履歴を全て削除しますか？この操作は元に戻せません。')) return;
+      
+      try {
+        localStorage.removeItem('sudokuHistory');
+        const contentEl = document.getElementById('history-content');
+        const clearBtn = document.getElementById('clear-history-btn');
+        contentEl.innerHTML = '<div class="empty-history">まだクリア履歴がありません</div>';
+        clearBtn.style.display = 'none';
+      } catch (error) {
+        console.error('履歴の削除中にエラーが発生しました:', error);
+        alert('履歴の削除中にエラーが発生しました。');
+</body>
+</html>
