@@ -1,6 +1,6 @@
 {
-  "name": "数独ゲーム",
-  "short_name": "数独",
+  "name": "SUDOKU",
+  "short_name": "SUDOKU",
   "description": "シンプルで楽しい数独ゲームアプリ",
   "start_url": "/SUDOKU/",
   "display": "standalone",

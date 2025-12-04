@@ -19,7 +19,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="数独ゲーム">
   <meta name="theme-color" content="#4f46e5">
-  <title>数独ゲーム</title>
+  <title>SUDOKU</title>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
   <style>
     * {
@@ -627,6 +627,36 @@
       pointer-events: none;
     }
     
+    @media (min-width: 641px) and (max-width: 1024px) {
+      /* タブレット向けのスタイル */
+      html {
+        font-size: 1.2rem;
+      }
+      
+      .container {
+        transform: scale(1.2);
+        transform-origin: center top;
+        padding: 2rem;
+      }
+      
+      .title h1 {
+        font-size: 2.4rem;
+      }
+      
+      .level-btn, .action-btn, .control-btn {
+        padding: 1.2rem;
+        font-size: 1.2rem;
+      }
+      
+      .cell {
+        font-size: 1.2rem;
+      }
+      
+      .number-btn {
+        font-size: 1.5rem;
+      }
+    }
+    
     @media (max-width: 640px) {
       .container {
         padding: 1rem;
@@ -650,8 +680,7 @@
   <div class="container">
     <div class="menu-screen" id="menu-screen">
       <div class="title">
-        <h1>数独ゲーム</h1>
-        <div class="subtitle">数独パズルゲーム</div>
+        <h1>SUDOKU</h1>
       </div>
       
       <div class="tabs">
