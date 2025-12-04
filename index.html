@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="数独ゲーム">
-  <link rel="manifest" href="manifest.json">
+  <link rel="manifest" href="/SUDOKU/manifest.json">
   <link rel="apple-touch-icon" href="icon-192.png">
   <link rel="shortcut icon" href="icon-192.png">
   <title>数独ゲーム</title>
@@ -640,9 +640,9 @@
 </head>
 <body>
   <div class="container">
-    <div id="menu-screen">
+    <div class="menu-screen" id="menu-screen">
       <div class="title">
-        <h1>SUDOKU</h1>
+        <h1>数独ゲーム</h1>
         <div class="subtitle">数独パズルゲーム</div>
       </div>
       
@@ -660,12 +660,12 @@
       <div id="game-tab" class="section active">
         <div class="level-list">
           <h2>難易度を選択</h2>
-          <button class="level-btn" onclick="startGame(0)">超簡単</button>
-          <button class="level-btn" onclick="startGame(1)">簡単</button>
-          <button class="level-btn" onclick="startGame(2)">普通</button>
-          <button class="level-btn" onclick="startGame(3)">難しい</button>
-          <button class="level-btn" onclick="startGame(4)">超難しい</button>
-          <button class="level-btn" onclick="startGame(5)">極悪</button>
+          <button class="level-btn" onclick="window.startGame(0)">超簡単</button>
+          <button class="level-btn" onclick="window.startGame(1)">簡単</button>
+          <button class="level-btn" onclick="window.startGame(2)">普通</button>
+          <button class="level-btn" onclick="window.startGame(3)">難しい</button>
+          <button class="level-btn" onclick="window.startGame(4)">超難しい</button>
+          <button class="level-btn" onclick="window.startGame(5)">極悪</button>
         </div>
       </div>
       
@@ -868,7 +868,8 @@
       return { puzzle: board, solution };
     }
     
-    function startGame(levelIndex) {
+    // グローバルにstartGame関数を定義
+    window.startGame = function(levelIndex) {
       currentLevel = levelIndex;
       const { puzzle, solution: sol } = generateSudoku(LEVELS[levelIndex].clues);
       board = puzzle.map(row => [...row]);
@@ -1306,5 +1307,8 @@
       } catch (error) {
         console.error('履歴の削除中にエラーが発生しました:', error);
         alert('履歴の削除中にエラーが発生しました。');
+      }
+    }
+</script>
 </body>
 </html>
