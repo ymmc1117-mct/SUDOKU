@@ -83,19 +83,20 @@
     
     .tab {
       flex: 1;
-      padding: 0.75rem 1rem;
+      padding: 1rem;
       border: none;
-      border-radius: 0.75rem;
+      border-radius: 0.5rem;
+      font-size: 1rem;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.2s ease;
-      background: #f3f4f6;
-      color: #4b5563;
+      transition: all 0.3s;
+      background: #4f46e5;
+      color: white;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 0.5rem;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
     
     .tab:hover {
@@ -685,7 +686,7 @@
       
       <div class="tabs">
         <button class="tab active" onclick="showTab('game')">
-          <i class="material-icons-round" style="font-size: 1.1rem;">sports_esports</i>
+          <i class="material-icons-round" style="font-size: 1.1rem;">+</i>
           <span>新しいゲーム</span>
         </button>
         <button class="tab" onclick="showTab('history')">
@@ -702,7 +703,7 @@
           <button class="level-btn" onclick="window.startGame(2)">普通</button>
           <button class="level-btn" onclick="window.startGame(3)">難しい</button>
           <button class="level-btn" onclick="window.startGame(4)">超難しい</button>
-          <button class="level-btn" onclick="window.startGame(5)">極悪</button>
+          <button class="level-btn" onclick="window.startGame(5)">激ムズ</button>
         </div>
       </div>
       
@@ -789,7 +790,7 @@
     { name: '普通', clues: 30 },
     { name: '難しい', clues: 25 },
     { name: '超難しい', clues: 20 },
-    { name: '極悪', clues: 17 }
+    { name: '激ムズ', clues: 17 }
   ];
     
     let currentLevel = null;
