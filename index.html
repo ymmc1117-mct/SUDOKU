@@ -58,86 +58,125 @@
       .container {
         max-width: 98vw;
         width: 98vw;
+        padding: 2rem;
       }
 
       .board-container {
-        max-width: 85vw;
+        max-width: none;
+        width: 100%;
       }
 
       .top-controls,
       .bottom-controls,
       .number-pad {
-        max-width: 85vw;
+        max-width: none;
+        width: 100%;
       }
 
       .title h1 {
         font-size: 4rem;
-        margin-bottom: 1rem;
+        margin-bottom: 1.5rem;
       }
 
       .tab {
-        font-size: 1.25rem;
-        padding: 1.25rem;
+        font-size: 1.5rem;
+        padding: 1.5rem;
       }
 
       .level-btn {
-        font-size: 1.25rem;
-        padding: 1.75rem;
+        font-size: 1.5rem;
+        padding: 2rem 1.5rem;
+      }
+
+      .level-name {
+        font-size: 1.4rem;
+      }
+
+      .level-desc {
+        font-size: 1rem;
       }
 
       .control-btn {
-        font-size: 1rem;
-        padding: 1rem 0.75rem;
+        font-size: 1.1rem;
+        padding: 1.25rem 1rem;
       }
 
       .control-btn i {
-        font-size: 1.5rem;
+        font-size: 1.75rem;
       }
 
       .number-btn {
-        font-size: 2rem;
+        font-size: 2.5rem;
       }
 
       .cell {
-        font-size: 1.75rem;
+        font-size: 2rem;
       }
 
       .game-header {
-        font-size: 1.25rem;
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
       }
 
       .timer {
+        font-size: 2rem;
+      }
+
+      .back-btn {
+        font-size: 1.5rem;
+      }
+
+      .back-btn i {
         font-size: 1.75rem;
       }
 
-      .back-btn,
       .game-level-name {
+        font-size: 1.5rem;
+      }
+
+      .delete-btn {
         font-size: 1.25rem;
       }
     }
 
     @media (min-width: 1024px) {
       .container {
-        max-width: 900px;
-        width: 900px;
+        max-width: 95vw;
+        width: 95vw;
+        padding: 2.5rem;
       }
 
       .board-container {
-        max-width: 700px;
+        max-width: none;
+        width: 100%;
       }
 
       .top-controls,
       .bottom-controls,
       .number-pad {
-        max-width: 700px;
+        max-width: none;
+        width: 100%;
       }
 
       .cell {
-        font-size: 2rem;
+        font-size: 2.5rem;
       }
 
       .number-btn {
-        font-size: 2.25rem;
+        font-size: 3rem;
+      }
+
+      .control-btn {
+        font-size: 1.25rem;
+        padding: 1.5rem 1.25rem;
+      }
+
+      .control-btn i {
+        font-size: 2rem;
+      }
+
+      .delete-btn {
+        font-size: 1.5rem;
       }
     }
 
@@ -319,6 +358,7 @@
       flex-direction: column;
       gap: 0.75rem;
       overflow-y: auto;
+      min-height: 0;
     }
 
     .history-item {
@@ -1715,7 +1755,7 @@
     function resetGame() {
       if (clearTime !== null) return;
       if (isPaused) return;
-      if (!confirm('記入した数字を全てクリアしますか？')) return;
+      if (!confirm('記入した数字を全てクリアしますか?')) return;
       
       for (let i = 0; i < 9; i++) {
         for (let j = 0; j < 9; j++) {
@@ -1826,7 +1866,7 @@
     }
 
     window.deleteHistoryItem = function(index) {
-      if (!confirm('この履歴を削除しますか？')) return;
+      if (!confirm('この履歴を削除しますか?')) return;
       
       try {
         const history = getHistory();
@@ -1840,7 +1880,7 @@
     }
 
     window.clearHistory = function() {
-      if (!confirm('クリア履歴を全て削除しますか？この操作は元に戻せません。')) return;
+      if (!confirm('クリア履歴を全て削除しますか?この操作は元に戻せません。')) return;
       
       try {
         localStorage.removeItem('sudokuHistory');
