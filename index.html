@@ -3,7 +3,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, shrink-to-fit=no">
   <meta name="theme-color" content="#4f46e5">
   <title>SUDOKU</title>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
@@ -23,6 +23,35 @@
       -moz-user-select: none;
       -ms-user-select: none;
       user-select: none;
+      touch-action: manipulation;
+    }
+
+    /* iOS向けのタッチターゲットの最小サイズ */
+    button, .btn, .control-btn, .level-btn, .cell, .number-btn {
+      min-height: 44px;
+      min-width: 44px;
+      cursor: pointer;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      background: transparent;
+      border: none;
+      outline: none;
+    }
+
+    /* iOS向けのアクティブフィードバック */
+    button:active, .btn:active, .control-btn:active, 
+    .level-btn:active, .cell:active, .number-btn:active {
+      opacity: 0.7;
+      transform: scale(0.98);
+      transition: opacity 0.1s, transform 0.1s;
+    }
+
+    /* スクロールの滑らかさを向上 */
+    html {
+      -webkit-overflow-scrolling: touch;
+      height: 100%;
+      overflow-y: auto;
     }
 
     body {
@@ -1901,6 +1930,35 @@
         document.getElementById('history-tab').classList.add('active');
         loadHistory();
       }
+    }
+
+    // iOSデバイスかどうかを検出
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || 
+                 (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+    // iOSデバイスの場合、タッチイベントを追加
+    if (isIOS) {
+      document.addEventListener('DOMContentLoaded', function() {
+        const interactiveElements = document.querySelectorAll('button, .btn, .control-btn, .level-btn, .cell, .number-btn');
+        
+        interactiveElements.forEach(element => {
+          // タッチ開始時の処理
+          element.addEventListener('touchstart', function(e) {
+            this.classList.add('active');
+            e.preventDefault();
+            e.stopPropagation();
+          }, { passive: false });
+          
+          // タッチ終了時の処理
+          element.addEventListener('touchend', function(e) {
+            this.classList.remove('active');
+            e.preventDefault();
+            e.stopPropagation();
+            // クリックイベントを発火
+            this.click();
+          }, { passive: false });
+        });
+      });
     }
 
     loadHistory();
