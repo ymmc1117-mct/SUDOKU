@@ -71,7 +71,7 @@
       }
 
       .title h1 {
-        font-size: 3.5rem;
+        font-size: 4rem;
         margin-bottom: 1rem;
       }
 
@@ -147,7 +147,7 @@
     }
 
     .title h1 {
-      font-size: 2.5rem;
+      font-size: 3rem;
       font-weight: 900;
       background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
       -webkit-background-clip: text;
@@ -199,10 +199,16 @@
 
     .section {
       display: none;
+      height: 100%;
     }
 
     .section.active {
-      display: block;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #history-tab {
+      overflow-y: auto;
     }
 
     .level-list h2 {
@@ -216,7 +222,7 @@
     .level-btn {
       width: 100%;
       padding: 1.25rem;
-      margin-bottom: 0.75rem;
+      margin-bottom: 0;
       border: none;
       border-radius: 0.75rem;
       font-size: 1rem;
@@ -229,6 +235,7 @@
       align-items: center;
       justify-content: center;
       box-shadow: 0 2px 8px rgba(79, 70, 229, 0.2);
+      flex-shrink: 0;
     }
 
     .level-btn:hover {
@@ -292,7 +299,25 @@
     }
 
     .history-list {
-      max-height: 400px;
+      max-height: none;
+      overflow-y: visible;
+    }
+
+    .level-list {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .level-list h2 {
+      flex-shrink: 0;
+    }
+
+    .level-buttons-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
       overflow-y: auto;
     }
 
@@ -771,19 +796,85 @@
 
     @media (max-width: 640px) {
       .container {
-        padding: 1rem;
+        padding: 0.75rem;
       }
       
+      .title {
+        margin-bottom: 1rem;
+      }
+
       .title h1 {
-        font-size: 2rem;
+        font-size: 2.25rem;
+      }
+
+      .tabs {
+        margin-bottom: 1rem;
+      }
+
+      .tab {
+        padding: 0.75rem;
+        font-size: 0.875rem;
+      }
+
+      .level-btn {
+        padding: 1rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .level-name {
+        font-size: 1rem;
+      }
+
+      .level-desc {
+        font-size: 0.7rem;
+      }
+
+      .top-controls,
+      .bottom-controls {
+        gap: 0.4rem;
+        margin-bottom: 0.75rem;
+      }
+
+      .control-btn {
+        padding: 0.5rem 0.25rem;
+        font-size: 0.7rem;
+      }
+
+      .control-btn i {
+        font-size: 1rem;
+      }
+
+      .board-container {
+        margin-bottom: 0.75rem;
       }
       
       .cell {
-        font-size: 1rem;
+        font-size: 0.95rem;
+      }
+
+      .number-pad {
+        gap: 0.4rem;
+        margin-bottom: 0.75rem;
       }
       
       .number-btn {
-        font-size: 1.25rem;
+        font-size: 1.1rem;
+      }
+
+      .game-header {
+        margin-bottom: 0.75rem;
+      }
+
+      .timer {
+        font-size: 1rem;
+      }
+
+      .back-btn {
+        font-size: 0.875rem;
+      }
+
+      .game-level-name {
+        font-size: 0.8rem;
       }
     }
   </style>
@@ -809,42 +900,44 @@
       <div id="game-tab" class="section active">
         <div class="level-list">
           <h2>難易度を選択</h2>
-          <button class="level-btn" onclick="window.startGame(0)">
-            <div class="level-details">
-              <div class="level-name">入門</div>
-              <div class="level-desc">基本スキャンのみ</div>
-            </div>
-          </button>
-          <button class="level-btn" onclick="window.startGame(1)">
-            <div class="level-details">
-              <div class="level-name">簡単</div>
-              <div class="level-desc">唯一候補法</div>
-            </div>
-          </button>
-          <button class="level-btn" onclick="window.startGame(2)">
-            <div class="level-details">
-              <div class="level-name">普通</div>
-              <div class="level-desc">ペア削除が必要</div>
-            </div>
-          </button>
-          <button class="level-btn" onclick="window.startGame(3)">
-            <div class="level-details">
-              <div class="level-name">難しい</div>
-              <div class="level-desc">複数技法の組み合わせ</div>
-            </div>
-          </button>
-          <button class="level-btn" onclick="window.startGame(4)">
-            <div class="level-details">
-              <div class="level-name">超難しい</div>
-              <div class="level-desc">高度な論理推論</div>
-            </div>
-          </button>
-          <button class="level-btn" onclick="window.startGame(5)">
-            <div class="level-details">
-              <div class="level-name">激ムズ</div>
-              <div class="level-desc">最高難易度の挑戦</div>
-            </div>
-          </button>
+          <div class="level-buttons-container">
+            <button class="level-btn" onclick="window.startGame(0)">
+              <div class="level-details">
+                <div class="level-name">入門</div>
+                <div class="level-desc">基本スキャンのみ</div>
+              </div>
+            </button>
+            <button class="level-btn" onclick="window.startGame(1)">
+              <div class="level-details">
+                <div class="level-name">簡単</div>
+                <div class="level-desc">唯一候補法</div>
+              </div>
+            </button>
+            <button class="level-btn" onclick="window.startGame(2)">
+              <div class="level-details">
+                <div class="level-name">普通</div>
+                <div class="level-desc">ペア削除が必要</div>
+              </div>
+            </button>
+            <button class="level-btn" onclick="window.startGame(3)">
+              <div class="level-details">
+                <div class="level-name">難しい</div>
+                <div class="level-desc">複数技法の組み合わせ</div>
+              </div>
+            </button>
+            <button class="level-btn" onclick="window.startGame(4)">
+              <div class="level-details">
+                <div class="level-name">超難しい</div>
+                <div class="level-desc">高度な論理推論</div>
+              </div>
+            </button>
+            <button class="level-btn" onclick="window.startGame(5)">
+              <div class="level-details">
+                <div class="level-name">激ムズ</div>
+                <div class="level-desc">最高難易度の挑戦</div>
+              </div>
+            </button>
+          </div>
         </div>
       </div>
       
