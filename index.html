@@ -977,6 +977,27 @@
   pointer-events: none;
 }
 
+/* iPad / タブレット向け調整: 盤面＋ボタン全体が縦に収まるよう少しコンパクトにする */
+@media (min-width: 641px) and (max-width: 1024px) {
+  :root {
+    /* タブレットでは少し余白を多めにとって、数字ボタン2段目が見切れないようにする */
+    --game-max-size: calc(100vh - 320px);
+  }
+
+  .top-controls,
+  .bottom-controls {
+    margin-bottom: 0.75rem;
+  }
+
+  .number-pad {
+    margin-bottom: 0.75rem;
+  }
+
+  .control-btn {
+    padding: 0.6rem 0.4rem;
+  }
+}
+
 @media (max-width: 640px) {
   .container {
     padding: 0.75rem;
