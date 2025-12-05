@@ -618,9 +618,14 @@
   font-size: 0.875rem;
 }
 
+:root {
+  /* 盤面＋数字ボタン＋下ボタンに使える一辺の最大値を「高さだけ」で決定 */
+  --game-max-size: calc(100vh - 260px);
+}
+
 .board-container {
   width: 100%;
-  max-width: min(100vw, 900px);
+  max-width: min(var(--game-max-size), 900px);
   margin: 0 auto 1rem;
   flex: 1;
   display: flex;
@@ -694,7 +699,7 @@
   width: 100%;
   height: 100%;
   padding: 2px;
-  font-size: 0.5rem;
+  font-size: 0.65rem;
   color: #9ca3af;
   position: absolute;
   top: 0;
@@ -705,7 +710,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.5rem;
+  font-size: 0.65rem;
   line-height: 1;
 }
 
@@ -714,7 +719,7 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 0.5rem;
   margin-bottom: 1rem;
-  max-width: min(80vh, 900px);
+  max-width: min(var(--game-max-size), 900px);
   margin-left: auto;
   margin-right: auto;
 }
@@ -724,7 +729,7 @@
   grid-template-columns: repeat(2, 1fr);
   gap: 0.5rem;
   margin-bottom: 1rem;
-  max-width: min(80vh, 900px);
+  max-width: min(var(--game-max-size), 900px);
   margin-left: auto;
   margin-right: auto;
 }
@@ -834,7 +839,7 @@
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 0.5rem;
-  max-width: min(80vh, 900px);
+  max-width: min(var(--game-max-size), 900px);
   margin: 0 auto 1rem;
 }
 
