@@ -68,6 +68,7 @@
       font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
       background: #ffffff;
       height: 100vh;
+      height: 100dvh;
       width: 100vw;
       display: flex;
       flex-direction: column;
@@ -104,6 +105,7 @@
     .title {
       text-align: center;
       margin-bottom: 1.5rem;
+      flex-shrink: 0;
     }
 
     .title h1 {
@@ -126,6 +128,7 @@
       display: flex;
       gap: 0.5rem;
       margin-bottom: 1.5rem;
+      flex-shrink: 0;
     }
 
     .tab {
@@ -158,7 +161,8 @@
 
     .section {
       display: none;
-      height: 100%;
+      flex: 1;
+      min-height: 0;
     }
 
     .section.active {
@@ -278,7 +282,8 @@
     .level-list {
       display: flex;
       flex-direction: column;
-      height: 100%;
+      flex: 1;
+      min-height: 0;
       padding: 10px 16px 20px;
       margin: 0;
       overflow: hidden;
@@ -370,17 +375,14 @@
     .game-screen {
       display: none;
       height: 100%;
+      width: 100%;
+      position: relative;
     }
 
     .game-screen.active {
       display: flex;
       flex-direction: column;
       height: 100%;
-    }
-
-    .game-screen.active #countdown-screen {
-      background: rgba(0, 0, 0, 0.85);
-      z-index: 1000;
     }
 
     .countdown-screen {
@@ -395,8 +397,12 @@
       justify-content: center;
       text-align: center;
       padding: 0;
-      background: none;
+      background: rgba(0, 0, 0, 0.85);
       width: 100%;
+      height: 100vh;
+      height: 100dvh;
+      z-index: 1000;
+      margin: 0;
     }
 
     .countdown-number {
@@ -900,17 +906,50 @@
       pointer-events: none;
     }
 
-    /* タブレット縦向け */
-    @media (min-width: 641px) and (max-width: 1024px) and (orientation: portrait) {
+    /* タブレット・iPad向け: 画面全体を使用 */
+    @media (min-width: 641px) and (max-width: 1440px) {
       .sudoku-board {
-        width: min(calc(100vw - 3rem), calc(100vh - 450px), 600px);
-        height: min(calc(100vw - 3rem), calc(100vh - 450px), 600px);
+        width: min(calc(100vw - 3rem), calc(100vh - 280px), 85vh);
+        height: min(calc(100vw - 3rem), calc(100vh - 280px), 85vh);
       }
 
       .top-controls,
       .bottom-controls,
       .number-pad {
-        max-width: min(calc(100vw - 3rem), calc(100vh - 450px), 600px);
+        max-width: min(calc(100vw - 3rem), calc(100vh - 280px), 85vh);
+      }
+
+      .container {
+        padding: 1rem;
+      }
+
+      #play-screen {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      .board-container {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0.5rem auto;
+      }
+    }
+
+    /* タブレット縦向け */
+    @media (min-width: 641px) and (max-width: 1024px) and (orientation: portrait) {
+      .sudoku-board {
+        width: min(calc(100vw - 3rem), calc(100vh - 300px), 80vh);
+        height: min(calc(100vw - 3rem), calc(100vh - 300px), 80vh);
+      }
+
+      .top-controls,
+      .bottom-controls,
+      .number-pad {
+        max-width: min(calc(100vw - 3rem), calc(100vh - 300px), 80vh);
       }
     }
 
@@ -1610,11 +1649,20 @@
     }
 
     function backToMenu() {
+      if (document.getElementById('clear-screen').classList.contains('active')) {
+        stopTimer();
+        document.getElementById('game-screen').classList.remove('active');
+        document.getElementById('clear-screen').classList.remove('active');
+        document.getElementById('menu-screen').style.display = 'flex';
+        loadHistory();
+        return;
+      }
+      
       if (!confirm('メニューに戻ると現在のゲームは失われます。メニューに戻りますか？')) return;
       stopTimer();
       document.getElementById('game-screen').classList.remove('active');
       document.getElementById('clear-screen').classList.remove('active');
-      document.getElementById('menu-screen').style.display = 'block';
+      document.getElementById('menu-screen').style.display = 'flex';
       loadHistory();
     }
 
