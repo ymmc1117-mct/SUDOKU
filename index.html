@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
@@ -26,7 +25,6 @@
       touch-action: manipulation;
     }
 
-    /* iOS向けのタッチターゲットの最小サイズ */
     button, .btn, .control-btn, .level-btn, .cell, .number-btn {
       min-height: 44px;
       min-width: 44px;
@@ -39,7 +37,6 @@
       outline: none;
     }
 
-    /* iOS向けのアクティブフィードバック */
     button:active, .btn:active, .control-btn:active, 
     .level-btn:active, .cell:active, .number-btn:active {
       opacity: 0.7;
@@ -47,14 +44,12 @@
       transition: opacity 0.1s, transform 0.1s;
     }
 
-    /* スクロールの滑らかさを向上 */
     html {
       -webkit-overflow-scrolling: touch;
       height: 100%;
       overflow: hidden;
     }
     
-    /* スクロールバーのスタイル */
     ::-webkit-scrollbar {
       width: 6px;
       height: 6px;
@@ -104,267 +99,6 @@
       min-height: 0;
       padding: 0;
       margin: 0;
-    }
-
-    @media (min-width: 640px) {
-      .container {
-        padding: 1.5rem;
-        max-width: 100%;
-        width: 100%;
-      }
-
-      body {
-        padding: 0;
-      }
-
-      .level-btn {
-        padding: 1.5rem 1rem;
-        font-size: 1.25rem;
-        min-height: 80px;
-      }
-    }
-
-    @media (min-width: 768px) {
-      .container {
-        max-width: 98vw;
-        width: 98vw;
-        height: 98vh;
-        padding: 1.5rem;
-        display: flex;
-        flex-direction: column;
-      }
-
-      #play-screen {
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-      }
-
-      .game-header {
-        flex-shrink: 0;
-      }
-
-      .board-container {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: flex-start;
-        width: 100%;
-        margin: 0.25rem auto;
-        min-height: 0;
-        overflow: hidden;
-        max-height: 100%;
-        padding: 0.5rem 0;
-      }
-
-      .sudoku-board {
-        width: 100%;
-        max-width: min(90vh, 90vw, 600px);
-        height: min(90vh, 90vw, 600px);
-        max-height: 70vh;
-        aspect-ratio: 1;
-        margin: 0 auto;
-        padding: 0;
-      }
-
-      .top-controls,
-      .bottom-controls,
-      .number-pad {
-        max-width: none;
-        width: 100%;
-        flex-shrink: 0;
-      }
-
-      .top-controls {
-        margin-bottom: 0.5rem;
-      }
-
-      .bottom-controls {
-        margin-bottom: 0.5rem;
-        margin-top: 0.5rem;
-      }
-
-      .number-pad {
-        margin: 0.5rem auto;
-        width: 100%;
-        max-width: min(90vw, 500px);
-        padding: 0.5rem 0;
-        box-sizing: border-box;
-        flex-shrink: 0;
-      }
-
-      .number-buttons {
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        gap: 0.5rem;
-        width: 100%;
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-
-      .number-btn {
-        min-height: 50px;
-        height: 100%;
-        border: none;
-        border-radius: 0.5rem;
-        font-size: clamp(1.5rem, 5vw, 3rem);
-        font-weight: 600;
-        background: #f3f4f6;
-        color: #1f2937;
-        cursor: pointer;
-        transition: all 0.2s;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        aspect-ratio: 1.5;
-      }
-
-      .title h1 {
-        font-size: 4rem;
-        margin-bottom: 1.5rem;
-      }
-
-      .tab {
-        font-size: 1.5rem;
-        padding: 1.5rem;
-      }
-
-      .level-btn {
-        font-size: 1.5rem;
-        padding: 2rem 1.5rem;
-      }
-
-      .level-name {
-        font-size: 1.4rem;
-      }
-
-      .level-desc {
-        font-size: 1rem;
-      }
-
-      .control-btn {
-        font-size: clamp(1.25rem, 3.5vw, 1.75rem);
-        padding: 1rem 0.75rem;
-      }
-
-      .control-btn i {
-        font-size: 1.75rem;
-      }
-
-      .number-btn {
-        font-size: 2.5rem;
-      }
-
-      .cell {
-        font-size: clamp(1.5rem, 5vw, 2.5rem);
-      }
-
-      .memo-grid {
-        font-size: 0.75rem;
-      }
-
-      .memo-cell {
-        font-size: 0.75rem;
-      }
-
-      .game-header {
-        font-size: clamp(1.25rem, 4.5vw, 1.75rem);
-        margin-bottom: 0.5rem;
-      }
-
-      .timer {
-        font-size: clamp(1.75rem, 5vw, 3rem);
-      }
-
-      .back-btn {
-        font-size: clamp(1.25rem, 4.5vw, 1.75rem);
-      }
-
-      .back-btn i {
-        font-size: 1.75rem;
-      }
-
-      .game-level-name {
-        font-size: 1.5rem;
-      }
-
-      .delete-btn {
-        font-size: 1.25rem;
-      }
-    }
-
-    @media (min-width: 1024px) {
-      .container {
-        max-width: 98vw;
-        width: 98vw;
-        height: 98vh;
-        padding: 2rem;
-      }
-
-      .sudoku-board {
-        max-width: min(80vh, 80vw, 700px);
-        height: min(80vh, 80vw, 700px);
-        max-height: 80vh;
-      }
-
-      .number-btn {
-        font-size: clamp(2rem, 3vw, 3.5rem);
-      }
-
-      .cell {
-        font-size: 2.5rem;
-      }
-
-      .memo-grid {
-        font-size: 0.9rem;
-      }
-
-      .memo-cell {
-        font-size: 0.9rem;
-      }
-
-      .control-btn {
-        font-size: 1.25rem;
-        padding: 1.5rem 1.25rem;
-      }
-
-      .control-btn i {
-        font-size: 2rem;
-      }
-
-      .delete-btn {
-        font-size: 1.5rem;
-      }
-    }
-
-    @media (min-width: 1280px) {
-      .container {
-        max-width: 95vw;
-        width: 95vw;
-        height: 98vh;
-        padding: 2rem;
-      }
-
-      .sudoku-board {
-        max-width: min(70vh, 70vw, 800px);
-        height: min(70vh, 70vw, 800px);
-        max-height: 85vh;
-      }
-
-
-      .memo-grid {
-        font-size: 1.1rem;
-      }
-
-      .memo-cell {
-        font-size: 1.1rem;
-      }
-
-      .number-btn {
-        font-size: 3.5rem;
-      }
     }
 
     .title {
@@ -563,806 +297,762 @@
     .level-list h2 {
       flex-shrink: 0;
     }
-  padding: 1.25rem 1.5rem;
-  margin-bottom: 0.75rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  transition: all 0.2s ease;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e5e7eb;
-  position: relative;
-}
-
-.history-item:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-}
-
-.history-info {
-  flex: 1;
-}
-
-.history-level {
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: #1f2937;
-  margin-bottom: 0.25rem;
-}
-
-.history-date {
-  font-size: 0.875rem;
-  color: #6b7280;
-}
-
-.history-time {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #4f46e5;
-  font-family: 'Roboto Mono', monospace;
-  letter-spacing: -0.5px;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.delete-history-btn {
-  padding: 0.5rem;
-  border: none;
-  border-radius: 0.5rem;
-  background: #fef2f2;
-  color: #ef4444;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid #fecaca;
-}
-
-.delete-history-btn:hover {
-  background: #fee2e2;
-  transform: scale(1.1);
-}
-
-.delete-history-btn i {
-  font-size: 1.25rem;
-}
-
-.game-screen {
-  display: none;
-  height: 100%;
-}
-
-.game-screen.active {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-.game-screen.active #countdown-screen {
-  background: rgba(0, 0, 0, 0.85);
-  z-index: 1000;
-}
-
-.countdown-screen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 0;
-  background: none;
-  width: 100%;
-}
-
-.countdown-number {
-  font-size: clamp(4rem, 20vw, 10rem);
-  font-weight: 700;
-  color: white;
-  animation: countdown-pulse 1s infinite;
-}
-
-@keyframes countdown-pulse {
-  0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.1); opacity: 0.8; }
-}
-
-.countdown-level {
-  font-size: 1.5rem;
-  color: white;
-  margin-top: 1rem;
-}
-
-.game-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.back-btn, .timer, .game-level-name {
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  font-weight: 600;
-}
-
-.back-btn {
-  background: none;
-  border: none;
-  color: #4f46e5;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem;
-  border-radius: 0.5rem;
-  transition: all 0.2s;
-}
-
-.back-btn:hover {
-  background-color: rgba(79, 70, 229, 0.1);
-}
-
-.timer {
-  color: #667eea;
-  font-size: 1.25rem;
-}
-
-.game-level-name {
-  color: #4b5563;
-  font-size: 0.875rem;
-}
-
-:root {
-  /* 盤面＋数字ボタン＋下ボタンに使える一辺の最大値を「高さだけ」で決定
-     さらに少しコンパクトにして、最下部ボタンの下にも余白が残るようにする */
-  --game-max-size: calc(100vh - 380px);
-}
-
-.board-container {
-  width: 100%;
-  max-width: min(var(--game-max-size), 900px);
-  margin: 0 auto 0.75rem;
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.sudoku-board {
-  display: grid;
-  grid-template-columns: repeat(9, 1fr);
-  gap: 0;
-  background: white;
-  border: 2px solid #1f2937;
-  border-radius: 0.5rem;
-  overflow: hidden;
-  width: 100%;
-  max-width: 100%;
-}
-
-.cell {
-  aspect-ratio: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.25rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: background 0.2s;
-  position: relative;
-  border: 0.5px solid #e5e7eb;
-}
-
-.cell:nth-child(3n):not(:nth-child(9n)) {
-  border-right: 2px solid #1f2937;
-}
-
-.cell:nth-child(n+19):nth-child(-n+27),
-.cell:nth-child(n+46):nth-child(-n+54) {
-  border-bottom: 2px solid #1f2937;
-}
-
-.cell.initial {
-  background: #f3f4f6;
-  color: #1f2937;
-  cursor: default;
-}
-
-.cell.editable {
-  background: white;
-  color: #667eea;
-}
-
-.cell.editable:hover {
-  background: #eef2ff;
-}
-
-.cell.selected {
-  box-shadow: inset 0 0 0 4px #667eea;
-  z-index: 10;
-}
-
-.cell.wrong {
-  background: #fee2e2;
-  color: #ef4444;
-}
-
-.memo-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0;
-  width: 100%;
-  height: 100%;
-  padding: 2px;
-  font-size: 0.65rem;
-  color: #9ca3af;
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-.memo-cell {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.65rem;
-  line-height: 1;
-}
-
-.top-controls {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.5rem;
-  margin-bottom: 1rem;
-  max-width: min(var(--game-max-size), 900px);
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.bottom-controls {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.5rem;
-  margin-bottom: 1.25rem;
-  max-width: min(var(--game-max-size), 900px);
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.control-btn {
-  padding: 0.75rem 0.5rem;
-  border: none;
-  border-radius: 9999px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: 0.35rem;
-  color: white;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  -webkit-tap-highlight-color: rgba(0,0,0,0);
-  touch-action: manipulation;
-  position: relative;
-  overflow: hidden;
-}
-
-.control-btn:active {
-  transform: scale(0.98);
-}
-
-.control-btn::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 5px;
-  height: 5px;
-  background: rgba(255, 255, 255, 0.5);
-  opacity: 0;
-  border-radius: 100%;
-  transform: scale(1, 1) translate(-50%, -50%);
-  transform-origin: 50% 50%;
-}
-
-.control-btn:focus:not(:active)::after {
-  animation: ripple 1s ease-out;
-}
-
-@keyframes ripple {
-  0% {
-    transform: scale(0, 0);
-    opacity: 0.5;
-  }
-  100% {
-    transform: scale(50, 50);
-    opacity: 0;
-  }
-}
-
-.control-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-}
-
-.error-btn {
-  background: #fca5a5;
-}
-
-.error-btn:hover {
-  background: #f87171;
-}
-
-.error-btn.active {
-  background: #ef4444;
-  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
-}
-
-.error-btn.active:hover {
-  background: #dc2626;
-}
-
-.hint-btn {
-  background: #f59e0b;
-}
-
-.hint-btn:hover {
-  background: #d97706;
-}
-
-.reset-btn {
-  background: #6b7280;
-}
-
-.reset-btn:hover {
-  background: #4b5563;
-}
-
-.pause-btn {
-  background: #cbd5e1;
-}
-
-.pause-btn:hover {
-  background: #94a3b8;
-}
-
-.pause-btn.active {
-  background: #f97316;
-  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.4);
-}
-
-.pause-btn.active:hover {
-  background: #ea580c;
-}
-
-.memo-btn {
-  background: #cffafe;
-  color: #0e7490;
-}
-
-.memo-btn:hover {
-  background: #a5f3fc;
-  color: #0e7490;
-}
-
-.memo-btn.active {
-  background: #06b6d4;
-  color: white;
-  box-shadow: 0 4px 12px rgba(6, 182, 212, 0.4), 0 0 0 3px rgba(6, 182, 212, 0.2);
-}
-
-.memo-btn.active:hover {
-  background: #0891b2;
-  color: white;
-}
-
-.number-pad {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 0.5rem;
-  max-width: min(var(--game-max-size), 900px);
-  margin: 0 auto 0.75rem;
-}
-
-.number-btn {
-  aspect-ratio: 1;
-  border: none;
-  border-radius: 0.75rem;
-  background: #4f46e5;
-  color: white;
-  font-size: 1.25rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 4px rgba(79, 70, 229, 0.2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.number-pad.memo-mode .number-btn:not(.delete-btn) {
-  background: #06b6d4;
-  box-shadow: 0 2px 6px rgba(6, 182, 212, 0.4);
-}
-
-.number-pad.memo-mode .number-btn:not(.delete-btn):hover {
-  background: #0891b2;
-  box-shadow: 0 4px 10px rgba(8, 145, 178, 0.5);
-}
-
-.number-btn:hover {
-  background: #4338ca;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(79, 70, 229, 0.25);
-}
-
-.number-btn:active {
-  transform: translateY(0);
-}
-
-.delete-btn {
-  background: #6b7280;
-  font-size: 1rem;
-}
-
-.delete-btn:hover {
-  background: #4b5563;
-}
-
-.clear-screen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-color: rgba(255, 255, 255, 0.95);
-  z-index: 1000;
-  padding: 1rem;
-  overflow-y: auto;
-  display: none;
-}
-
-.clear-screen.active {
-  display: flex;
-}
-
-.clear-content {
-  max-width: 100%;
-  max-height: 100%;
-  overflow-y: auto;
-  text-align: center;
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.clear-title {
-  margin: 1rem 0;
-  color: #1f2937;
-  font-size: 2rem;
-  font-weight: 700;
-}
-
-.clear-message {
-  margin-bottom: 1.5rem;
-  color: #4b5563;
-  font-size: 1.25rem;
-}
-
-.clear-stats {
-  background: #f3f4f6;
-  border-radius: 0.75rem;
-  padding: 1.5rem;
-  margin: 1rem 0;
-  width: 100%;
-  max-width: 300px;
-}
-
-.clear-time-label {
-  color: #6b7280;
-  font-size: 0.875rem;
-  margin-bottom: 0.5rem;
-}
-
-.clear-time {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #1f2937;
-  margin-bottom: 0.5rem;
-}
-
-.clear-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  width: 100%;
-  max-width: 300px;
-  margin-top: 1rem;
-}
-
-.trophy-icon {
-  width: 120px;
-  height: 120px;
-  margin: 0 auto 1.5rem;
-  display: block;
-}
-
-.clear-title {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #667eea;
-  margin-bottom: 0.5rem;
-  text-align: center;
-}
-
-.clear-message {
-  color: #6b7280;
-  margin-bottom: 2rem;
-  text-align: center;
-}
-
-.clear-stats {
-  background: linear-gradient(135deg, #eef2ff, #f3e8ff);
-  border-radius: 0.75rem;
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
-}
-
-.clear-time-label {
-  font-size: 0.875rem;
-  color: #6b7280;
-  margin-bottom: 0.5rem;
-  text-align: center;
-}
-
-.clear-time {
-  font-size: 3rem;
-  font-weight: 700;
-  color: #667eea;
-  margin-bottom: 1rem;
-  text-align: center;
-}
-
-.clear-level {
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: #374151;
-  text-align: center;
-}
-
-.clear-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.action-btn {
-  width: 100%;
-  padding: 1rem;
-  border: none;
-  border-radius: 0.5rem;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-}
-
-.primary-btn {
-  background: linear-gradient(135deg, #4f46e5, #7c3aed);
-  color: white;
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
-}
-
-.primary-btn:hover {
-  background: linear-gradient(135deg, #4338ca, #6d28d9);
-}
-
-.secondary-btn {
-  background: #f3f4f6;
-  color: #4b5563;
-  border: 1px solid #e5e7eb;
-}
-
-.secondary-btn:hover {
-  background: #e5e7eb;
-}
-
-#board.paused {
-  opacity: 0.7;
-  pointer-events: none;
-}
-
-/* iPad / タブレット向け調整: 盤面＋ボタン全体が縦に収まるよう少しコンパクトにする */
-@media (min-width: 641px) and (max-width: 1024px) {
-  :root {
-    /* タブレット（主に横向き）では少し小さめにして、下に余白が残るようにする */
-    --game-max-size: calc(100vh - 420px);
-  }
-
-  .top-controls,
-  .bottom-controls {
-    margin-bottom: 1.5rem; /* 一時停止・メモの下に少しゆとりを持たせる */
-  }
-
-  .number-pad {
-    margin-bottom: 0.75rem;
-  }
-
-  .control-btn {
-    padding: 0.55rem 0.4rem;
-  }
-}
-
-/* タブレット横向き: 左にグリッド、右にボタン群を縦にレイアウト */
-@media (min-width: 641px) and (max-width: 1024px) and (orientation: landscape) {
-  #play-screen {
-    display: grid;
-    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
-    grid-template-rows: auto auto 1fr auto;
-    grid-template-areas:
-      "header header"
-      "board  top"
-      "board  numbers"
-      "board  bottom";
-    column-gap: 1rem;
-    row-gap: 0.5rem;
-    align-items: stretch;
-  }
-
-  .game-header {
-    grid-area: header;
-    margin-bottom: 0.25rem;
-  }
-
-  .board-container {
-    grid-area: board;
-    margin-bottom: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .top-controls {
-    grid-area: top;
-    max-width: 100%;
-    margin-left: 0;
-    margin-right: 0;
-  }
-
-  .number-pad {
-    grid-area: numbers;
-    max-width: 100%;
-    margin-left: 0;
-    margin-right: 0;
-  }
-
-  .bottom-controls {
-    grid-area: bottom;
-    max-width: 100%;
-    margin-left: 0;
-    margin-right: 0;
-  }
-}
-
-@media (max-width: 640px) {
-  .container {
-    padding: 0.75rem;
-  }
-  
-  .title {
-    margin-bottom: 1rem;
-  }
-
-  .title h1 {
-    font-size: 2.25rem;
-  }
-
-  .tabs {
-    margin-bottom: 1rem;
-  }
-
-  .tab {
-    padding: 0.75rem;
-    font-size: 0.875rem;
-  }
-
-  .level-btn {
-    padding: 0.75rem;
-    margin-bottom: 0.35rem;
-    min-height: 11vh;
-    -webkit-tap-highlight-color: rgba(0,0,0,0);
-    touch-action: manipulation;
-  }
-
-  .level-name {
-    font-size: 1rem;
-  }
-
-  .level-desc {
-    font-size: 0.7rem;
-  }
-
-  .top-controls,
-  .bottom-controls {
-    gap: 0.4rem;
-    margin-bottom: 0.75rem;
-  }
-
-  .control-btn {
-    padding: 0.5rem 0.25rem;
-    font-size: 0.7rem;
-  }
-
-  .control-btn i {
-    font-size: 1rem;
-  }
-
-  .board-container {
-    margin-bottom: 0.75rem;
-    max-width: 100%;
-  }
-  
-  .cell {
-    font-size: 0.95rem;
-  }
-
-  .number-pad {
-    gap: 0.4rem;
-    margin-bottom: 0.75rem;
-    width: 100%;
-    max-width: 100%;
-  }
-  
-  .number-btn {
-    font-size: 1.1rem;
-    /* モバイルでは正方形固定を解除し、横幅に合わせて高さは自動にするが、
-       タップしやすいように最小高さを確保する */
-    aspect-ratio: auto;
-    min-height: 44px;
-    padding-top: 0.4rem;
-    padding-bottom: 0.4rem;
-  }
-
-  .top-controls,
-  .bottom-controls {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .game-header {
-    margin-bottom: 0.75rem;
-  }
-
-  .timer {
-    font-size: 1rem;
-  }
-
-  .back-btn {
 
+    .history-item {
+      background: white;
+      border-radius: 0.75rem;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 0.75rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.2s ease;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.1);
+      border: 1px solid #e5e7eb;
+      position: relative;
+    }
+
+    .history-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+
+    .history-info {
+      flex: 1;
+    }
+
+    .history-level {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: #1f2937;
+      margin-bottom: 0.25rem;
+    }
+
+    .history-date {
+      font-size: 0.875rem;
+      color: #6b7280;
+    }
+
+    .history-time {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #4f46e5;
+      font-family: 'Roboto Mono', monospace;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .delete-history-btn {
+      padding: 0.5rem;
+      border: none;
+      border-radius: 0.5rem;
+      background: #fef2f2;
+      color: #ef4444;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #fecaca;
+    }
+
+    .delete-history-btn:hover {
+      background: #fee2e2;
+      transform: scale(1.1);
+    }
+
+    .delete-history-btn i {
+      font-size: 1.25rem;
+    }
+
+    .game-screen {
+      display: none;
+      height: 100%;
+    }
+
+    .game-screen.active {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .game-screen.active #countdown-screen {
+      background: rgba(0, 0, 0, 0.85);
+      z-index: 1000;
+    }
+
+    .countdown-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 0;
+      background: none;
+      width: 100%;
+    }
+
+    .countdown-number {
+      font-size: clamp(4rem, 20vw, 10rem);
+      font-weight: 700;
+      color: white;
+      animation: countdown-pulse 1s infinite;
+    }
+
+    @keyframes countdown-pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.1); opacity: 0.8; }
+    }
+
+    .countdown-level {
+      font-size: 1.5rem;
+      color: white;
+      margin-top: 1rem;
+    }
+
+    .game-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      flex-shrink: 0;
+    }
+
+    .back-btn, .timer, .game-level-name {
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      font-weight: 600;
+    }
+
+    .back-btn {
+      background: none;
+      border: none;
+      color: #4f46e5;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+      transition: all 0.2s;
+    }
+
+    .back-btn:hover {
+      background-color: rgba(79, 70, 229, 0.1);
+    }
+
+    .timer {
+      color: #667eea;
+      font-size: 1.25rem;
+    }
+
+    .game-level-name {
+      color: #4b5563;
+      font-size: 0.875rem;
+    }
+
+    .board-container {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0.5rem auto;
+      flex-shrink: 0;
+    }
+
+    .sudoku-board {
+      display: grid;
+      grid-template-columns: repeat(9, 1fr);
+      gap: 0;
+      background: white;
+      border: 2px solid #1f2937;
+      border-radius: 0.5rem;
+      overflow: hidden;
+      width: min(calc(100vw - 2rem), calc(100vh - 420px));
+      height: min(calc(100vw - 2rem), calc(100vh - 420px));
+      aspect-ratio: 1 / 1;
+    }
+
+    .cell {
+      aspect-ratio: 1 / 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s;
+      position: relative;
+      border: 0.5px solid #e5e7eb;
+    }
+
+    .cell:nth-child(3n):not(:nth-child(9n)) {
+      border-right: 2px solid #1f2937;
+    }
+
+    .cell:nth-child(n+19):nth-child(-n+27),
+    .cell:nth-child(n+46):nth-child(-n+54) {
+      border-bottom: 2px solid #1f2937;
+    }
+
+    .cell.initial {
+      background: #f3f4f6;
+      color: #1f2937;
+      cursor: default;
+    }
+
+    .cell.editable {
+      background: white;
+      color: #667eea;
+    }
+
+    .cell.editable:hover {
+      background: #eef2ff;
+    }
+
+    .cell.selected {
+      box-shadow: inset 0 0 0 4px #667eea;
+      z-index: 10;
+    }
+
+    .cell.wrong {
+      background: #fee2e2;
+      color: #ef4444;
+    }
+
+    .memo-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      width: 100%;
+      height: 100%;
+      padding: 2px;
+      font-size: 0.65rem;
+      color: #9ca3af;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .memo-cell {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      line-height: 1;
+    }
+
+    .top-controls {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+      flex-shrink: 0;
+      width: 100%;
+      max-width: min(calc(100vw - 2rem), calc(100vh - 420px));
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .bottom-controls {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+      margin-top: 0.5rem;
+      flex-shrink: 0;
+      width: 100%;
+      max-width: min(calc(100vw - 2rem), calc(100vh - 420px));
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .control-btn {
+      padding: 0.75rem 0.5rem;
+      border: none;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      color: white;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      -webkit-tap-highlight-color: rgba(0,0,0,0);
+      touch-action: manipulation;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .control-btn:active {
+      transform: scale(0.98);
+    }
+
+    .control-btn::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 5px;
+      height: 5px;
+      background: rgba(255, 255, 255, 0.5);
+      opacity: 0;
+      border-radius: 100%;
+      transform: scale(1, 1) translate(-50%, -50%);
+      transform-origin: 50% 50%;
+    }
+
+    .control-btn:focus:not(:active)::after {
+      animation: ripple 1s ease-out;
+    }
+
+    @keyframes ripple {
+      0% {
+        transform: scale(0, 0);
+        opacity: 0.5;
+      }
+      100% {
+        transform: scale(50, 50);
+        opacity: 0;
+      }
+    }
+
+    .control-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .error-btn {
+      background: #fca5a5;
+    }
+
+    .error-btn:hover {
+      background: #f87171;
+    }
+
+    .error-btn.active {
+      background: #ef4444;
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+    }
+
+    .error-btn.active:hover {
+      background: #dc2626;
+    }
+
+    .hint-btn {
+      background: #f59e0b;
+    }
+
+    .hint-btn:hover {
+      background: #d97706;
+    }
+
+    .reset-btn {
+      background: #6b7280;
+    }
+
+    .reset-btn:hover {
+      background: #4b5563;
+    }
+
+    .pause-btn {
+      background: #cbd5e1;
+    }
+
+    .pause-btn:hover {
+      background: #94a3b8;
+    }
+
+    .pause-btn.active {
+      background: #f97316;
+      box-shadow: 0 4px 12px rgba(249, 115, 22, 0.4);
+    }
+
+    .pause-btn.active:hover {
+      background: #ea580c;
+    }
+
+    .memo-btn {
+      background: #cffafe;
+      color: #0e7490;
+    }
+
+    .memo-btn:hover {
+      background: #a5f3fc;
+      color: #0e7490;
+    }
+
+    .memo-btn.active {
+      background: #06b6d4;
+      color: white;
+      box-shadow: 0 4px 12px rgba(6, 182, 212, 0.4), 0 0 0 3px rgba(6, 182, 212, 0.2);
+    }
+
+    .memo-btn.active:hover {
+      background: #0891b2;
+      color: white;
+    }
+
+    .number-pad {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0.5rem;
+      margin: 0.5rem auto;
+      flex-shrink: 0;
+      width: 100%;
+      max-width: min(calc(100vw - 2rem), calc(100vh - 420px));
+    }
+
+    .number-btn {
+      aspect-ratio: 1.5 / 1;
+      border: none;
+      border-radius: 0.75rem;
+      background: #4f46e5;
+      color: white;
+      font-size: 1.25rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 4px rgba(79, 70, 229, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .number-pad.memo-mode .number-btn:not(.delete-btn) {
+      background: #06b6d4;
+      box-shadow: 0 2px 6px rgba(6, 182, 212, 0.4);
+    }
+
+    .number-pad.memo-mode .number-btn:not(.delete-btn):hover {
+      background: #0891b2;
+      box-shadow: 0 4px 10px rgba(8, 145, 178, 0.5);
+    }
+
+    .number-btn:hover {
+      background: #4338ca;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(79, 70, 229, 0.25);
+    }
+
+    .number-btn:active {
+      transform: translateY(0);
+    }
+
+    .delete-btn {
+      background: #6b7280;
+      font-size: 1rem;
+    }
+
+    .delete-btn:hover {
+      background: #4b5563;
+    }
+
+    .clear-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background-color: rgba(255, 255, 255, 0.95);
+      z-index: 1000;
+      padding: 1rem;
+      overflow-y: auto;
+      display: none;
+    }
+
+    .clear-screen.active {
+      display: flex;
+    }
+
+    .clear-content {
+      max-width: 100%;
+      max-height: 100%;
+      overflow-y: auto;
+      text-align: center;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .clear-title {
+      margin: 1rem 0;
+      color: #1f2937;
+      font-size: 2rem;
+      font-weight: 700;
+    }
+
+    .clear-message {
+      margin-bottom: 1.5rem;
+      color: #4b5563;
+      font-size: 1.25rem;
+    }
+
+    .clear-stats {
+      background: #f3f4f6;
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+      margin: 1rem 0;
+      width: 100%;
+      max-width: 300px;
+    }
+
+    .clear-time-label {
+      color: #6b7280;
+      font-size: 0.875rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .clear-time {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #1f2937;
+      margin-bottom: 0.5rem;
+    }
+
+    .clear-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      width: 100%;
+      max-width: 300px;
+      margin-top: 1rem;
+    }
+
+    .trophy-icon {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 1.5rem;
+      display: block;
+    }
+
+    .clear-level {
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: #374151;
+      text-align: center;
+    }
+
+    .clear-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .action-btn {
+      width: 100%;
+      padding: 1rem;
+      border: none;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .primary-btn {
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      color: white;
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+    }
+
+    .primary-btn:hover {
+      background: linear-gradient(135deg, #4338ca, #6d28d9);
+    }
+
+    .secondary-btn {
+      background: #f3f4f6;
+      color: #4b5563;
+      border: 1px solid #e5e7eb;
+    }
+
+    .secondary-btn:hover {
+      background: #e5e7eb;
+    }
+
+    #board.paused {
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    /* タブレット縦向け */
+    @media (min-width: 641px) and (max-width: 1024px) and (orientation: portrait) {
+      .sudoku-board {
+        width: min(calc(100vw - 3rem), calc(100vh - 450px), 600px);
+        height: min(calc(100vw - 3rem), calc(100vh - 450px), 600px);
+      }
+
+      .top-controls,
+      .bottom-controls,
+      .number-pad {
+        max-width: min(calc(100vw - 3rem), calc(100vh - 450px), 600px);
+      }
+    }
+
+    /* タブレット横向き: 左右レイアウト */
+    @media (min-width: 641px) and (max-width: 1024px) and (orientation: landscape) {
+      #play-screen {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto 1fr auto;
+        grid-template-areas:
+          "header header"
+          "board controls"
+          "board controls";
+        gap: 1rem;
+        height: 100%;
+      }
+
+      .game-header {
+        grid-area: header;
+      }
+
+      .board-container {
+        grid-area: board;
+        margin: 0;
+        height: 100%;
+      }
+
+      .sudoku-board {
+        width: min(calc(100vh - 120px), calc(50vw - 2rem), 600px);
+        height: min(calc(100vh - 120px), calc(50vw - 2rem), 600px);
+      }
+
+      #play-screen > div:nth-child(3),
+      #play-screen > div:nth-child(4),
+      #play-screen > div:nth-child(5) {
+        grid-area: controls;
+      }
+
+      #play-screen > div:nth-child(3) {
+        align-self: start;
+      }
+
+      #play-screen > div:nth-child(5) {
+        align-self: end;
+      }
+    }
+
+    /* PC */
+    @media (min-width: 1025px) {
+      .sudoku-board {
+        width: min(calc(100vw - 4rem), calc(100vh - 380px), 700px);
+        height: min(calc(100vw - 4rem), calc(100vh - 380px), 700px);
+      }
+
+      .top-controls,
+      .bottom-controls,
+      .number-pad {
+        max-width: min(calc(100vw - 4rem), calc(100vh - 380px), 700px);
+      }
+
+      .cell {
+        font-size: 2rem;
+      }
+
+      .memo-grid {
+        font-size: 0.9rem;
+      }
+
+      .memo-cell {
+        font-size: 0.9rem;
+      }
+    }
+
+    /* モバイル */
+    @media (max-width: 640px) {
+      .container {
+        padding: 0.75rem;
+      }
+      
+      .title {
+        margin-bottom: 1rem;
+      }
+
+      .title h1 {
+        font-size: 2.25rem;
+      }
+
+      .tabs {
+        margin-bottom: 1rem;
+      }
+
+      .tab {
+        padding: 0.75rem;
+        font-size: 0.875rem;
+      }
+
+      .level-btn {
+        padding: 0.75rem;
+        margin-bottom: 0.35rem;
+        min-height: 11vh;
+      }
+
+      .level-name {
+        font-size: 1rem;
+      }
+
+      .level-desc {
+        font-size: 0.7rem;
+      }
+
+      .sudoku-board {
+        width: min(calc(100vw - 1.5rem), calc(100vh - 480px));
+        height: min(calc(100vw - 1.5rem), calc(100vh - 480px));
+      }
+
+      .top-controls,
+      .bottom-controls,
+      .number-pad {
+        max-width: min(calc(100vw - 1.5rem), calc(100vh - 480px));
+      }
+
+      .cell {
+        font-size: 0.95rem;
+      }
+
+      .control-btn {
+        padding: 0.5rem 0.25rem;
+        font-size: 0.7rem;
+      }
+
+      .control-btn i {
+        font-size: 1rem;
+      }
+
+      .number-btn {
+        font-size: 1.1rem;
+      }
+
+      .timer {
+        font-size: 1rem;
+      }
+    }
   </style>
 </head>
 <body>
@@ -2003,29 +1693,24 @@
       }
     }
 
-    // iOSデバイスかどうかを検出
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || 
                  (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
-    // iOSデバイスの場合、タッチイベントを追加
     if (isIOS) {
       document.addEventListener('DOMContentLoaded', function() {
         const interactiveElements = document.querySelectorAll('button, .btn, .control-btn, .level-btn, .cell, .number-btn');
         
         interactiveElements.forEach(element => {
-          // タッチ開始時の処理
           element.addEventListener('touchstart', function(e) {
             this.classList.add('active');
             e.preventDefault();
             e.stopPropagation();
           }, { passive: false });
           
-          // タッチ終了時の処理
           element.addEventListener('touchend', function(e) {
             this.classList.remove('active');
             e.preventDefault();
             e.stopPropagation();
-            // クリックイベントを発火
             this.click();
           }, { passive: false });
         });
