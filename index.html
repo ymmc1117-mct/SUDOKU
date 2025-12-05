@@ -83,7 +83,8 @@
     .container {
       width: 100%;
       height: 100%;
-      max-height: 100%;
+      height: 100dvh;
+      max-height: 100dvh;
       background: white;
       padding: 0.5rem;
       display: flex;
@@ -104,12 +105,12 @@
 
     .title {
       text-align: center;
-      margin-bottom: 1.5rem;
+      margin-bottom: clamp(0.75rem, 2vh, 1.5rem);
       flex-shrink: 0;
     }
 
     .title h1 {
-      font-size: 3rem;
+      font-size: clamp(2rem, 5vh, 3rem);
       font-weight: 900;
       font-family: 'Futura', 'Poppins', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
       background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
@@ -127,7 +128,7 @@
     .tabs {
       display: flex;
       gap: 0.5rem;
-      margin-bottom: 1.5rem;
+      margin-bottom: clamp(0.75rem, 2vh, 1.5rem);
       flex-shrink: 0;
     }
 
@@ -485,8 +486,8 @@
       border: 2px solid #1f2937;
       border-radius: 0.5rem;
       overflow: hidden;
-      width: min(calc(100vw - 2rem), calc(100vh - 420px));
-      height: min(calc(100vw - 2rem), calc(100vh - 420px));
+      width: min(calc(100vw - 2rem), calc(100dvh - 420px));
+      height: min(calc(100vw - 2rem), calc(100dvh - 420px));
       aspect-ratio: 1 / 1;
     }
 
@@ -532,6 +533,11 @@
       z-index: 10;
     }
 
+    .cell.selected.memo-active {
+      box-shadow: inset 0 0 0 4px #06b6d4;
+      background: #ecfeff;
+    }
+
     .cell.wrong {
       background: #fee2e2;
       color: #ef4444;
@@ -566,7 +572,7 @@
       margin-bottom: 0.75rem;
       flex-shrink: 0;
       width: 100%;
-      max-width: min(calc(100vw - 2rem), calc(100vh - 420px));
+      max-width: min(calc(100vw - 2rem), calc(100dvh - 420px));
       margin-left: auto;
       margin-right: auto;
     }
@@ -579,7 +585,7 @@
       margin-top: 0.5rem;
       flex-shrink: 0;
       width: 100%;
-      max-width: min(calc(100vw - 2rem), calc(100vh - 420px));
+      max-width: min(calc(100vw - 2rem), calc(100dvh - 420px));
       margin-left: auto;
       margin-right: auto;
     }
@@ -721,7 +727,7 @@
       margin: 0.5rem auto;
       flex-shrink: 0;
       width: 100%;
-      max-width: min(calc(100vw - 2rem), calc(100vh - 420px));
+      max-width: min(calc(100vw - 2rem), calc(100dvh - 420px));
     }
 
     .number-btn {
@@ -909,14 +915,14 @@
     /* タブレット・iPad向け: 画面全体を使用 */
     @media (min-width: 641px) and (max-width: 1440px) {
       .sudoku-board {
-        width: min(calc(100vw - 3rem), calc(100vh - 280px), 85vh);
-        height: min(calc(100vw - 3rem), calc(100vh - 280px), 85vh);
+        width: min(calc(100vw - 3rem), calc(100dvh - 280px), 85vh);
+        height: min(calc(100vw - 3rem), calc(100dvh - 280px), 85vh);
       }
 
       .top-controls,
       .bottom-controls,
       .number-pad {
-        max-width: min(calc(100vw - 3rem), calc(100vh - 280px), 85vh);
+        max-width: min(calc(100vw - 3rem), calc(100dvh - 280px), 85vh);
       }
 
       .container {
@@ -942,14 +948,14 @@
     /* タブレット縦向け */
     @media (min-width: 641px) and (max-width: 1024px) and (orientation: portrait) {
       .sudoku-board {
-        width: min(calc(100vw - 3rem), calc(100vh - 300px), 80vh);
-        height: min(calc(100vw - 3rem), calc(100vh - 300px), 80vh);
+        width: min(calc(100vw - 3rem), calc(100dvh - 300px), 80vh);
+        height: min(calc(100vw - 3rem), calc(100dvh - 300px), 80vh);
       }
 
       .top-controls,
       .bottom-controls,
       .number-pad {
-        max-width: min(calc(100vw - 3rem), calc(100vh - 300px), 80vh);
+        max-width: min(calc(100vw - 3rem), calc(100dvh - 300px), 80vh);
       }
     }
 
@@ -1000,14 +1006,14 @@
     /* PC */
     @media (min-width: 1025px) {
       .sudoku-board {
-        width: min(calc(100vw - 4rem), calc(100vh - 380px), 700px);
-        height: min(calc(100vw - 4rem), calc(100vh - 380px), 700px);
+        width: min(calc(100vw - 4rem), calc(100dvh - 380px), 700px);
+        height: min(calc(100vw - 4rem), calc(100dvh - 380px), 700px);
       }
 
       .top-controls,
       .bottom-controls,
       .number-pad {
-        max-width: min(calc(100vw - 4rem), calc(100vh - 380px), 700px);
+        max-width: min(calc(100vw - 4rem), calc(100dvh - 380px), 700px);
       }
 
       .cell {
@@ -1030,15 +1036,15 @@
       }
       
       .title {
-        margin-bottom: 1rem;
+        margin-bottom: clamp(0.5rem, 1.5vh, 1rem);
       }
 
       .title h1 {
-        font-size: 2.25rem;
+        font-size: clamp(1.75rem, 4vh, 2.25rem);
       }
 
       .tabs {
-        margin-bottom: 1rem;
+        margin-bottom: clamp(0.5rem, 1.5vh, 1rem);
       }
 
       .tab {
@@ -1061,14 +1067,14 @@
       }
 
       .sudoku-board {
-        width: min(calc(100vw - 1.5rem), calc(100vh - 480px));
-        height: min(calc(100vw - 1.5rem), calc(100vh - 480px));
+        width: min(calc(100vw - 1.5rem), calc(100dvh - 480px));
+        height: min(calc(100vw - 1.5rem), calc(100dvh - 480px));
       }
 
       .top-controls,
       .bottom-controls,
       .number-pad {
-        max-width: min(calc(100vw - 1.5rem), calc(100vh - 480px));
+        max-width: min(calc(100vw - 1.5rem), calc(100dvh - 480px));
       }
 
       .cell {
@@ -1090,6 +1096,37 @@
 
       .timer {
         font-size: 1rem;
+      }
+    }
+
+    /* 横向きモバイル用の追加調整 */
+    @media (max-width: 640px) and (orientation: landscape) {
+      .title h1 {
+        font-size: clamp(1.5rem, 3.5vh, 2rem);
+      }
+
+      .title {
+        margin-bottom: clamp(0.25rem, 1vh, 0.5rem);
+      }
+
+      .tabs {
+        margin-bottom: clamp(0.25rem, 1vh, 0.5rem);
+      }
+
+      .level-btn {
+        min-height: 8vh;
+        padding: 0.5rem;
+      }
+
+      .sudoku-board {
+        width: min(calc(100vw - 1.5rem), calc(100dvh - 380px));
+        height: min(calc(100vw - 1.5rem), calc(100dvh - 380px));
+      }
+
+      .top-controls,
+      .bottom-controls,
+      .number-pad {
+        max-width: min(calc(100vw - 1.5rem), calc(100dvh - 380px));
       }
     }
   </style>
@@ -1440,6 +1477,9 @@
           
           if (gameState.selectedCell && gameState.selectedCell[0] === row && gameState.selectedCell[1] === col) {
             cell.classList.add('selected');
+            if (gameState.isMemoMode) {
+              cell.classList.add('memo-active');
+            }
           }
           
           if (gameState.showErrors && cellValue !== 0 && cellValue !== gameState.solution[row][col]) {
