@@ -1,1714 +1,276 @@
 <!DOCTYPE html>
-
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#4f46e5">
-  <title>SUDOKU</title>
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Roboto+Mono:wght@400;700&family=Poppins:wght@600;700;900&display=swap" rel="stylesheet">
-
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
-    }
-
-    body {
-      font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-      min-height: 100vh;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0;
-      margin: 0;
-      overflow: hidden;
-    }
-
-    .container {
-      max-width: 100vw;
-      width: 100vw;
-      height: 100vh;
-      max-height: 100vh;
-      background: white;
-      border-radius: 0;
-      box-shadow: none;
-      padding: 1rem;
-      overflow-y: auto;
-    }
-
-@media (min-width: 640px) {
-  .container {
-    max-width: 98vw;
-    width: 98vw;
-    height: 98vh;
-    max-height: 98vh;
-    border-radius: 1rem;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-    padding: 1.5rem;
-  }
-
-  body {
-    padding: 0.25rem;
-  }
-}
-
-@media (min-width: 768px) {
-  .container {
-    max-width: 98vw;
-    width: 98vw;
-    height: 98vh;
-    padding: 1.5rem;
-    display: flex;
-    flex-direction: column;
-  }
-
-  #play-screen {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-  }
-
-  .game-header {
-    flex-shrink: 0;
-  }
-
-  .board-container {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    max-width: none;
-    width: 100%;
-    margin: 0.5rem auto;
-    min-height: 0;
-  }
-
-  .sudoku-board {
-    width: 100%;
-    height: 100%;
-    max-width: min(70vh, 90vw);
-    max-height: min(70vh, 90vw);
-  }
-
-  .top-controls,
-  .bottom-controls,
-  .number-pad {
-    max-width: none;
-    width: 100%;
-    flex-shrink: 0;
-  }
-
-  .top-controls {
-    margin-bottom: 0.5rem;
-  }
-
-  .bottom-controls {
-    margin-bottom: 0.5rem;
-    margin-top: 0.5rem;
-  }
-
-  .number-pad {
-    margin: 0.5rem auto;
-  }
-
-  .title h1 {
-    font-size: 4rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .tab {
-    font-size: 1.5rem;
-    padding: 1.5rem;
-  }
-
-  .level-btn {
-    font-size: 1.5rem;
-    padding: 2rem 1.5rem;
-  }
-
-  .level-name {
-    font-size: 1.4rem;
-  }
-
-  .level-desc {
-    font-size: 1rem;
-  }
-
-  .control-btn {
-    font-size: 1.1rem;
-    padding: 1.25rem 1rem;
-  }
-
-  .control-btn i {
-    font-size: 1.75rem;
-  }
-
-  .number-btn {
-    font-size: 2.5rem;
-  }
-
-  .cell {
-    font-size: 2rem;
-  }
-
-  .memo-grid {
-    font-size: 0.75rem;
-  }
-
-  .memo-cell {
-    font-size: 0.75rem;
-  }
-
-  .game-header {
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
-  }
-
-  .timer {
-    font-size: 2rem;
-  }
-
-  .back-btn {
-    font-size: 1.5rem;
-  }
-
-  .back-btn i {
-    font-size: 1.75rem;
-  }
-
-  .game-level-name {
-    font-size: 1.5rem;
-  }
-
-  .delete-btn {
-    font-size: 1.25rem;
-  }
-}
-
-@media (min-width: 1024px) {
-  .container {
-    max-width: 98vw;
-    width: 98vw;
-    height: 98vh;
-    padding: 2rem;
-  }
-
-  .sudoku-board {
-    max-width: min(75vh, 85vw);
-    max-height: min(75vh, 85vw);
-  }
-
-  .cell {
-    font-size: 2.5rem;
-  }
-
-  .memo-grid {
-    font-size: 0.9rem;
-  }
-
-  .memo-cell {
-    font-size: 0.9rem;
-  }
-
-  .number-btn {
-    font-size: 3rem;
-  }
-
-  .control-btn {
-    font-size: 1.25rem;
-    padding: 1.5rem 1.25rem;
-  }
-
-  .control-btn i {
-    font-size: 2rem;
-  }
-
-  .delete-btn {
-    font-size: 1.5rem;
-  }
-}
-
-@media (min-width: 1280px) {
-  .container {
-    max-width: 95vw;
-    width: 95vw;
-    height: 98vh;
-    padding: 2rem;
-  }
-
-  .sudoku-board {
-    max-width: min(80vh, 80vw);
-    max-height: min(80vh, 80vw);
-  }
-
-  .cell {
-    font-size: 3rem;
-  }
-
-  .memo-grid {
-    font-size: 1.1rem;
-  }
-
-  .memo-cell {
-    font-size: 1.1rem;
-  }
-
-  .number-btn {
-    font-size: 3.5rem;
-  }
-}
-
-.title {
-  text-align: center;
-  margin-bottom: 1.5rem;
-}
-
-.title h1 {
-  font-size: 3rem;
-  font-weight: 900;
-  font-family: 'Futura', 'Poppins', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
-  background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.8; }
-}
-
-.tabs {
-  display: flex;
-  gap: 0.5rem;
-  margin-bottom: 1.5rem;
-}
-
-.tab {
-  flex: 1;
-  padding: 1rem;
-  border: none;
-  border-radius: 9999px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s;
-  background: #e5e7eb;
-  color: #4b5563;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.tab:hover {
-  background: #d1d5db;
-}
-
-.tab.active {
-  background: #4f46e5;
-  color: white;
-  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.3);
-}
-
-.section {
-  display: none;
-  height: 100%;
-}
-
-.section.active {
-  display: flex;
-  flex-direction: column;
-}
-
-#history-tab {
-  overflow-y: auto;
-}
-
-.level-list h2,
-.history-header h2 {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #374151;
-  margin-bottom: 1rem;
-  text-align: center;
-}
-
-.level-btn {
-  width: 100%;
-  padding: 1.25rem;
-  margin-bottom: 0;
-  border: none;
-  border-radius: 0.75rem;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s;
-  background: #4f46e5;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.2);
-  flex-shrink: 0;
-}
-
-.level-btn:hover {
-  background: #4338ca;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
-}
-
-.level-details {
-  text-align: center;
-}
-
-.level-name {
-  font-size: 1.1rem;
-  font-weight: 700;
-}
-
-.level-desc {
-  font-size: 0.75rem;
-  opacity: 0.9;
-  margin-top: 0.25rem;
-}
-
-.history-header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 1rem;
-}
-
-.history-header .clear-btn {
-  align-self: center;
-}
-
-.clear-btn {
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 0.75rem;
-  background: #fef2f2;
-  color: #ef4444;
-  font-weight: 600;
-  cursor: pointer;
-  font-size: 0.875rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  transition: all 0.2s ease;
-  border: 1px solid #fecaca;
-}
-
-.clear-btn:hover {
-  background: #fee2e2;
-  transform: translateY(-1px);
-}
-
-.empty-history {
-  text-align: center;
-  padding: 4rem 2rem;
-  color: #6b7280;
-  background: #f9fafb;
-  border-radius: 0.75rem;
-  border: 1px dashed #e5e7eb;
-  margin: 1rem 0;
-  font-size: 1rem;
-}
-
-.history-list {
-  max-height: none;
-  overflow-y: visible;
-}
-
-.level-list {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-.level-list h2 {
-  flex-shrink: 0;
-}
-
-.level-buttons-container {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  overflow-y: auto;
-  min-height: 0;
-}
-
-.history-item {
-  background: #f9fafb;
-  border-radius: 0.75rem;
-  padding: 1.25rem 1.5rem;
-  margin-bottom: 0.75rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  transition: all 0.2s ease;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e5e7eb;
-  position: relative;
-}
-
-.history-item:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-}
-
-.history-info {
-  flex: 1;
-}
-
-.history-level {
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: #1f2937;
-  margin-bottom: 0.25rem;
-}
-
-.history-date {
-  font-size: 0.875rem;
-  color: #6b7280;
-}
-
-.history-time {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #4f46e5;
-  font-family: 'Roboto Mono', monospace;
-  letter-spacing: -0.5px;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.delete-history-btn {
-  padding: 0.5rem;
-  border: none;
-  border-radius: 0.5rem;
-  background: #fef2f2;
-  color: #ef4444;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid #fecaca;
-}
-
-.delete-history-btn:hover {
-  background: #fee2e2;
-  transform: scale(1.1);
-}
-
-.delete-history-btn i {
-  font-size: 1.25rem;
-}
-
-.game-screen {
-  display: none;
-  height: 100%;
-}
-
-.game-screen.active {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-.game-screen.active #countdown-screen {
-  background: rgba(0, 0, 0, 0.85);
-  z-index: 1000;
-}
-
-.countdown-screen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 0;
-  background: none;
-  width: 100%;
-}
-
-.countdown-number {
-  font-size: 8rem;
-  font-weight: 700;
-  color: white;
-  animation: countdown-pulse 1s infinite;
-}
-
-@keyframes countdown-pulse {
-  0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.1); opacity: 0.8; }
-}
-
-.countdown-level {
-  font-size: 1.5rem;
-  color: white;
-  margin-top: 1rem;
-}
-
-.game-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.back-btn, .timer, .game-level-name {
-  padding: 0.5rem 1rem;
-  border-radius: 0.5rem;
-  font-weight: 600;
-}
-
-.back-btn {
-  background: none;
-  border: none;
-  color: #4f46e5;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem;
-  border-radius: 0.5rem;
-  transition: all 0.2s;
-}
-
-.back-btn:hover {
-  background-color: rgba(79, 70, 229, 0.1);
-}
-
-.timer {
-  color: #667eea;
-  font-size: 1.25rem;
-}
-
-.game-level-name {
-  color: #4b5563;
-  font-size: 0.875rem;
-}
-
-:root {
-  /* 盤面＋数字ボタン＋下ボタンに使える一辺の最大値を「高さだけ」で決定
-     さらに少しコンパクトにして、最下部ボタンの下にも余白が残るようにする */
-  --game-max-size: calc(100vh - 380px);
-}
-
-.board-container {
-  width: 100%;
-  max-width: min(var(--game-max-size), 900px);
-  margin: 0 auto 0.75rem;
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.sudoku-board {
-  display: grid;
-  grid-template-columns: repeat(9, 1fr);
-  gap: 0;
-  background: white;
-  border: 2px solid #1f2937;
-  border-radius: 0.5rem;
-  overflow: hidden;
-  width: 100%;
-  max-width: 100%;
-}
-
-.cell {
-  aspect-ratio: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.25rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: background 0.2s;
-  position: relative;
-  border: 0.5px solid #e5e7eb;
-}
-
-.cell:nth-child(3n):not(:nth-child(9n)) {
-  border-right: 2px solid #1f2937;
-}
-
-.cell:nth-child(n+19):nth-child(-n+27),
-.cell:nth-child(n+46):nth-child(-n+54) {
-  border-bottom: 2px solid #1f2937;
-}
-
-.cell.initial {
-  background: #f3f4f6;
-  color: #1f2937;
-  cursor: default;
-}
-
-.cell.editable {
-  background: white;
-  color: #667eea;
-}
-
-.cell.editable:hover {
-  background: #eef2ff;
-}
-
-.cell.selected {
-  box-shadow: inset 0 0 0 4px #667eea;
-  z-index: 10;
-}
-
-.cell.wrong {
-  background: #fee2e2;
-  color: #ef4444;
-}
-
-.memo-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0;
-  width: 100%;
-  height: 100%;
-  padding: 2px;
-  font-size: 0.65rem;
-  color: #9ca3af;
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-.memo-cell {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.65rem;
-  line-height: 1;
-}
-
-.top-controls {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.5rem;
-  margin-bottom: 1rem;
-  max-width: min(var(--game-max-size), 900px);
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.bottom-controls {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.5rem;
-  margin-bottom: 1.25rem;
-  max-width: min(var(--game-max-size), 900px);
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.control-btn {
-  padding: 0.75rem 0.5rem;
-  border: none;
-  border-radius: 9999px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: 0.35rem;
-  color: white;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.control-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-}
-
-.control-btn:active {
-  transform: translateY(0);
-}
-
-.control-btn i {
-  font-size: 1.25rem;
-}
-
-.error-btn {
-  background: #fca5a5;
-}
-
-.error-btn:hover {
-  background: #f87171;
-}
-
-.error-btn.active {
-  background: #ef4444;
-  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
-}
-
-.error-btn.active:hover {
-  background: #dc2626;
-}
-
-.hint-btn {
-  background: #f59e0b;
-}
-
-.hint-btn:hover {
-  background: #d97706;
-}
-
-.reset-btn {
-  background: #6b7280;
-}
-
-.reset-btn:hover {
-  background: #4b5563;
-}
-
-.pause-btn {
-  background: #cbd5e1;
-}
-
-.pause-btn:hover {
-  background: #94a3b8;
-}
-
-.pause-btn.active {
-  background: #f97316;
-  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.4);
-}
-
-.pause-btn.active:hover {
-  background: #ea580c;
-}
-
-.memo-btn {
-  background: #cffafe;
-  color: #0e7490;
-}
-
-.memo-btn:hover {
-  background: #a5f3fc;
-  color: #0e7490;
-}
-
-.memo-btn.active {
-  background: #06b6d4;
-  color: white;
-  box-shadow: 0 4px 12px rgba(6, 182, 212, 0.4), 0 0 0 3px rgba(6, 182, 212, 0.2);
-}
-
-.memo-btn.active:hover {
-  background: #0891b2;
-  color: white;
-}
-
-.number-pad {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 0.5rem;
-  max-width: min(var(--game-max-size), 900px);
-  margin: 0 auto 0.75rem;
-}
-
-.number-btn {
-  aspect-ratio: 1;
-  border: none;
-  border-radius: 0.75rem;
-  background: #4f46e5;
-  color: white;
-  font-size: 1.25rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 4px rgba(79, 70, 229, 0.2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.number-btn:hover {
-  background: #4338ca;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(79, 70, 229, 0.25);
-}
-
-.number-btn:active {
-  transform: translateY(0);
-}
-
-.delete-btn {
-  background: #6b7280;
-  font-size: 1rem;
-}
-
-.delete-btn:hover {
-  background: #4b5563;
-}
-
-.clear-screen {
-  display: none;
-}
-
-.clear-screen.active {
-  display: block;
-}
-
-.trophy-icon {
-  width: 120px;
-  height: 120px;
-  margin: 0 auto 1.5rem;
-  display: block;
-}
-
-.clear-title {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #667eea;
-  margin-bottom: 0.5rem;
-  text-align: center;
-}
-
-.clear-message {
-  color: #6b7280;
-  margin-bottom: 2rem;
-  text-align: center;
-}
-
-.clear-stats {
-  background: linear-gradient(135deg, #eef2ff, #f3e8ff);
-  border-radius: 0.75rem;
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
-}
-
-.clear-time-label {
-  font-size: 0.875rem;
-  color: #6b7280;
-  margin-bottom: 0.5rem;
-  text-align: center;
-}
-
-.clear-time {
-  font-size: 3rem;
-  font-weight: 700;
-  color: #667eea;
-  margin-bottom: 1rem;
-  text-align: center;
-}
-
-.clear-level {
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: #374151;
-  text-align: center;
-}
-
-.clear-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.action-btn {
-  width: 100%;
-  padding: 1rem;
-  border: none;
-  border-radius: 0.5rem;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-}
-
-.primary-btn {
-  background: linear-gradient(135deg, #4f46e5, #7c3aed);
-  color: white;
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
-}
-
-.primary-btn:hover {
-  background: linear-gradient(135deg, #4338ca, #6d28d9);
-}
-
-.secondary-btn {
-  background: #f3f4f6;
-  color: #4b5563;
-  border: 1px solid #e5e7eb;
-}
-
-.secondary-btn:hover {
-  background: #e5e7eb;
-}
-
-#board.paused {
-  opacity: 0.7;
-  pointer-events: none;
-}
-
-/* iPad / タブレット向け調整: 盤面＋ボタン全体が縦に収まるよう少しコンパクトにする */
-@media (min-width: 641px) and (max-width: 1024px) {
-  :root {
-    /* タブレットでは少し余白を多めにとって、数字ボタン2段目が見切れないようにする */
-    --game-max-size: calc(100vh - 320px);
-  }
-
-  .top-controls,
-  .bottom-controls {
-    margin-bottom: 0.75rem;
-  }
-
-  .number-pad {
-    margin-bottom: 0.75rem;
-  }
-
-  .control-btn {
-    padding: 0.6rem 0.4rem;
-  }
-}
-
-@media (max-width: 640px) {
-  .container {
-    padding: 0.75rem;
-  }
-  
-  .title {
-    margin-bottom: 1rem;
-  }
-
-  .title h1 {
-    font-size: 2.25rem;
-  }
-
-  .tabs {
-    margin-bottom: 1rem;
-  }
-
-  .tab {
-    padding: 0.75rem;
-    font-size: 0.875rem;
-  }
-
-  .level-btn {
-    padding: 0.75rem;
-    margin-bottom: 0.35rem;
-    min-height: 11vh;
-  }
-
-  .level-name {
-    font-size: 1rem;
-  }
-
-  .level-desc {
-    font-size: 0.7rem;
-  }
-
-  .top-controls,
-  .bottom-controls {
-    gap: 0.4rem;
-    margin-bottom: 0.75rem;
-  }
-
-  .control-btn {
-    padding: 0.5rem 0.25rem;
-    font-size: 0.7rem;
-  }
-
-  .control-btn i {
-    font-size: 1rem;
-  }
-
-  .board-container {
-    margin-bottom: 0.75rem;
-    max-width: 100%;
-  }
-  
-  .cell {
-    font-size: 0.95rem;
-  }
-
-  .number-pad {
-    gap: 0.4rem;
-    margin-bottom: 0.75rem;
-  }
-  
-  .number-btn {
-    font-size: 1.1rem;
-  }
-
-  .game-header {
-    margin-bottom: 0.75rem;
-  }
-
-  .timer {
-    font-size: 1rem;
-  }
-
-  .back-btn {
-
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Today's Key">
+    <title>Today's Key - ピアノ音階スロット</title>
+    
+    <!-- ホーム画面アイコン -->
+    <link rel="apple-touch-icon" href="icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="icon.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="icon.png">
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- iOS用メタタグ -->
+    <meta name="theme-color" content="#fce7f3">
+    
+    <!-- SoundFont.js CDN -->
+    <script src="https://unpkg.com/soundfont-player@0.12.0/dist/soundfont-player.min.js"></script>
+    
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <div class="menu-screen" id="menu-screen">
-      <div class="title">
-        <h1>SUDOKU</h1>
-      </div>
-
-  <div class="tabs">
-    <button class="tab active" onclick="showTab('game')">
-      <i class="material-icons-round" style="font-size: 1.1rem;">add</i>
-      <span>新しいゲーム</span>
-    </button>
-    <button class="tab" onclick="showTab('history')">
-      <i class="material-icons-round" style="font-size: 1.1rem;">history</i>
-      <span>履歴</span>
-    </button>
-  </div>
-  
-  <div id="game-tab" class="section active">
-    <div class="level-list">
-      <h2>難易度を選択</h2>
-      <div class="level-buttons-container">
-        <button class="level-btn" onclick="startGame(0)">
-          <div class="level-details">
-            <div class="level-name">入門</div>
-            <div class="level-desc">基本スキャンのみ</div>
-          </div>
-        </button>
-        <button class="level-btn" onclick="startGame(1)">
-          <div class="level-details">
-            <div class="level-name">簡単</div>
-            <div class="level-desc">唯一候補法</div>
-          </div>
-        </button>
-        <button class="level-btn" onclick="startGame(2)">
-          <div class="level-details">
-            <div class="level-name">普通</div>
-            <div class="level-desc">ペア削除が必要</div>
-          </div>
-        </button>
-        <button class="level-btn" onclick="startGame(3)">
-          <div class="level-details">
-            <div class="level-name">難しい</div>
-            <div class="level-desc">複数技法の組み合わせ</div>
-          </div>
-        </button>
-        <button class="level-btn" onclick="startGame(4)">
-          <div class="level-details">
-            <div class="level-name">超難しい</div>
-            <div class="level-desc">高度な論理推論</div>
-          </div>
-        </button>
-        <button class="level-btn" onclick="startGame(5)">
-          <div class="level-details">
-            <div class="level-name">激ムズ</div>
-            <div class="level-desc">最高難易度の挑戦</div>
-          </div>
-        </button>
-      </div>
-    </div>
-  </div>
-  
-  <div id="history-tab" class="section">
-    <div class="history-header">
-      <h2>クリア履歴</h2>
-      <button class="clear-btn" onclick="clearHistory()" id="clear-history-btn" style="display:none">
-        <i class="material-icons-round" style="font-size: 1rem;">delete</i>
-        全て削除
-      </button>
-    </div>
-    <div id="history-content"></div>
-  </div>
-</div>
-
-<div id="game-screen" class="game-screen">
-  <div id="countdown-screen" class="countdown-screen" style="display:none"></div>
-  
-  <div id="play-screen" style="display:none">
-    <div class="game-header">
-      <button class="back-btn" onclick="backToMenu()">
-        <i class="material-icons-round" style="font-size: 1.25rem;">arrow_back</i>
-        <span>戻る</span>
-      </button>
-      <div class="timer" id="timer">0:00</div>
-      <div class="game-level-name" id="level-name"></div>
-    </div>
-    
-    <div class="top-controls">
-      <button class="control-btn error-btn" id="error-btn" onclick="toggleErrors()">
-        <i class="material-icons-round">error_outline</i>
-        <span>間違い表示</span>
-      </button>
-      <button class="control-btn hint-btn" onclick="getHint()">
-        <i class="material-icons-round">lightbulb</i>
-        <span>ヒント</span>
-      </button>
-      <button class="control-btn reset-btn" onclick="resetGame()">
-        <i class="material-icons-round">refresh</i>
-        <span>リセット</span>
-      </button>
-    </div>
-    
-    <div class="board-container">
-      <div class="sudoku-board" id="board"></div>
-    </div>
-    
-    <div class="number-pad" id="number-pad"></div>
-    
-    <div class="bottom-controls">
-      <button class="control-btn pause-btn" id="pause-btn" onclick="togglePause()">
-        <i class="material-icons-round">pause</i>
-        <span>一時停止</span>
-      </button>
-      <button class="control-btn memo-btn" id="memo-btn" onclick="toggleMemo()">
-        <i class="material-icons-round">edit_note</i>
-        <span>メモ</span>
-      </button>
-    </div>
-  </div>
-</div>
-
-<div id="clear-screen" class="clear-screen">
-  <svg class="trophy-icon" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <linearGradient id="trophyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-        <stop offset="0%" style="stop-color:#fbbf24;stop-opacity:1" />
-        <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:1" />
-      </linearGradient>
-    </defs>
-    <rect x="70" y="160" width="60" height="15" rx="3" fill="url(#trophyGradient)"/>
-    <rect x="90" y="140" width="20" height="25" fill="url(#trophyGradient)"/>
-    <path d="M 60 60 L 60 100 Q 60 130 100 130 Q 140 130 140 100 L 140 60 Z" fill="url(#trophyGradient)"/>
-    <path d="M 60 70 Q 40 70 40 90 Q 40 100 50 100 L 60 100" fill="none" stroke="url(#trophyGradient)" stroke-width="8"/>
-    <path d="M 140 70 Q 160 70 160 90 Q 160 100 150 100 L 140 100" fill="none" stroke="url(#trophyGradient)" stroke-width="8"/>
-    <rect x="55" y="55" width="90" height="10" rx="3" fill="url(#trophyGradient)"/>
-    <path d="M 100 25 L 105 40 L 120 40 L 108 50 L 113 65 L 100 55 L 87 65 L 92 50 L 80 40 L 95 40 Z" fill="#fbbf24" opacity="0.8"/>
-  </svg>
-  <h1 class="clear-title">おめでとう!</h1>
-  <p class="clear-message">数独をクリアしました!</p>
-  
-  <div class="clear-stats">
-    <div class="clear-time-label">クリアタイム</div>
-    <div class="clear-time" id="clear-time">0:00</div>
-    <div class="clear-level" id="clear-level"></div>
-  </div>
-  
-  <div class="clear-actions">
-    <button class="action-btn primary-btn" onclick="replayLevel()">
-      <i class="material-icons-round">replay</i>
-      <span>もう一度</span>
-    </button>
-    <button class="action-btn secondary-btn" onclick="backToMenu()">
-      <i class="material-icons-round">home</i>
-      <span>メニューに戻る</span>
-    </button>
-  </div>
-</div>
-
-  </div>
-
-  <script>
-    const LEVEL_NAMES = ['入門', '簡単', '普通', '難しい', '超難しい', '激ムズ'];
-    const LEVEL_DIFFICULTIES = [30, 40, 50, 55, 60, 65];
-    
-    let gameState = {
-      board: [],
-      solution: [],
-      initialBoard: [],
-      selectedCell: null,
-      level: 0,
-      timer: 0,
-      timerInterval: null,
-      isPaused: false,
-      isMemoMode: false,
-      showErrors: false,
-      memos: {}
-    };
-
-    function startGame(level) {
-      gameState.level = level;
-      gameState.board = [];
-      gameState.solution = [];
-      gameState.initialBoard = [];
-      gameState.selectedCell = null;
-      gameState.timer = 0;
-      gameState.isPaused = false;
-      gameState.isMemoMode = false;
-      gameState.showErrors = false;
-      gameState.memos = {};
-      
-      document.getElementById('menu-screen').style.display = 'none';
-      document.getElementById('game-screen').classList.add('active');
-      document.getElementById('level-name').textContent = LEVEL_NAMES[level];
-      
-      showCountdown();
-    }
-
-    function showCountdown() {
-      const countdownScreen = document.getElementById('countdown-screen');
-      const playScreen = document.getElementById('play-screen');
-      
-      countdownScreen.style.display = 'flex';
-      playScreen.style.display = 'none';
-      
-      let count = 3;
-      countdownScreen.innerHTML = `
-        <div class="countdown-number">${count}</div>
-        <div class="countdown-level">${LEVEL_NAMES[gameState.level]}</div>
-      `;
-      
-      const countInterval = setInterval(() => {
-        count--;
-        if (count > 0) {
-          countdownScreen.innerHTML = `
-            <div class="countdown-number">${count}</div>
-            <div class="countdown-level">${LEVEL_NAMES[gameState.level]}</div>
-          `;
-        } else {
-          clearInterval(countInterval);
-          countdownScreen.style.display = 'none';
-          playScreen.style.display = 'block';
-          initializeGame();
-        }
-      }, 1000);
-    }
-
-    function initializeGame() {
-      generateSudoku();
-      renderBoard();
-      renderNumberPad();
-      startTimer();
-      updateButtonStates();
-    }
-
-    function generateSudoku() {
-      gameState.solution = generateCompleteSudoku();
-      gameState.board = JSON.parse(JSON.stringify(gameState.solution));
-      gameState.initialBoard = createPuzzle(gameState.board, LEVEL_DIFFICULTIES[gameState.level]);
-      gameState.board = JSON.parse(JSON.stringify(gameState.initialBoard));
-    }
-
-    function generateCompleteSudoku() {
-      const board = Array(9).fill(0).map(() => Array(9).fill(0));
-      fillBoard(board);
-      return board;
-    }
-
-    function fillBoard(board) {
-      const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-      
-      for (let row = 0; row < 9; row++) {
-        for (let col = 0; col < 9; col++) {
-          if (board[row][col] === 0) {
-            shuffleArray(numbers);
-            for (const num of numbers) {
-              if (isValidMove(board, row, col, num)) {
-                board[row][col] = num;
-                if (fillBoard(board)) {
-                  return true;
-                }
-                board[row][col] = 0;
-              }
-            }
-            return false;
-          }
-        }
-      }
-      return true;
-    }
-
-    function isValidMove(board, row, col, num) {
-      for (let x = 0; x < 9; x++) {
-        if (board[row][x] === num || board[x][col] === num) {
-          return false;
-        }
-      }
-      
-      const startRow = Math.floor(row / 3) * 3;
-      const startCol = Math.floor(col / 3) * 3;
-      for (let i = 0; i < 3; i++) {
-        for (let j = 0; j < 3; j++) {
-          if (board[startRow + i][startCol + j] === num) {
-            return false;
-          }
-        }
-      }
-      return true;
-    }
-
-    function createPuzzle(solution, difficulty) {
-      const puzzle = JSON.parse(JSON.stringify(solution));
-      const cells = [];
-      for (let i = 0; i < 9; i++) {
-        for (let j = 0; j < 9; j++) {
-          cells.push([i, j]);
-        }
-      }
-      shuffleArray(cells);
-      
-      for (let i = 0; i < difficulty; i++) {
-        const [row, col] = cells[i];
-        puzzle[row][col] = 0;
-      }
-      return puzzle;
-    }
-
-    function shuffleArray(array) {
-      for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-      }
-    }
-
-    function renderBoard() {
-      const boardElement = document.getElementById('board');
-      boardElement.innerHTML = '';
-      
-      for (let row = 0; row < 9; row++) {
-        for (let col = 0; col < 9; col++) {
-          const cell = document.createElement('div');
-          cell.className = 'cell';
-          const cellValue = gameState.board[row][col];
-          
-          if (gameState.initialBoard[row][col] !== 0) {
-            cell.classList.add('initial');
-            cell.textContent = cellValue;
-          } else {
-            cell.classList.add('editable');
-            const memoKey = `${row}-${col}`;
-            if (gameState.memos[memoKey] && gameState.memos[memoKey].length > 0) {
-              const memoGrid = document.createElement('div');
-              memoGrid.className = 'memo-grid';
-              for (let i = 1; i <= 9; i++) {
-                const memoCell = document.createElement('div');
-                memoCell.className = 'memo-cell';
-                memoCell.textContent = gameState.memos[memoKey].includes(i) ? i : '';
-                memoGrid.appendChild(memoCell);
-              }
-              cell.appendChild(memoGrid);
-            } else if (cellValue !== 0) {
-              cell.textContent = cellValue;
-            }
-          }
-          
-          if (gameState.selectedCell && gameState.selectedCell[0] === row && gameState.selectedCell[1] === col) {
-            cell.classList.add('selected');
-          }
-          
-          if (gameState.showErrors && cellValue !== 0 && cellValue !== gameState.solution[row][col]) {
-            cell.classList.add('wrong');
-          }
-          
-          cell.addEventListener('click', () => selectCell(row, col));
-          boardElement.appendChild(cell);
-        }
-      }
-    }
-
-    function renderNumberPad() {
-      const padElement = document.getElementById('number-pad');
-      padElement.innerHTML = '';
-      
-      for (let i = 1; i <= 9; i++) {
-        const btn = document.createElement('button');
-        btn.className = 'number-btn';
-        btn.textContent = i;
-        btn.addEventListener('click', () => placeNumber(i));
-        padElement.appendChild(btn);
-      }
-      
-      const deleteBtn = document.createElement('button');
-      deleteBtn.className = 'number-btn delete-btn';
-      deleteBtn.innerHTML = '<i class="material-icons-round">backspace</i>';
-      deleteBtn.addEventListener('click', () => placeNumber(0));
-      padElement.appendChild(deleteBtn);
-    }
-
-    function selectCell(row, col) {
-      if (gameState.isPaused) return;
-      if (gameState.initialBoard[row][col] !== 0) return;
-      gameState.selectedCell = [row, col];
-      renderBoard();
-    }
-
-    function placeNumber(num) {
-      if (!gameState.selectedCell || gameState.isPaused) return;
-      const [row, col] = gameState.selectedCell;
-      if (gameState.initialBoard[row][col] !== 0) return;
-      
-      const memoKey = `${row}-${col}`;
-      
-      if (gameState.isMemoMode && num !== 0) {
-        if (!gameState.memos[memoKey]) {
-          gameState.memos[memoKey] = [];
-        }
-        const index = gameState.memos[memoKey].indexOf(num);
-        if (index > -1) {
-          gameState.memos[memoKey].splice(index, 1);
-        } else {
-          gameState.memos[memoKey].push(num);
-          gameState.memos[memoKey].sort();
-        }
-      } else {
-        gameState.board[row][col] = num;
-        if (num !== 0) {
-          delete gameState.memos[memoKey];
-        }
-      }
-      
-      renderBoard();
-      checkCompletion();
-    }
-
-    function checkCompletion() {
-      for (let row = 0; row < 9; row++) {
-        for (let col = 0; col < 9; col++) {
-          if (gameState.board[row][col] !== gameState.solution[row][col]) {
-            return;
-          }
-        }
-      }
-      gameComplete();
-    }
-
-    function gameComplete() {
-      stopTimer();
-      saveHistory();
-      showClearScreen();
-    }
-
-    function showClearScreen() {
-      document.getElementById('play-screen').style.display = 'none';
-      const clearScreen = document.getElementById('clear-screen');
-      clearScreen.classList.add('active');
-      
-      const minutes = Math.floor(gameState.timer / 60);
-      const seconds = gameState.timer % 60;
-      document.getElementById('clear-time').textContent = 
-        `${minutes}:${seconds.toString().padStart(2, '0')}`;
-      document.getElementById('clear-level').textContent = 
-        `難易度: ${LEVEL_NAMES[gameState.level]}`;
-    }
-
-    function startTimer() {
-      gameState.timer = 0;
-      gameState.timerInterval = setInterval(() => {
-        if (!gameState.isPaused) {
-          gameState.timer++;
-          updateTimerDisplay();
-        }
-      }, 1000);
-    }
-
-    function stopTimer() {
-      if (gameState.timerInterval) {
-        clearInterval(gameState.timerInterval);
-        gameState.timerInterval = null;
-      }
-    }
-
-    function updateTimerDisplay() {
-      const minutes = Math.floor(gameState.timer / 60);
-      const seconds = gameState.timer % 60;
-      document.getElementById('timer').textContent = 
-        `${minutes}:${seconds.toString().padStart(2, '0')}`;
-    }
-
-    function toggleErrors() {
-      gameState.showErrors = !gameState.showErrors;
-      updateButtonStates();
-      renderBoard();
-    }
-
-    function togglePause() {
-      gameState.isPaused = !gameState.isPaused;
-      const board = document.getElementById('board');
-      if (gameState.isPaused) {
-        board.classList.add('paused');
-      } else {
-        board.classList.remove('paused');
-      }
-      updateButtonStates();
-    }
-
-    function toggleMemo() {
-      gameState.isMemoMode = !gameState.isMemoMode;
-      updateButtonStates();
-    }
-
-    function updateButtonStates() {
-      const errorBtn = document.getElementById('error-btn');
-      const pauseBtn = document.getElementById('pause-btn');
-      const memoBtn = document.getElementById('memo-btn');
-      
-      if (gameState.showErrors) {
-        errorBtn.classList.add('active');
-      } else {
-        errorBtn.classList.remove('active');
-      }
-      
-      if (gameState.isPaused) {
-        pauseBtn.classList.add('active');
-        pauseBtn.querySelector('i').textContent = 'play_arrow';
-        pauseBtn.querySelector('span').textContent = '再開';
-      } else {
-        pauseBtn.classList.remove('active');
-        pauseBtn.querySelector('i').textContent = 'pause';
-        pauseBtn.querySelector('span').textContent = '一時停止';
-      }
-      
-      if (gameState.isMemoMode) {
-        memoBtn.classList.add('active');
-        memoBtn.querySelector('span').textContent = 'メモ中';
-      } else {
-        memoBtn.classList.remove('active');
-        memoBtn.querySelector('span').textContent = 'メモ';
-      }
-    }
-
-    function getHint() {
-      if (gameState.isPaused || !gameState.selectedCell) return;
-      const [row, col] = gameState.selectedCell;
-      if (gameState.initialBoard[row][col] !== 0) return;
-      
-      gameState.board[row][col] = gameState.solution[row][col];
-      const memoKey = `${row}-${col}`;
-      delete gameState.memos[memoKey];
-      renderBoard();
-      checkCompletion();
-    }
-
-    function resetGame() {
-      if (!confirm('ゲームをリセットしますか?')) return;
-      gameState.board = JSON.parse(JSON.stringify(gameState.initialBoard));
-      gameState.selectedCell = null;
-      gameState.memos = {};
-      gameState.timer = 0;
-      gameState.isPaused = false;
-      gameState.isMemoMode = false;
-      gameState.showErrors = false;
-      updateButtonStates();
-      renderBoard();
-    }
-
-    function backToMenu() {
-      stopTimer();
-      document.getElementById('game-screen').classList.remove('active');
-      document.getElementById('clear-screen').classList.remove('active');
-      document.getElementById('menu-screen').style.display = 'block';
-      loadHistory();
-    }
-
-    function replayLevel() {
-      document.getElementById('clear-screen').classList.remove('active');
-      startGame(gameState.level);
-    }
-
-    function saveHistory() {
-      const history = JSON.parse(localStorage.getItem('sudokuHistory') || '[]');
-      history.unshift({
-        level: gameState.level,
-        time: gameState.timer,
-        date: new Date().toISOString()
-      });
-      localStorage.setItem('sudokuHistory', JSON.stringify(history.slice(0, 50)));
-    }
-
-    function loadHistory() {
-      const history = JSON.parse(localStorage.getItem('sudokuHistory') || '[]');
-      const content = document.getElementById('history-content');
-      const clearBtn = document.getElementById('clear-history-btn');
-      
-      if (history.length === 0) {
-        content.innerHTML = '<div class="empty-history">まだクリア履歴がありません</div>';
-        clearBtn.style.display = 'none';
-      } else {
-        clearBtn.style.display = 'flex';
-        content.innerHTML = history.map((item, index) => {
-          const date = new Date(item.date);
-          const minutes = Math.floor(item.time / 60);
-          const seconds = item.time % 60;
-          return `
-            <div class="history-item">
-              <div class="history-info">
-                <div class="history-level">${LEVEL_NAMES[item.level]}</div>
-                <div class="history-date">${date.toLocaleDateString('ja-JP')}</div>
-              </div>
-              <div class="history-time">
-                ${minutes}:${seconds.toString().padStart(2, '0')}
-                <button class="delete-history-btn" onclick="deleteHistoryItem(${index})">
-                  <i class="material-icons-round">delete</i>
-                </button>
-              </div>
+    <div class="container">
+        <div class="content">
+            <!-- ヘッダー -->
+            <div class="header">
+                <div class="title-wrapper">
+                    <svg class="icon-left" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+                    </svg>
+                    <h1 class="title">Today's Key</h1>
+                    <svg class="icon-right" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+                    </svg>
+                </div>
+                <p class="subtitle">今日の音階は何かな?</p>
             </div>
-          `;
-        }).join('');
-      }
-    }
 
-    function deleteHistoryItem(index) {
-      if (!confirm('この履歴を削除しますか?')) return;
-      const history = JSON.parse(localStorage.getItem('sudokuHistory') || '[]');
-      history.splice(index, 1);
-      localStorage.setItem('sudokuHistory', JSON.stringify(history));
-      loadHistory();
-    }
+            <!-- スロットマシン -->
+            <div class="slot-container">
+                <div class="slot-window">
+                    <div class="gradient-top"></div>
+                    <div class="gradient-bottom"></div>
+                    <div class="selection-frame"></div>
+                    <div class="slot-list" id="slotList"></div>
+                </div>
+                <button class="start-button" id="startButton">スタート</button>
+            </div>
 
-    function clearHistory() {
-      if (!confirm('全ての履歴を削除しますか?')) return;
-      localStorage.removeItem('sudokuHistory');
-      loadHistory();
-    }
+            <!-- 結果表示 -->
+            <div class="result-container" id="resultContainer" style="display: none;">
+                <p class="result-scale-german" id="resultGerman"></p>
+                <p class="result-scale-reading" id="resultReading"></p>
+                <div class="result-scale-info">
+                    <p class="result-scale-japanese" id="resultJapanese"></p>
+                    <p class="result-scale-key-signature" id="resultKeySignature"></p>
+                </div>
+            </div>
 
-    function showTab(tabName) {
-      document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-      document.querySelectorAll('.section').forEach(section => section.classList.remove('active'));
-      
-      event.target.closest('.tab').classList.add('active');
-      
-      if (tabName === 'game') {
-        document.getElementById('game-tab').classList.add('active');
-      } else {
-        document.getElementById('history-tab').classList.add('active');
-        loadHistory();
-      }
-    }
+            <!-- 練習履歴ボタン -->
+            <button class="history-button" id="historyButton">
+                <svg class="history-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                    <path d="M3 3v5h5"/>
+                    <path d="M12 7v5l4 2"/>
+                </svg>
+                <span id="historyButtonText">練習履歴を見る</span>
+            </button>
 
-    loadHistory();
-  </script>
+            <!-- 練習履歴表示 -->
+            <div class="history-container" id="historyContainer" style="display: none;">
+                <h3 class="history-title">練習履歴</h3>
+                <div id="historyList"></div>
+            </div>
 
+            <!-- 一覧表ボタン -->
+            <button class="table-button" id="tableButton">
+                <svg class="table-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 3h18v18H3z"/>
+                    <path d="M3 9h18"/>
+                    <path d="M3 15h18"/>
+                    <path d="M9 3v18"/>
+                </svg>
+                <span id="tableButtonText">音階一覧表を見る</span>
+            </button>
+
+            <!-- 一覧表表示 -->
+            <div class="table-container" id="tableContainer" style="display: none;">
+                <h3 class="table-title">音階一覧表</h3>
+                <p class="table-instruction">各カードをタップすると音階が流れます</p>
+                
+                <div class="table-section">
+                    <div class="table-section-header">
+                        <h4 class="table-section-title">dur</h4>
+                        <h4 class="table-section-title">moll</h4>
+                    </div>
+                    <div class="scale-grid">
+                        <!-- 調号なし -->
+                        <div class="scale-card" data-scale="C dur">
+                            <div class="scale-german">C dur</div>
+                            <div class="scale-reading">ツェー・ドゥア</div>
+                            <div class="scale-japanese">ハ長調</div>
+                            <div class="scale-key-signature">調号なし</div>
+                        </div>
+                        <div class="scale-card" data-scale="a moll">
+                            <div class="scale-german">a moll</div>
+                            <div class="scale-reading">アー・モル</div>
+                            <div class="scale-japanese">イ短調</div>
+                            <div class="scale-key-signature">調号なし</div>
+                        </div>
+                        
+                        <!-- ♯1個 -->
+                        <div class="scale-card" data-scale="G dur">
+                            <div class="scale-german">G dur</div>
+                            <div class="scale-reading">ゲー・ドゥア</div>
+                            <div class="scale-japanese">ト長調</div>
+                            <div class="scale-key-signature">♯</div>
+                        </div>
+                        <div class="scale-card" data-scale="e moll">
+                            <div class="scale-german">e moll</div>
+                            <div class="scale-reading">エー・モル</div>
+                            <div class="scale-japanese">ホ短調</div>
+                            <div class="scale-key-signature">♯</div>
+                        </div>
+                        
+                        <!-- ♯2個 -->
+                        <div class="scale-card" data-scale="D dur">
+                            <div class="scale-german">D dur</div>
+                            <div class="scale-reading">デー・ドゥア</div>
+                            <div class="scale-japanese">ニ長調</div>
+                            <div class="scale-key-signature">♯♯</div>
+                        </div>
+                        <div class="scale-card" data-scale="h moll">
+                            <div class="scale-german">h moll</div>
+                            <div class="scale-reading">ハー・モル</div>
+                            <div class="scale-japanese">ロ短調</div>
+                            <div class="scale-key-signature">♯♯</div>
+                        </div>
+                        
+                        <!-- ♯3個 -->
+                        <div class="scale-card" data-scale="A dur">
+                            <div class="scale-german">A dur</div>
+                            <div class="scale-reading">アー・ドゥア</div>
+                            <div class="scale-japanese">イ長調</div>
+                            <div class="scale-key-signature">♯♯♯</div>
+                        </div>
+                        <div class="scale-card" data-scale="fis moll">
+                            <div class="scale-german">fis moll</div>
+                            <div class="scale-reading">フィス・モル</div>
+                            <div class="scale-japanese">嬰ヘ短調</div>
+                            <div class="scale-key-signature">♯♯♯</div>
+                        </div>
+                        
+                        <!-- ♯4個 -->
+                        <div class="scale-card" data-scale="E dur">
+                            <div class="scale-german">E dur</div>
+                            <div class="scale-reading">エー・ドゥア</div>
+                            <div class="scale-japanese">ホ長調</div>
+                            <div class="scale-key-signature">♯♯♯♯</div>
+                        </div>
+                        <div class="scale-card" data-scale="cis moll">
+                            <div class="scale-german">cis moll</div>
+                            <div class="scale-reading">ツィス・モル</div>
+                            <div class="scale-japanese">嬰ハ短調</div>
+                            <div class="scale-key-signature">♯♯♯♯</div>
+                        </div>
+                        
+                        <!-- ♯5個 -->
+                        <div class="scale-card" data-scale="H dur">
+                            <div class="scale-german">H dur</div>
+                            <div class="scale-reading">ハー・ドゥア</div>
+                            <div class="scale-japanese">ロ長調</div>
+                            <div class="scale-key-signature">♯♯♯♯♯</div>
+                        </div>
+                        <div class="scale-card" data-scale="gis moll">
+                            <div class="scale-german">gis moll</div>
+                            <div class="scale-reading">ギス・モル</div>
+                            <div class="scale-japanese">嬰ト短調</div>
+                            <div class="scale-key-signature">♯♯♯♯♯</div>
+                        </div>
+                        
+                        <!-- ♭6個 -->
+                        <div class="scale-card" data-scale="Ges dur">
+                            <div class="scale-german">Ges dur</div>
+                            <div class="scale-reading">ゲス・ドゥア</div>
+                            <div class="scale-japanese">変ト長調</div>
+                            <div class="scale-key-signature">♭♭♭♭♭♭</div>
+                        </div>
+                        <div class="scale-card" data-scale="es moll">
+                            <div class="scale-german">es moll</div>
+                            <div class="scale-reading">エス・モル</div>
+                            <div class="scale-japanese">変ホ短調</div>
+                            <div class="scale-key-signature">♭♭♭♭♭♭</div>
+                        </div>
+                        
+                        <!-- ♭5個 -->
+                        <div class="scale-card" data-scale="Des dur">
+                            <div class="scale-german">Des dur</div>
+                            <div class="scale-reading">デス・ドゥア</div>
+                            <div class="scale-japanese">変ニ長調</div>
+                            <div class="scale-key-signature">♭♭♭♭♭</div>
+                        </div>
+                        <div class="scale-card" data-scale="b moll">
+                            <div class="scale-german">b moll</div>
+                            <div class="scale-reading">ベー・モル</div>
+                            <div class="scale-japanese">変ロ短調</div>
+                            <div class="scale-key-signature">♭♭♭♭♭</div>
+                        </div>
+                        
+                        <!-- ♭4個 -->
+                        <div class="scale-card" data-scale="As dur">
+                            <div class="scale-german">As dur</div>
+                            <div class="scale-reading">アス・ドゥア</div>
+                            <div class="scale-japanese">変イ長調</div>
+                            <div class="scale-key-signature">♭♭♭♭</div>
+                        </div>
+                        <div class="scale-card" data-scale="f moll">
+                            <div class="scale-german">f moll</div>
+                            <div class="scale-reading">エフ・モル</div>
+                            <div class="scale-japanese">ヘ短調</div>
+                            <div class="scale-key-signature">♭♭♭♭</div>
+                        </div>
+                        
+                        <!-- ♭3個 -->
+                        <div class="scale-card" data-scale="Es dur">
+                            <div class="scale-german">Es dur</div>
+                            <div class="scale-reading">エス・ドゥア</div>
+                            <div class="scale-japanese">変ホ長調</div>
+                            <div class="scale-key-signature">♭♭♭</div>
+                        </div>
+                        <div class="scale-card" data-scale="c moll">
+                            <div class="scale-german">c moll</div>
+                            <div class="scale-reading">ツェー・モル</div>
+                            <div class="scale-japanese">ハ短調</div>
+                            <div class="scale-key-signature">♭♭♭</div>
+                        </div>
+                        
+                        <!-- ♭2個 -->
+                        <div class="scale-card" data-scale="B dur">
+                            <div class="scale-german">B dur</div>
+                            <div class="scale-reading">ベー・ドゥア</div>
+                            <div class="scale-japanese">変ロ長調</div>
+                            <div class="scale-key-signature">♭♭</div>
+                        </div>
+                        <div class="scale-card" data-scale="g moll">
+                            <div class="scale-german">g moll</div>
+                            <div class="scale-reading">ゲー・モル</div>
+                            <div class="scale-japanese">ト短調</div>
+                            <div class="scale-key-signature">♭♭</div>
+                        </div>
+                        
+                        <!-- ♭1個 -->
+                        <div class="scale-card" data-scale="F dur">
+                            <div class="scale-german">F dur</div>
+                            <div class="scale-reading">エフ・ドゥア</div>
+                            <div class="scale-japanese">ヘ長調</div>
+                            <div class="scale-key-signature">♭</div>
+                        </div>
+                        <div class="scale-card" data-scale="d moll">
+                            <div class="scale-german">d moll</div>
+                            <div class="scale-reading">デー・モル</div>
+                            <div class="scale-japanese">ニ短調</div>
+                            <div class="scale-key-signature">♭</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
