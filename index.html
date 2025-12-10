@@ -645,7 +645,35 @@
         .level-btn {
             font-size: 32px;
         }
+        /* --- タブレット/大画面向け (例: 幅 768px 以上) --- */
+@media (min-width: 768px) {
+    /* 1. 数字ボタンのサイズとフォント調整 */
+    .number-pad {
+        gap: 12px; /* ボタン間の間隔を少し広げる */
     }
+
+    .number-btn {
+        font-size: 32px; /* 数字を大きく */
+        border-radius: 16px; /* 角丸も少し大きく */
+    }
+
+    /* 2. 機能ボタンのサイズとフォント調整 */
+    .function-buttons {
+        gap: 12px; /* ボタン間の間隔を広げる */
+    }
+    
+    .function-btn {
+        padding: 16px 12px; /* パディングを増やし、ボタンの高さを増やす */
+        font-size: 16px; /* テキストサイズを大きく */
+        border-radius: 16px;
+    }
+
+    .function-btn .material-icons {
+        font-size: 24px; /* アイコンサイズを大きく */
+    }
+}
+
+
 </style>
 
 </head>
