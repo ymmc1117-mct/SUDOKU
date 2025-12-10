@@ -2,1640 +2,2223 @@
 
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#4f46e5">
-  <title>SUDOKU</title>
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      -webkit-tap-highlight-color: rgba(0,0,0,0);
-      -webkit-user-select: none;
-      user-select: none;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#5B57D9">
+    <title>SUDOKU</title>
+    <link rel="manifest" href="manifest.json">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+
+    body {
+        font-family: 'Futura', 'Arial', sans-serif;
+        background: #f5f5f7;
+        user-select: none;
+        overflow: hidden;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .screen {
+        display: none;
+        flex-direction: column;
+        height: 100vh;
+        width: 100%;
+    }
+
+    .screen.active {
+        display: flex;
+    }
+
+    /* メニュー画面 */
+    .menu-screen {
+        padding: 10px 20px 20px 20px;
+        overflow-y: auto;
+    }
+
+    .logo {
+        text-align: center;
+        font-size: 48px;
+        font-weight: 900;
+        color: #5B57D9;
+        margin: 10px 0 20px 0;
+        letter-spacing: 4px;
+    }
+
+    .tab-buttons {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 30px;
+    }
+
+    .tab-btn {
+        flex: 1;
+        background: #E5E5EA;
+        border: none;
+        border-radius: 50px;
+        font-size: 18px;
+        font-weight: 600;
+        color: #666;
+        cursor: pointer;
+        transition: all 0.3s;
+        white-space: nowrap;
+    }
+
+    .tab-btn.active {
+        background: #5B57D9;
+        color: white;
+        box-shadow: 0 4px 12px rgba(91, 87, 217, 0.3);
+    }
+
+    @media (max-width: 400px) {
+        .tab-btn {
+            font-size: 15px;
+        }
+    }
+
+    .tab-content {
+        display: none;
+    }
+
+    .tab-content.active {
+        display: block;
+    }
+
+    .level-container {
+        display: flex;
+        flex-direction: column;
+        height: calc(100vh - 240px);
+        min-height: 400px;
+    }
+
+    .level-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        padding-bottom: 20px;
+        flex: 1;
+    }
+
+    .level-btn {
+        flex: 1;
+        min-height: 80px;
+        padding: 20px;
+        background: #5B57D9;
+        border: none;
+        border-radius: 20px;
+        color: white;
+        font-size: 28px;
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(91, 87, 217, 0.3);
+        transition: transform 0.2s;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
 
 
-html, body {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  position: fixed;
-}
-
-body {
-  background: #ffffff;
-  display: flex;
-  flex-direction: column;
-}
-
-.container {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  padding: max(1rem, env(safe-area-inset-top)) 1rem max(1rem, env(safe-area-inset-bottom)) 1rem;
-  overflow: hidden;
-}
-
-.menu-screen {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.title {
-  text-align: center;
-  margin-bottom: 1rem;
-}
-
-.title h1 {
-  font-size: 2.5rem;
-  font-weight: 900;
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.tabs {
-  display: flex;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
-}
-
-.tab {
-  flex: 1;
-  padding: 0.75rem;
-  border: none;
-  border-radius: 9999px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s;
-  background: #e5e7eb;
-  color: #4b5563;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-}
-
-.tab.active {
-  background: #4f46e5;
-  color: white;
-}
-
-.section {
-  display: none;
-  flex: 1;
-  overflow-y: auto;
-}
-
-.section.active {
-  display: flex;
-  flex-direction: column;
-}
-
-.level-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  padding: 1rem;
-  flex: 1;
-  overflow-y: auto;
-}
-
-.level-list h2 {
-  font-size: 1.25rem;
-  color: #374151;
-  text-align: center;
-  margin-bottom: 0.5rem;
-  flex-shrink: 0;
-}
-
-.level-btn {
-  width: 100%;
-  padding: 1.5rem 1.25rem;
-  border: none;
-  border-radius: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  background: #4f46e5;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.25rem;
-  flex: 1;
-  min-height: 70px;
-}
-
-.level-name {
-  font-size: 1.25rem;
-  font-weight: 700;
-}
-
-.level-desc {
-  font-size: 0.9rem;
-  opacity: 0.9;
-}
-
-.history-header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 1rem;
-}
-
-.history-header h2 {
-  font-size: 1.25rem;
-  color: #374151;
-}
-
-.clear-btn {
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 0.75rem;
-  background: #fef2f2;
-  color: #ef4444;
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  border: 1px solid #fecaca;
-}
-
-.empty-history {
-  text-align: center;
-  padding: 3rem 2rem;
-  color: #6b7280;
-  background: #f9fafb;
-  border-radius: 0.75rem;
-  border: 1px dashed #e5e7eb;
-}
-
-.history-item {
-  background: white;
-  border-radius: 0.75rem;
-  padding: 1rem;
-  margin-bottom: 0.75rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-  border: 1px solid #e5e7eb;
-}
-
-.history-level {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #1f2937;
-}
-
-.history-date {
-  font-size: 0.85rem;
-  color: #6b7280;
-}
-
-.history-time {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #4f46e5;
-  font-family: 'Roboto Mono', monospace;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.delete-history-btn {
-  padding: 0.5rem;
-  border: none;
-  border-radius: 0.5rem;
-  background: #fef2f2;
-  color: #ef4444;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  border: 1px solid #fecaca;
-}
-
-.game-screen {
-  display: none;
-  flex-direction: column;
-  height: 100%;
-  overflow: hidden;
-}
-
-.game-screen.active {
-  display: flex;
-}
-
-#play-screen {
-  display: none;
-  flex-direction: column;
-  height: 100%;
-  overflow: hidden;
-}
-
-#play-screen[style*="display: flex"],
-#play-screen[style*="display:flex"] {
-  display: flex !important;
-}
-
-.countdown-screen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.85);
-  z-index: 1000;
-}
-
-.countdown-number {
-  font-size: 8rem;
-  font-weight: 700;
-  color: white;
-}
-
-.countdown-level {
-  font-size: 1.5rem;
-  color: white;
-  margin-top: 1rem;
-}
-
-.game-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 0.5rem;
-  margin-bottom: 1rem;
-  flex-shrink: 0;
-  position: relative;
-  min-height: 2.5rem;
-}
-
-.back-btn {
-  background: none;
-  border: none;
-  color: #4f46e5;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem;
-  position: absolute;
-  left: 0;
-}
-
-.timer {
-  color: #667eea;
-  font-size: 1.25rem;
-  font-weight: 600;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.game-level-name {
-  color: #4b5563;
-  font-size: 0.875rem;
-  font-weight: 600;
-  position: absolute;
-  right: 0;
-}
-
-.game-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-  gap: 0.5rem;
-  padding: 0.5rem 0;
-  min-height: 0;
-}
-
-.top-controls {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.5rem;
-  width: 100%;
-  max-width: 500px;
-}
-
-.control-btn {
-  padding: 0.6rem;
-  border: none;
-  border-radius: 9999px;
-  font-size: 0.7rem;
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.3rem;
-  color: white;
-  white-space: nowrap;
-}
-
-.control-btn i {
-  font-size: 1rem;
-}
-
-.error-btn { background: #fca5a5; }
-.error-btn.active { background: #ef4444; }
-.hint-btn { background: #f59e0b; }
-.reset-btn { background: #6b7280; }
-.pause-btn { background: #cbd5e1; }
-.pause-btn.active { background: #f97316; }
-.memo-btn { background: #cffafe; color: #0e7490; }
-.memo-btn.active { background: #06b6d4; color: white; }
-
-.sudoku-board {
-  display: grid;
-  grid-template-columns: repeat(9, 1fr);
-  grid-template-rows: repeat(9, 1fr);
-  background: white;
-  border: 3px solid #1f2937;
-  border-radius: 8px;
-  width: 100%;
-  max-width: 500px;
-  aspect-ratio: 1;
-  margin: 0 auto;
-  overflow: hidden;
-}
-
-.cell {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
-  font-weight: 700;
-  cursor: pointer;
-  position: relative;
-  background: white;
-  border-right: 1px solid #d1d5db;
-  border-bottom: 1px solid #d1d5db;
-}
-
-.cell:nth-child(9n) { border-right: none; }
-.cell:nth-child(n+73) { border-bottom: none; }
-.cell:nth-child(3n):not(:nth-child(9n)) { border-right: 2px solid #1f2937; }
-.cell:nth-child(n+19):nth-child(-n+27),
-.cell:nth-child(n+46):nth-child(-n+54) { border-bottom: 2px solid #1f2937; }
-
-.cell.initial {
-  background: #f3f4f6;
-  color: #1f2937;
-  cursor: default;
-}
-
-.cell.editable {
-  color: #667eea;
-}
-
-.cell.editable:active {
-  background: #eef2ff;
-}
-
-.cell.selected {
-  background: #eef2ff;
-  box-shadow: inset 0 0 0 3px #667eea;
-}
-
-.cell.selected.memo-active {
-  box-shadow: inset 0 0 0 3px #06b6d4;
-  background: #ecfeff;
-}
-
-.cell.wrong {
-  background: #fee2e2;
-  color: #ef4444;
-}
-
-.memo-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  width: 100%;
-  height: 100%;
-  padding: 1px;
-  font-size: 0.5rem;
-  color: #9ca3af;
-  position: absolute;
-}
-
-.memo-cell {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 1;
-}
-
-.number-pad {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 0.5rem;
-  width: 100%;
-  max-width: 500px;
-}
-
-.number-btn {
-  aspect-ratio: 1.5 / 1;
-  border: none;
-  border-radius: 0.75rem;
-  background: #4f46e5;
-  color: white;
-  font-size: 1.2rem;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.number-pad.memo-mode .number-btn:not(.delete-btn) {
-  background: #06b6d4;
-}
-
-.delete-btn {
-  background: #6b7280;
-}
-
-.bottom-controls {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.5rem;
-  width: 100%;
-  max-width: 500px;
-}
-
-#board.paused {
-  opacity: 0.5;
-  pointer-events: none;
-}
-
-.clear-screen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: none;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background: rgba(255, 255, 255, 0.95);
-  z-index: 1000;
-  padding: 2rem;
-}
-
-.clear-screen.active {
-  display: flex;
-}
-
-.confirm-dialog {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: none;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 2000;
-}
-
-.confirm-dialog.active {
-  display: flex;
-}
-
-.confirm-content {
-  background: white;
-  border-radius: 1rem;
-  padding: 2rem;
-  min-width: 280px;
-  max-width: 90vw;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-}
-
-.confirm-message {
-  font-size: 1.1rem;
-  color: #1f2937;
-  margin-bottom: 1.5rem;
-  text-align: center;
-}
-
-.confirm-buttons {
-  display: flex;
-  gap: 0.75rem;
-}
-
-.confirm-btn {
-  flex: 1;
-  padding: 0.75rem;
-  border: none;
-  border-radius: 0.5rem;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.confirm-btn.cancel {
-  background: #f3f4f6;
-  color: #4b5563;
-}
-
-.confirm-btn.ok {
-  background: #4f46e5;
-  color: white;
-}
-
-.trophy-icon {
-  width: 120px;
-  height: 120px;
-  margin-bottom: 1.5rem;
-}
-
-.clear-title {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #1f2937;
-  margin-bottom: 0.5rem;
-}
-
-.clear-message {
-  font-size: 1.25rem;
-  color: #4b5563;
-  margin-bottom: 1.5rem;
-}
-
-.clear-stats {
-  background: #f3f4f6;
-  border-radius: 0.75rem;
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
-  text-align: center;
-}
-
-.clear-time-label {
-  color: #6b7280;
-  font-size: 0.875rem;
-  margin-bottom: 0.5rem;
-}
-
-.clear-time {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #1f2937;
-  margin-bottom: 0.5rem;
-}
-
-.clear-level {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #374151;
-}
-
-.clear-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  width: 100%;
-  max-width: 300px;
-}
-
-.action-btn {
-  width: 100%;
-  padding: 1rem;
-  border: none;
-  border-radius: 0.5rem;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-}
-
-.primary-btn {
-  background: linear-gradient(135deg, #4f46e5, #7c3aed);
-  color: white;
-}
-
-.secondary-btn {
-  background: #f3f4f6;
-  color: #4b5563;
-  border: 1px solid #e5e7eb;
-}
-
-@media (max-width: 640px) and (orientation: portrait) {
-  .container {
-    padding: 0.5rem;
-  }
-
-  .title h1 {
-    font-size: 2rem;
-  }
-
-  .game-content {
-    padding: 0;
-    gap: 0.5rem;
-  }
-
-  .sudoku-board {
-    width: calc(100vw - 4rem);
-    max-width: calc(100vw - 4rem);
-    border: 2px solid #1f2937;
-    border-radius: 8px;
-  }
-
-  .top-controls,
-  .number-pad,
-  .bottom-controls {
-    width: calc(100vw - 4rem);
-    max-width: calc(100vw - 4rem);
-  }
-
-  .cell {
-    font-size: 1rem;
-  }
-
-  .control-btn {
-    font-size: 0.65rem;
-    padding: 0.5rem 0.25rem;
-  }
-
-  .control-btn i {
-    font-size: 0.9rem;
-  }
-
-  .number-btn {
-    font-size: 1.1rem;
-  }
-
-  .memo-grid {
-    font-size: 0.4rem;
-  }
-}
-
-@media (max-width: 900px) and (orientation: landscape) {
-  .container {
-    padding: 0.5rem;
-  }
-
-  .title h1 {
-    font-size: 1.5rem;
-  }
-
-  .game-header {
-    margin-bottom: 0.4rem;
-  }
-
-  .game-content {
-    display: grid !important;
-    grid-template-columns: auto auto !important;
-    grid-template-rows: 1fr !important;
-    gap: 0.75rem !important;
-    align-items: center !important;
-    justify-content: center !important;
-    padding: 0 0.5rem !important;
-    flex-direction: row !important;
-    overflow: hidden !important;
-  }
-
-  .sudoku-board {
-    width: calc(100vh - 80px) !important;
-    height: calc(100vh - 80px) !important;
-    max-width: calc(100vh - 80px) !important;
-    max-height: calc(100vh - 80px) !important;
-    min-width: calc(100vh - 80px) !important;
-    min-height: calc(100vh - 80px) !important;
-    aspect-ratio: 1 / 1 !important;
-    border: 2px solid #1f2937 !important;
-    border-radius: 6px !important;
-    margin: 0 !important;
-    overflow: hidden !important;
-    flex-shrink: 0 !important;
-  }
-
-  .top-controls {
-    display: none !important;
-  }
-
-  .bottom-controls {
-    display: none !important;
-  }
-
-  .number-pad {
-    display: grid !important;
-    grid-template-columns: repeat(3, 1fr) !important;
-    grid-template-rows: repeat(5, 1fr) !important;
-    grid-column: 2 !important;
-    grid-row: 1 !important;
-    width: 180px !important;
-    height: calc(100vh - 80px) !important;
-    gap: 0.4rem !important;
-    align-self: center !important;
-  }
-
-  .number-pad .landscape-btn {
-    width: 100% !important;
-    height: 100% !important;
-    min-width: 0 !important;
-    min-height: 0 !important;
-    padding: 0 !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    border-radius: 0.5rem !important;
-  }
-
-  .number-pad .landscape-btn i {
-    font-size: clamp(1rem, 3vh, 1.5rem) !important;
-    margin: 0 !important;
-  }
-
-  .number-pad .landscape-btn.number-btn {
-    font-size: clamp(1rem, 3.5vh, 1.5rem) !important;
-    font-weight: 700 !important;
-  }
-
-  .cell {
-    font-size: calc((100vh - 80px) / 13) !important;
-  }
-
-  .memo-grid {
-    font-size: calc((100vh - 80px) / 32) !important;
-  }
-}
-
-@media (min-width: 641px) and (orientation: landscape) {
-  .game-content {
-    padding: 0.5rem 0;
-    gap: 0.4rem;
-  }
-
-  .sudoku-board {
-    max-width: min(55vh, 450px);
-    border: 2px solid #1f2937;
-  }
-
-  .top-controls,
-  .number-pad,
-  .bottom-controls {
-    max-width: min(55vh, 450px);
-    gap: 0.4rem;
-  }
-
-  .cell {
-    font-size: 0.95rem;
-  }
-
-  .control-btn {
-    font-size: 0.7rem;
-    padding: 0.55rem 0.3rem;
-  }
-
-  .control-btn i {
-    font-size: 0.95rem;
-  }
-
-  .number-btn {
-    font-size: 1.05rem;
-  }
-
-  .memo-grid {
-    font-size: 0.45rem;
-  }
-}
-
-@media (min-width: 641px) and (orientation: portrait) {
-  .container {
-    padding: 1rem;
-  }
-
-  .sudoku-board {
-    max-width: min(80vw, 600px);
-  }
-
-  .top-controls,
-  .number-pad,
-  .bottom-controls {
-    max-width: min(80vw, 600px);
-  }
-
-  .cell {
-    font-size: 1.3rem;
-  }
-
-  .control-btn {
-    font-size: 0.8rem;
-    padding: 0.7rem 0.4rem;
-  }
-
-  .control-btn i {
-    font-size: 1.1rem;
-  }
-
-  .number-btn {
-    font-size: 1.3rem;
-  }
-
-  .memo-grid {
-    font-size: 0.55rem;
-  }
-}
-
-
-  </style>
+        .level-buttons {
+            gap: 12px;
+        }
+
+        .level-btn {
+            min-height: 70px;
+            padding: 16px 12px;
+            font-size: 24px;
+        }
+
+        .level-subtitle {
+            font-size: 14px;
+        }
+    }
+
+    .level-btn:active {
+        transform: scale(0.98);
+    }
+
+    .level-subtitle {
+        font-size: 16px;
+        font-weight: 400;
+        margin-top: 4px;
+        opacity: 0.9;
+    }
+
+    /* 履歴 */
+    .history-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .history-item {
+        background: white;
+        padding: 16px;
+        border-radius: 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .history-info {
+        flex: 1;
+    }
+
+    .history-level {
+        font-weight: 700;
+        color: #5B57D9;
+        font-size: 18px;
+    }
+
+    .history-time {
+        color: #666;
+        font-size: 14px;
+        margin-top: 4px;
+    }
+
+    .delete-btn {
+        background: #FF3B30;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    .clear-all-btn {
+        margin-top: 20px;
+        width: 100%;
+        padding: 16px;
+        background: #FF3B30;
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .empty-history {
+        text-align: center;
+        color: #999;
+        padding: 40px;
+        font-size: 16px;
+    }
+
+    /* カウントダウン画面 */
+    .countdown-screen {
+        background: #2C2C2E;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .countdown-number {
+        font-size: 120px;
+        font-weight: 900;
+        color: white;
+        animation: countPulse 1s;
+    }
+
+    .countdown-level {
+        color: white;
+        font-size: 24px;
+        margin-top: 20px;
+        opacity: 0.8;
+    }
+
+    @keyframes countPulse {
+        0% { transform: scale(0.5); opacity: 0; }
+        50% { transform: scale(1.1); }
+        100% { transform: scale(1); opacity: 1; }
+    }
+
+    /* ゲーム画面 */
+    .game-screen {
+        background: #f5f5f7;
+    }
+
+    .game-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px;
+        background: white;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .back-btn {
+        background: #5B57D9;
+        border: none;
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 8px rgba(91, 87, 217, 0.3);
+    }
+
+    .back-btn .material-icons {
+        font-size: 24px;
+    }
+
+    .timer {
+        font-size: 24px;
+        font-weight: 700;
+        color: #5B57D9;
+    }
+
+    .level-badge {
+        background: #5B57D9;
+        color: white;
+        padding: 6px 12px;
+        border-radius: 100px;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .game-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 16px;
+        overflow-y: auto;
+    }
+
+    .game-container {
+        width: 100%;
+        max-width: 500px;
+    }
+
+    .board-container {
+        width: 100%;
+        margin-bottom: 16px;
+    }
+
+    .sudoku-board {
+        background: white;
+        border: 3px solid #2C2C2E;
+        border-radius: 8px;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+        width: 100%;
+        padding-bottom: 100%;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .board-grid {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: grid;
+        grid-template-columns: repeat(9, 1fr);
+        grid-template-rows: repeat(9, 1fr);
+        width: 100%;
+        height: 100%;
+    }
+
+    .cell {
+        border: 0.5px solid #d0d0d0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 24px;
+        font-weight: 600;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+        cursor: pointer;
+        position: relative;
+        background: white;
+    }
+
+    .cell:nth-child(9n+3), .cell:nth-child(9n+6) {
+        border-right: 2px solid #2C2C2E;
+    }
+
+    .cell:nth-child(n+19):nth-child(-n+27),
+    .cell:nth-child(n+46):nth-child(-n+54) {
+        border-bottom: 2px solid #2C2C2E;
+    }
+
+    .cell.fixed {
+        color: #2C2C2E;
+        font-weight: 700;
+        background: #f8f8f8;
+    }
+
+    .cell.selected {
+        background: #5B57D9 !important;
+        color: white !important;
+    }
+
+    .cell.selected.memo-mode {
+        background: #0288D1 !important;
+    }
+
+    .cell.selected .cell-note {
+        color: white;
+    }
+
+    .cell.same-number {
+        background: #E8E7FF !important;
+    }
+
+    .cell.same-number.memo-mode {
+        background: #B4E5F5 !important;
+    }
+
+    .cell.error {
+        background: #FFE5E5 !important;
+        color: #FF3B30 !important;
+    }
+
+    .cell.related {
+        background: #F0F0FF !important;
+    }
+
+    .cell.related.memo-mode {
+        background: #E0F2F7 !important;
+    }
+
+    .cell-notes {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(3, 1fr);
+        width: 100%;
+        height: 100%;
+        font-size: 8px;
+        color: #666;
+        padding: 2px;
+    }
+
+    .cell-note {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 8px;
+    }
+
+    /* 数字ボタン */
+    .number-pad {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 8px;
+        margin-bottom: 12px;
+    }
+
+    .number-btn {
+        aspect-ratio: 1.6;
+        background: #5B57D9;
+        border: none;
+        border-radius: 12px;
+        color: white;
+        font-size: 24px;
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow: 0 2px 8px rgba(91, 87, 217, 0.3);
+        transition: transform 0.1s, background 0.3s;
+    }
+
+    .number-btn.memo-mode {
+        background: #0288D1;
+        box-shadow: 0 2px 8px rgba(2, 136, 209, 0.3);
+    }
+
+    .number-btn:active {
+        transform: scale(0.95);
+    }
+
+    .number-btn.delete {
+        background: #8E8E93;
+    }
+
+    /* 機能ボタン */
+    .function-buttons {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+        margin-bottom: 8px;
+    }
+
+    .function-buttons.top-row {
+        grid-template-columns: repeat(3, 1fr);
+        margin-bottom: 12px;
+    }
+
+    .function-btn {
+        padding: 14px;
+        border: none;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        transition: transform 0.1s;
+    }
+
+    .function-btn .material-icons {
+        font-size: 20px;
+    }
+
+    @media (max-width: 400px) {
+        .function-btn {
+            font-size: 13px;
+            padding: 12px 8px;
+            gap: 4px;
+        }
+
+        .function-btn .material-icons {
+            font-size: 18px;
+        }
+    }
+
+    .function-btn:active {
+        transform: scale(0.98);
+    }
+
+    .function-btn.error-check {
+        background: #FFE5E5; /* 薄い赤（背景ピンク） */
+        color: #FF3B30;      /* 文字を赤 */
+    }
+
+    .function-btn.error-check.active {
+        background: #E84045;
+        color: white;
+    }
+
+    .function-btn.hint {
+        background: #FFB800;
+        color: white;
+    }
+
+    .function-btn.pause {
+        background: #D1D1D6;
+        color: #666;
+    }
+
+    .function-btn.memo {
+        background: #B4F0FF;
+        color: #007D9C;
+    }
+
+    .function-btn.memo.active {
+        background: #007D9C;
+        color: white;
+    }
+
+    .function-btn.reset {
+        background: #8E8E93;
+        color: white;
+    }
+
+    /* 一時停止オーバーレイ */
+    .pause-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.9);
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .pause-overlay.active {
+        display: flex;
+    }
+
+    .pause-content {
+        text-align: center;
+        color: white;
+    }
+
+    .pause-title {
+        font-size: 48px;
+        font-weight: 700;
+        margin-bottom: 30px;
+    }
+
+    .resume-btn {
+        background: #5B57D9;
+        color: white;
+        border: none;
+        padding: 16px 48px;
+        border-radius: 24px;
+        font-size: 20px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    /* 完成画面 */
+    .complete-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.9);
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+
+    .complete-overlay.active {
+        display: flex;
+    }
+
+    .complete-content {
+        background: white;
+        padding: 40px;
+        border-radius: 20px;
+        text-align: center;
+        max-width: 320px;
+    }
+
+    .complete-title {
+        font-size: 32px;
+        font-weight: 700;
+        color: #5B57D9;
+        margin-bottom: 20px;
+    }
+
+    .complete-time {
+        font-size: 48px;
+        font-weight: 700;
+        color: #2C2C2E;
+        margin-bottom: 30px;
+    }
+
+    .complete-buttons {
+        display: flex;
+        gap: 12px;
+    }
+
+    .complete-btn {
+        flex: 1;
+        padding: 16px;
+        border: none;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .complete-btn.menu {
+        background: #E5E5EA;
+        color: #666;
+    }
+
+    .complete-btn.retry {
+        background: #5B57D9;
+        color: white;
+    }
+
+    @media (min-width: 768px) {
+        .logo {
+            font-size: 64px;
+            margin: 50px 0;
+        }
+
+        .level-btn {
+            font-size: 32px;
+        }
+    }
+</style>
+```
+
 </head>
 <body>
-  <div class="container">
-    <div class="menu-screen" id="menu-screen">
-      <div class="title">
-        <h1>SUDOKU</h1>
-      </div>
+    <!-- メニュー画面 -->
+    <div class="screen menu-screen active">
+        <div class="logo">SUDOKU</div>
+        <div class="tab-buttons">
+            <button class="tab-btn active" data-tab="new-game">新しいゲーム</button>
+            <button class="tab-btn" data-tab="history">履歴</button>
+        </div>
 
-
-  <div class="tabs">
-    <button class="tab active" onclick="showTab('game', event)">
-      <i class="material-icons-round">add</i>
-      <span>新しいゲーム</span>
-    </button>
-    <button class="tab" onclick="showTab('history', event)">
-      <i class="material-icons-round">history</i>
-      <span>履歴</span>
-    </button>
-  </div>
-  
-  <div id="game-tab" class="section active">
-    <div class="level-list">
-      <h2>難易度を選択</h2>
-      <button class="level-btn" onclick="startGame(0)">
-        <div class="level-name">入門</div>
-        <div class="level-desc">基本スキャンのみ</div>
-      </button>
-      <button class="level-btn" onclick="startGame(1)">
-        <div class="level-name">簡単</div>
-        <div class="level-desc">唯一候補法</div>
-      </button>
-      <button class="level-btn" onclick="startGame(2)">
-        <div class="level-name">普通</div>
-        <div class="level-desc">ペア削除が必要</div>
-      </button>
-      <button class="level-btn" onclick="startGame(3)">
-        <div class="level-name">難しい</div>
-        <div class="level-desc">複数技法の組み合わせ</div>
-      </button>
-      <button class="level-btn" onclick="startGame(4)">
-        <div class="level-name">超難しい</div>
-        <div class="level-desc">高度な論理推論</div>
-      </button>
-      <button class="level-btn" onclick="startGame(5)">
-        <div class="level-name">激ムズ</div>
-        <div class="level-desc">最高難易度の挑戦</div>
-      </button>
+```
+    <div class="tab-content active" id="new-game-tab">
+        <div class="level-buttons level-container">
+            <button class="level-btn" data-level="beginner">
+                入門
+                <div class="level-subtitle">基本スキャンのみ</div>
+            </button>
+            <button class="level-btn" data-level="easy">
+                初級
+                <div class="level-subtitle">唯一候補法</div>
+            </button>
+            <button class="level-btn" data-level="medium">
+                中級
+                <div class="level-subtitle">ペア削除が必要</div>
+            </button>
+            <button class="level-btn" data-level="hard">
+                上級
+                <div class="level-subtitle">複数技法の組み合わせ</div>
+            </button>
+            <button class="level-btn" data-level="expert">
+                達人
+                <div class="level-subtitle">高度な論理推論</div>
+            </button>
+        </div>
     </div>
-  </div>
-  
-  <div id="history-tab" class="section">
-    <div class="history-header">
-      <h2>クリア履歴</h2>
-      <button class="clear-btn" onclick="clearHistory()" id="clear-history-btn" style="display:none">
-        <i class="material-icons-round">delete</i>
-        全て削除
-      </button>
+   
+    <div class="tab-content" id="history-tab">
+        <div class="history-list" id="history-list"></div>
+        <button class="clear-all-btn" id="clear-all-btn" style="display: none;">全件削除</button>
     </div>
-    <div id="history-content"></div>
-  </div>
 </div>
 
-<div id="game-screen" class="game-screen">
-  <div id="countdown-screen" class="countdown-screen" style="display:none"></div>
-  
-  <div id="play-screen" style="display:none;">
+<!-- カウントダウン画面 -->
+<div class="screen countdown-screen">
+    <div class="countdown-number" id="countdown-number">3</div>
+    <div class="countdown-level" id="countdown-level"></div>
+</div>
+
+<!-- ゲーム画面 -->
+<div class="screen game-screen">
     <div class="game-header">
-      <button class="back-btn" onclick="backToMenu()">
-        <i class="material-icons-round">arrow_back</i>
-        <span>戻る</span>
-      </button>
-      <div class="timer" id="timer">0:00</div>
-      <div class="game-level-name" id="level-name"></div>
+        <button class="back-btn" id="back-btn"><span class="material-icons">arrow_back</span></button>
+        <div class="timer" id="timer">0:00</div>
+        <div class="level-badge" id="level-badge">入門</div>
     </div>
-    
+   
     <div class="game-content">
-      <div class="top-controls">
-        <button class="control-btn error-btn" id="error-btn" onclick="toggleErrors()">
-          <i class="material-icons-round">error_outline</i>
-          <span>間違い表示</span>
-        </button>
-        <button class="control-btn hint-btn" onclick="getHint()">
-          <i class="material-icons-round">lightbulb</i>
-          <span>ヒント</span>
-        </button>
-        <button class="control-btn reset-btn" onclick="resetGame()">
-          <i class="material-icons-round">refresh</i>
-          <span>リセット</span>
-        </button>
-      </div>
-
-      <div class="sudoku-board" id="board"></div>
-      
-      <div class="number-pad" id="number-pad"></div>
-
-      <div class="bottom-controls">
-        <button class="control-btn pause-btn" id="pause-btn" onclick="togglePause()">
-          <i class="material-icons-round">pause</i>
-          <span>一時停止</span>
-        </button>
-        <button class="control-btn memo-btn" id="memo-btn" onclick="toggleMemo()">
-          <i class="material-icons-round">edit_note</i>
-          <span>メモ</span>
-        </button>
-      </div>
+        <div class="board-container">
+            <div class="sudoku-board">
+                <div class="board-grid" id="board-grid"></div>
+            </div>
+        </div>
+       
+        <div class="controls">
+            <div class="number-pad">
+                <button class="number-btn" data-number="1">1</button>
+                <button class="number-btn" data-number="2">2</button>
+                <button class="number-btn" data-number="3">3</button>
+                <button class="number-btn" data-number="4">4</button>
+                <button class="number-btn" data-number="5">5</button>
+                <button class="number-btn" data-number="6">6</button>
+                <button class="number-btn" data-number="7">7</button>
+                <button class="number-btn" data-number="8">8</button>
+                <button class="number-btn" data-number="9">9</button>
+                <button class="number-btn delete" id="delete-btn">✕</button>
+            </div>
+           
+            <div class="function-buttons">
+                <button class="function-btn pause" id="pause-btn"><span class="material-icons">pause</span>一時停止</button>
+                <button class="function-btn memo" id="memo-btn"><span class="material-icons">edit_note</span>メモ</button>
+            </div>
+           
+            <div class="function-buttons top-row">
+                <button class="function-btn error-check" id="error-check-btn"><span class="material-icons">error_outline</span>間違い表示</button>
+                <button class="function-btn hint" id="hint-btn"><span class="material-icons">lightbulb_outline</span>ヒント</button>
+                <button class="function-btn reset" id="reset-btn"><span class="material-icons">refresh</span>リセット</button>
+            </div>
+        </div>
+        </div>
     </div>
-  </div>
 </div>
 
-<div id="clear-screen" class="clear-screen">
-  <svg class="trophy-icon" viewBox="0 0 200 200">
-    <defs>
-      <linearGradient id="trophyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-        <stop offset="0%" style="stop-color:#fbbf24" />
-        <stop offset="100%" style="stop-color:#f59e0b" />
-      </linearGradient>
-    </defs>
-    <rect x="70" y="160" width="60" height="15" rx="3" fill="url(#trophyGradient)"/>
-    <rect x="90" y="140" width="20" height="25" fill="url(#trophyGradient)"/>
-    <path d="M 60 60 L 60 100 Q 60 130 100 130 Q 140 130 140 100 L 140 60 Z" fill="url(#trophyGradient)"/>
-    <path d="M 60 70 Q 40 70 40 90 Q 40 100 50 100 L 60 100" fill="none" stroke="url(#trophyGradient)" stroke-width="8"/>
-    <path d="M 140 70 Q 160 70 160 90 Q 160 100 150 100 L 140 100" fill="none" stroke="url(#trophyGradient)" stroke-width="8"/>
-    <rect x="55" y="55" width="90" height="10" rx="3" fill="url(#trophyGradient)"/>
-    <path d="M 100 25 L 105 40 L 120 40 L 108 50 L 113 65 L 100 55 L 87 65 L 92 50 L 80 40 L 95 40 Z" fill="#fbbf24" opacity="0.8"/>
-  </svg>
-  <h1 class="clear-title">おめでとう!</h1>
-  <p class="clear-message">数独をクリアしました!</p>
-  
-  <div class="clear-stats">
-    <div class="clear-time-label">クリアタイム</div>
-    <div class="clear-time" id="clear-time">0:00</div>
-    <div class="clear-level" id="clear-level"></div>
-  </div>
-  
-  <div class="clear-actions">
-    <button class="action-btn primary-btn" onclick="replayLevel()">
-      <i class="material-icons-round">replay</i>
-      <span>もう一度</span>
-    </button>
-    <button class="action-btn secondary-btn" onclick="backToMenu()">
-      <i class="material-icons-round">home</i>
-      <span>メニューに戻る</span>
-    </button>
-  </div>
-</div>
-
-<div id="confirm-dialog" class="confirm-dialog">
-  <div class="confirm-content">
-    <div class="confirm-message" id="confirm-message"></div>
-    <div class="confirm-buttons">
-      <button class="confirm-btn cancel" onclick="hideConfirm()">キャンセル</button>
-      <button class="confirm-btn ok" id="confirm-ok-btn">OK</button>
+<!-- 一時停止オーバーレイ -->
+<div class="pause-overlay" id="pause-overlay">
+    <div class="pause-content">
+        <div class="pause-title">一時停止中</div>
+        <button class="resume-btn" id="resume-btn">再開</button>
     </div>
-  </div>
 </div>
 
+<!-- 完成オーバーレイ -->
+<div class="complete-overlay" id="complete-overlay">
+    <div class="complete-content">
+        <div class="complete-title">🎉 完成！</div>
+        <div class="complete-time" id="complete-time">0:00</div>
+        <div class="complete-buttons">
+            <button class="complete-btn menu" id="menu-btn">メニュー</button>
+            <button class="complete-btn retry" id="retry-btn">もう一度</button>
+        </div>
+    </div>
+</div>
 
-  </div>
-
-  <script>
-    const LEVEL_NAMES = ['入門', '簡単', '普通', '難しい', '超難しい', '激ムズ'];
-    const LEVEL_DIFFICULTIES = [30, 40, 50, 55, 60, 65];
-    
-    let gameState = {
-      board: [],
-      solution: [],
-      initialBoard: [],
-      selectedCell: null,
-      level: 0,
-      timer: 0,
-      timerInterval: null,
-      isPaused: false,
-      isMemoMode: false,
-      showErrors: false,
-      memos: {}
+<script>
+    // ゲーム状態管理
+    const game = {
+        board: [],
+        solution: [],
+        initial: [],
+        level: '',
+        levelName: '',
+        selectedCell: null,
+        memoMode: false,
+        errorCheckMode: false,
+        startTime: null,
+        elapsedTime: 0,
+        timerInterval: null,
+        isPaused: false
     };
 
-    function startGame(level) {
-      gameState.level = level;
-      gameState.board = [];
-      gameState.solution = [];
-      gameState.initialBoard = [];
-      gameState.selectedCell = null;
-      gameState.timer = 0;
-      gameState.isPaused = false;
-      gameState.isMemoMode = false;
-      gameState.showErrors = false;
-      gameState.memos = {};
-      
-      document.getElementById('menu-screen').style.display = 'none';
-      document.getElementById('game-screen').classList.add('active');
-      document.getElementById('level-name').textContent = LEVEL_NAMES[level];
-      
-      showCountdown();
+    // 画面切り替え
+    function showScreen(screenClass) {
+        document.querySelectorAll('.screen').forEach(function(s) {
+            s.classList.remove('active');
+        });
+        document.querySelector('.' + screenClass).classList.add('active');
     }
 
-    function showCountdown() {
-      const countdownScreen = document.getElementById('countdown-screen');
-      const playScreen = document.getElementById('play-screen');
-      
-      countdownScreen.style.display = 'flex';
-      playScreen.style.display = 'none';
-      
-      let count = 3;
-      countdownScreen.innerHTML = `
-        <div class="countdown-number">${count}</div>
-        <div class="countdown-level">${LEVEL_NAMES[gameState.level]}</div>
-      `;
-      
-      const countInterval = setInterval(() => {
-        count--;
-        if (count > 0) {
-          countdownScreen.innerHTML = `
-            <div class="countdown-number">${count}</div>
-            <div class="countdown-level">${LEVEL_NAMES[gameState.level]}</div>
-          `;
-        } else {
-          clearInterval(countInterval);
-          countdownScreen.style.display = 'none';
-          playScreen.style.display = 'flex';
-          initializeGame();
+    // タブ切り替え
+    document.querySelectorAll('.tab-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.tab-btn').forEach(function(b) {
+                b.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-content').forEach(function(c) {
+                c.classList.remove('active');
+            });
+            btn.classList.add('active');
+            document.getElementById(btn.dataset.tab + '-tab').classList.add('active');
+            if (btn.dataset.tab === 'history') {
+                loadHistory();
+            }
+        });
+    });
+
+    // 数独生成の基本関数
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            const temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
         }
-      }, 1000);
     }
 
-    function initializeGame() {
-      generateSudoku();
-      renderBoard();
-      renderNumberPad();
-      startTimer();
-      updateButtonStates();
-      
-      // 画面回転時にボタンを再描画
-      window.addEventListener('resize', () => {
-        renderNumberPad();
-      });
-    }
-
-    function generateSudoku() {
-      gameState.solution = generateCompleteSudoku();
-      gameState.board = JSON.parse(JSON.stringify(gameState.solution));
-      gameState.initialBoard = createPuzzle(gameState.board, LEVEL_DIFFICULTIES[gameState.level]);
-      gameState.board = JSON.parse(JSON.stringify(gameState.initialBoard));
-    }
-
-    function generateCompleteSudoku() {
-      const board = Array(9).fill(0).map(() => Array(9).fill(0));
-      fillBoard(board);
-      return board;
+    function isValid(board, row, col, num) {
+        for (let x = 0; x < 9; x++) {
+            if (board[row][x] === num) return false;
+        }
+        for (let x = 0; x < 9; x++) {
+            if (board[x][col] === num) return false;
+        }
+        const startRow = Math.floor(row / 3) * 3;
+        const startCol = Math.floor(col / 3) * 3;
+        for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+                if (board[startRow + i][startCol + j] === num) return false;
+            }
+        }
+        return true;
     }
 
     function fillBoard(board) {
-      const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-      
-      for (let row = 0; row < 9; row++) {
-        for (let col = 0; col < 9; col++) {
-          if (board[row][col] === 0) {
-            shuffleArray(numbers);
-            for (const num of numbers) {
-              if (isValidMove(board, row, col, num)) {
-                board[row][col] = num;
-                if (fillBoard(board)) {
-                  return true;
+        const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+       
+        for (let row = 0; row < 9; row++) {
+            for (let col = 0; col < 9; col++) {
+                if (board[row][col] === 0) {
+                    shuffle(numbers);
+                    for (let i = 0; i < numbers.length; i++) {
+                        const num = numbers[i];
+                        if (isValid(board, row, col, num)) {
+                            board[row][col] = num;
+                            if (fillBoard(board)) {
+                                return true;
+                            }
+                            board[row][col] = 0;
+                        }
+                    }
+                    return false;
                 }
-                board[row][col] = 0;
-              }
             }
-            return false;
-          }
         }
-      }
-      return true;
+        return true;
     }
 
-    function isValidMove(board, row, col, num) {
-      for (let x = 0; x < 9; x++) {
-        if (board[row][x] === num || board[x][col] === num) {
-          return false;
+    // 簡易的な数独生成（動作確認用）
+    function generateSudoku(level) {
+        const board = [];
+        for (let i = 0; i < 9; i++) {
+            board[i] = [];
+            for (let j = 0; j < 9; j++) {
+                board[i][j] = 0;
+            }
         }
-      }
-      
-      const startRow = Math.floor(row / 3) * 3;
-      const startCol = Math.floor(col / 3) * 3;
-      for (let i = 0; i < 3; i++) {
-        for (let j = 0; j < 3; j++) {
-          if (board[startRow + i][startCol + j] === num) {
-            return false;
-          }
+       
+        fillBoard(board);
+        const solution = [];
+        for (let i = 0; i < 9; i++) {
+            solution[i] = board[i].slice();
         }
-      }
-      return true;
+       
+        // 段階的に穴を開けていく
+        const puzzle = [];
+        for (let i = 0; i < 9; i++) {
+            puzzle[i] = solution[i].slice();
+        }
+       
+        const cells = [];
+        for (let r = 0; r < 9; r++) {
+            for (let c = 0; c < 9; c++) {
+                cells.push([r, c]);
+            }
+        }
+        shuffle(cells);
+       
+        const targetHoles = {
+            'beginner': 35,
+            'easy': 40,
+            'medium': 45,
+            'hard': 50,
+            'expert': 55
+        };
+       
+        const maxHoles = targetHoles[level] || 35;
+        let removed = 0;
+       
+        for (let i = 0; i < cells.length && removed < maxHoles; i++) {
+            const r = cells[i][0];
+            const c = cells[i][1];
+            const backup = puzzle[r][c];
+            puzzle[r][c] = 0;
+           
+            // 唯一解チェック
+            if (hasUniqueSolution(puzzle, solution)) {
+                removed++;
+               
+                // 難易度チェック
+                const techniques = solvePuzzleWithTechniques(puzzle);
+                if (isCorrectDifficulty(techniques, level)) {
+                    return { board: puzzle, solution: solution };
+                }
+            } else {
+                puzzle[r][c] = backup;
+            }
+        }
+       
+        return { board: puzzle, solution: solution };
     }
 
-    function createPuzzle(solution, difficulty) {
-      const puzzle = JSON.parse(JSON.stringify(solution));
-      const cells = [];
-      for (let i = 0; i < 9; i++) {
-        for (let j = 0; j < 9; j++) {
-          cells.push([i, j]);
+    // 唯一解チェック
+    function hasUniqueSolution(puzzle, solution) {
+        const test = [];
+        for (let i = 0; i < 9; i++) {
+            test[i] = puzzle[i].slice();
         }
-      }
-      shuffleArray(cells);
-      
-      for (let i = 0; i < difficulty; i++) {
-        const [row, col] = cells[i];
-        puzzle[row][col] = 0;
-      }
-      return puzzle;
+       
+        let solutionCount = 0;
+       
+        function countSolutions(board, limit) {
+            if (solutionCount >= limit) return;
+           
+            for (let row = 0; row < 9; row++) {
+                for (let col = 0; col < 9; col++) {
+                    if (board[row][col] === 0) {
+                        for (let num = 1; num <= 9; num++) {
+                            if (isValid(board, row, col, num)) {
+                                board[row][col] = num;
+                                countSolutions(board, limit);
+                                board[row][col] = 0;
+                                if (solutionCount >= limit) return;
+                            }
+                        }
+                        return;
+                    }
+                }
+            }
+            solutionCount++;
+        }
+       
+        countSolutions(test, 2);
+        return solutionCount === 1;
     }
 
-    function shuffleArray(array) {
-      for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-      }
+    // 候補数の初期化
+    function initCandidates(board) {
+        const candidates = [];
+        for (let r = 0; r < 9; r++) {
+            candidates[r] = [];
+            for (let c = 0; c < 9; c++) {
+                candidates[r][c] = [];
+                if (board[r][c] === 0) {
+                    for (let num = 1; num <= 9; num++) {
+                        if (isValid(board, r, c, num)) {
+                            candidates[r][c].push(num);
+                        }
+                    }
+                }
+            }
+        }
+        return candidates;
     }
 
+    // 候補数から数字を削除
+    function eliminateCandidate(candidates, row, col, num) {
+        // 行から削除
+        for (let c = 0; c < 9; c++) {
+            const index = candidates[row][c].indexOf(num);
+            if (index !== -1) {
+                candidates[row][c].splice(index, 1);
+            }
+        }
+       
+        // 列から削除
+        for (let r = 0; r < 9; r++) {
+            const index = candidates[r][col].indexOf(num);
+            if (index !== -1) {
+                candidates[r][col].splice(index, 1);
+            }
+        }
+       
+        // 3x3ブロックから削除
+        const boxR = Math.floor(row / 3) * 3;
+        const boxC = Math.floor(col / 3) * 3;
+        for (let r = boxR; r < boxR + 3; r++) {
+            for (let c = boxC; c < boxC + 3; c++) {
+                const index = candidates[r][c].indexOf(num);
+                if (index !== -1) {
+                    candidates[r][c].splice(index, 1);
+                }
+            }
+        }
+    }
+
+    // Naked Single（基本スキャン）
+    function applyNakedSingles(board, candidates, techniques) {
+        let found = false;
+        for (let r = 0; r < 9; r++) {
+            for (let c = 0; c < 9; c++) {
+                if (board[r][c] === 0 && candidates[r][c].length === 1) {
+                    const num = candidates[r][c][0];
+                    board[r][c] = num;
+                    candidates[r][c] = [];
+                    eliminateCandidate(candidates, r, c, num);
+                    techniques.nakedSingle++;
+                    found = true;
+                }
+            }
+        }
+        return found;
+    }
+
+    // Hidden Single（唯一候補法）
+    function applyHiddenSingles(board, candidates, techniques) {
+        let found = false;
+       
+        // 行チェック
+        for (let r = 0; r < 9; r++) {
+            for (let num = 1; num <= 9; num++) {
+                const positions = [];
+                for (let c = 0; c < 9; c++) {
+                    if (candidates[r][c].indexOf(num) !== -1) {
+                        positions.push(c);
+                    }
+                }
+                if (positions.length === 1) {
+                    const c = positions[0];
+                    if (board[r][c] === 0) {
+                        board[r][c] = num;
+                        candidates[r][c] = [];
+                        eliminateCandidate(candidates, r, c, num);
+                        techniques.hiddenSingle++;
+                        found = true;
+                    }
+                }
+            }
+        }
+       
+        // 列チェック
+        for (let c = 0; c < 9; c++) {
+            for (let num = 1; num <= 9; num++) {
+                const positions = [];
+                for (let r = 0; r < 9; r++) {
+                    if (candidates[r][c].indexOf(num) !== -1) {
+                        positions.push(r);
+                    }
+                }
+                if (positions.length === 1) {
+                    const r = positions[0];
+                    if (board[r][c] === 0) {
+                        board[r][c] = num;
+                        candidates[r][c] = [];
+                        eliminateCandidate(candidates, r, c, num);
+                        techniques.hiddenSingle++;
+                        found = true;
+                    }
+                }
+            }
+        }
+       
+        // ブロックチェック
+        for (let boxR = 0; boxR < 9; boxR += 3) {
+            for (let boxC = 0; boxC < 9; boxC += 3) {
+                for (let num = 1; num <= 9; num++) {
+                    const positions = [];
+                    for (let r = boxR; r < boxR + 3; r++) {
+                        for (let c = boxC; c < boxC + 3; c++) {
+                            if (candidates[r][c].indexOf(num) !== -1) {
+                                positions.push([r, c]);
+                            }
+                        }
+                    }
+                    if (positions.length === 1) {
+                        const r = positions[0][0];
+                        const c = positions[0][1];
+                        if (board[r][c] === 0) {
+                            board[r][c] = num;
+                            candidates[r][c] = [];
+                            eliminateCandidate(candidates, r, c, num);
+                            techniques.hiddenSingle++;
+                            found = true;
+                        }
+                    }
+                }
+            }
+        }
+       
+        return found;
+    }
+
+    // Naked Pairs（ペア削除）
+    function applyNakedPairs(candidates, techniques) {
+        let found = false;
+       
+        // 行チェック
+        for (let r = 0; r < 9; r++) {
+            const pairs = [];
+            for (let c = 0; c < 9; c++) {
+                if (candidates[r][c].length === 2) {
+                    pairs.push({ col: c, nums: candidates[r][c].slice() });
+                }
+            }
+           
+            for (let i = 0; i < pairs.length - 1; i++) {
+                for (let j = i + 1; j < pairs.length; j++) {
+                    if (arraysEqual(pairs[i].nums, pairs[j].nums)) {
+                        const pairNums = pairs[i].nums;
+                        for (let c = 0; c < 9; c++) {
+                            if (c !== pairs[i].col && c !== pairs[j].col) {
+                                for (let k = 0; k < pairNums.length; k++) {
+                                    const num = pairNums[k];
+                                    const index = candidates[r][c].indexOf(num);
+                                    if (index !== -1) {
+                                        candidates[r][c].splice(index, 1);
+                                        found = true;
+                                    }
+                                }
+                            }
+                        }
+                        if (found) techniques.nakedPair++;
+                    }
+                }
+            }
+        }
+       
+        // 列チェック
+        for (let c = 0; c < 9; c++) {
+            const pairs = [];
+            for (let r = 0; r < 9; r++) {
+                if (candidates[r][c].length === 2) {
+                    pairs.push({ row: r, nums: candidates[r][c].slice() });
+                }
+            }
+           
+            for (let i = 0; i < pairs.length - 1; i++) {
+                for (let j = i + 1; j < pairs.length; j++) {
+                    if (arraysEqual(pairs[i].nums, pairs[j].nums)) {
+                        const pairNums = pairs[i].nums;
+                        for (let r = 0; r < 9; r++) {
+                            if (r !== pairs[i].row && r !== pairs[j].row) {
+                                for (let k = 0; k < pairNums.length; k++) {
+                                    const num = pairNums[k];
+                                    const index = candidates[r][c].indexOf(num);
+                                    if (index !== -1) {
+                                        candidates[r][c].splice(index, 1);
+                                        found = true;
+                                    }
+                                }
+                            }
+                        }
+                        if (found) techniques.nakedPair++;
+                    }
+                }
+            }
+        }
+       
+        // ブロックチェック
+        for (let boxR = 0; boxR < 9; boxR += 3) {
+            for (let boxC = 0; boxC < 9; boxC += 3) {
+                const pairs = [];
+                for (let r = boxR; r < boxR + 3; r++) {
+                    for (let c = boxC; c < boxC + 3; c++) {
+                        if (candidates[r][c].length === 2) {
+                            pairs.push({ row: r, col: c, nums: candidates[r][c].slice() });
+                        }
+                    }
+                }
+               
+                for (let i = 0; i < pairs.length - 1; i++) {
+                    for (let j = i + 1; j < pairs.length; j++) {
+                        if (arraysEqual(pairs[i].nums, pairs[j].nums)) {
+                            const pairNums = pairs[i].nums;
+                            for (let r = boxR; r < boxR + 3; r++) {
+                                for (let c = boxC; c < boxC + 3; c++) {
+                                    if ((r !== pairs[i].row || c !== pairs[i].col) &&
+                                        (r !== pairs[j].row || c !== pairs[j].col)) {
+                                        for (let k = 0; k < pairNums.length; k++) {
+                                            const num = pairNums[k];
+                                            const index = candidates[r][c].indexOf(num);
+                                            if (index !== -1) {
+                                                candidates[r][c].splice(index, 1);
+                                                found = true;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            if (found) techniques.nakedPair++;
+                        }
+                    }
+                }
+            }
+        }
+       
+        return found;
+    }
+
+    // Hidden Pairs（隠れペア）
+    function applyHiddenPairs(candidates, techniques) {
+        let found = false;
+       
+        // 行チェック
+        for (let r = 0; r < 9; r++) {
+            for (let n1 = 1; n1 <= 8; n1++) {
+                for (let n2 = n1 + 1; n2 <= 9; n2++) {
+                    const positions = [];
+                    for (let c = 0; c < 9; c++) {
+                        if (candidates[r][c].indexOf(n1) !== -1 ||
+                            candidates[r][c].indexOf(n2) !== -1) {
+                            positions.push(c);
+                        }
+                    }
+                   
+                    if (positions.length === 2) {
+                        const c1 = positions[0];
+                        const c2 = positions[1];
+                        if (candidates[r][c1].indexOf(n1) !== -1 &&
+                            candidates[r][c1].indexOf(n2) !== -1 &&
+                            candidates[r][c2].indexOf(n1) !== -1 &&
+                            candidates[r][c2].indexOf(n2) !== -1) {
+                           
+                            if (candidates[r][c1].length > 2) {
+                                candidates[r][c1] = [n1, n2];
+                                found = true;
+                            }
+                            if (candidates[r][c2].length > 2) {
+                                candidates[r][c2] = [n1, n2];
+                                found = true;
+                            }
+                            if (found) techniques.hiddenPair++;
+                        }
+                    }
+                }
+            }
+        }
+       
+        return found;
+    }
+
+    // Pointing Pairs（指定ペア）
+    function applyPointingPairs(candidates, techniques) {
+        let found = false;
+       
+        // 各ブロックをチェック
+        for (let boxR = 0; boxR < 9; boxR += 3) {
+            for (let boxC = 0; boxC < 9; boxC += 3) {
+                for (let num = 1; num <= 9; num++) {
+                    const positions = [];
+                    for (let r = boxR; r < boxR + 3; r++) {
+                        for (let c = boxC; c < boxC + 3; c++) {
+                            if (candidates[r][c].indexOf(num) !== -1) {
+                                positions.push([r, c]);
+                            }
+                        }
+                    }
+                   
+                    if (positions.length >= 2 && positions.length <= 3) {
+                        // 同じ行に揃っているか
+                        const rows = [];
+                        for (let i = 0; i < positions.length; i++) {
+                            if (rows.indexOf(positions[i][0]) === -1) {
+                                rows.push(positions[i][0]);
+                            }
+                        }
+                       
+                        if (rows.length === 1) {
+                            const row = rows[0];
+                            for (let c = 0; c < 9; c++) {
+                                const inBox = c >= boxC && c < boxC + 3;
+                                if (!inBox) {
+                                    const index = candidates[row][c].indexOf(num);
+                                    if (index !== -1) {
+                                        candidates[row][c].splice(index, 1);
+                                        found = true;
+                                    }
+                                }
+                            }
+                            if (found) techniques.pointingPair++;
+                        }
+                       
+                        // 同じ列に揃っているか
+                        const cols = [];
+                        for (let i = 0; i < positions.length; i++) {
+                            if (cols.indexOf(positions[i][1]) === -1) {
+                                cols.push(positions[i][1]);
+                            }
+                        }
+                       
+                        if (cols.length === 1) {
+                            const col = cols[0];
+                            for (let r = 0; r < 9; r++) {
+                                const inBox = r >= boxR && r < boxR + 3;
+                                if (!inBox) {
+                                    const index = candidates[r][col].indexOf(num);
+                                    if (index !== -1) {
+                                        candidates[r][col].splice(index, 1);
+                                        found = true;
+                                    }
+                                }
+                            }
+                            if (found) techniques.pointingPair++;
+                        }
+                    }
+                }
+            }
+        }
+       
+        return found;
+    }
+
+    // Box/Line Reduction
+    function applyBoxLineReduction(candidates, techniques) {
+        let found = false;
+       
+        // 行から各ブロックへ
+        for (let r = 0; r < 9; r++) {
+            for (let num = 1; num <= 9; num++) {
+                const positions = [];
+                for (let c = 0; c < 9; c++) {
+                    if (candidates[r][c].indexOf(num) !== -1) {
+                        positions.push(c);
+                    }
+                }
+               
+                if (positions.length >= 2 && positions.length <= 3) {
+                    const boxes = [];
+                    for (let i = 0; i < positions.length; i++) {
+                        const box = Math.floor(positions[i] / 3);
+                        if (boxes.indexOf(box) === -1) {
+                            boxes.push(box);
+                        }
+                    }
+                   
+                    if (boxes.length === 1) {
+                        const boxC = boxes[0] * 3;
+                        const boxR = Math.floor(r / 3) * 3;
+                       
+                        for (let br = boxR; br < boxR + 3; br++) {
+                            if (br !== r) {
+                                for (let bc = boxC; bc < boxC + 3; bc++) {
+                                    const index = candidates[br][bc].indexOf(num);
+                                    if (index !== -1) {
+                                        candidates[br][bc].splice(index, 1);
+                                        found = true;
+                                    }
+                                }
+                            }
+                        }
+                        if (found) techniques.boxLine++;
+                    }
+                }
+            }
+        }
+       
+        // 列から各ブロックへ
+        for (let c = 0; c < 9; c++) {
+            for (let num = 1; num <= 9; num++) {
+                const positions = [];
+                for (let r = 0; r < 9; r++) {
+                    if (candidates[r][c].indexOf(num) !== -1) {
+                        positions.push(r);
+                    }
+                }
+               
+                if (positions.length >= 2 && positions.length <= 3) {
+                    const boxes = [];
+                    for (let i = 0; i < positions.length; i++) {
+                        const box = Math.floor(positions[i] / 3);
+                        if (boxes.indexOf(box) === -1) {
+                            boxes.push(box);
+                        }
+                    }
+                   
+                    if (boxes.length === 1) {
+                        const boxR = boxes[0] * 3;
+                        const boxC = Math.floor(c / 3) * 3;
+                       
+                        for (let br = boxR; br < boxR + 3; br++) {
+                            for (let bc = boxC; bc < boxC + 3; bc++) {
+                                if (bc !== c) {
+                                    const index = candidates[br][bc].indexOf(num);
+                                    if (index !== -1) {
+                                        candidates[br][bc].splice(index, 1);
+                                        found = true;
+                                    }
+                                }
+                            }
+                        }
+                        if (found) techniques.boxLine++;
+                    }
+                }
+            }
+        }
+       
+        return found;
+    }
+
+    // 配列比較ヘルパー
+    function arraysEqual(arr1, arr2) {
+        if (arr1.length !== arr2.length) return false;
+        for (let i = 0; i < arr1.length; i++) {
+            if (arr1[i] !== arr2[i]) return false;
+        }
+        return true;
+    }
+
+    // Naked Triples（トリプル削除）
+    function applyNakedTriples(candidates, techniques) {
+        let found = false;
+       
+        // 行チェック
+        for (let r = 0; r < 9; r++) {
+            const cells = [];
+            for (let c = 0; c < 9; c++) {
+                if (candidates[r][c].length === 2 || candidates[r][c].length === 3) {
+                    cells.push({ col: c, nums: candidates[r][c].slice() });
+                }
+            }
+           
+            // 3つのセルの組み合わせをチェック
+            for (let i = 0; i < cells.length - 2; i++) {
+                for (let j = i + 1; j < cells.length - 1; j++) {
+                    for (let k = j + 1; k < cells.length; k++) {
+                        const allNums = [];
+                        for (let n = 0; n < cells[i].nums.length; n++) {
+                            if (allNums.indexOf(cells[i].nums[n]) === -1) {
+                                allNums.push(cells[i].nums[n]);
+                            }
+                        }
+                        for (let n = 0; n < cells[j].nums.length; n++) {
+                            if (allNums.indexOf(cells[j].nums[n]) === -1) {
+                                allNums.push(cells[j].nums[n]);
+                            }
+                        }
+                        for (let n = 0; n < cells[k].nums.length; n++) {
+                            if (allNums.indexOf(cells[k].nums[n]) === -1) {
+                                allNums.push(cells[k].nums[n]);
+                            }
+                        }
+                       
+                        if (allNums.length === 3) {
+                            // Naked Triple発見
+                            for (let c = 0; c < 9; c++) {
+                                if (c !== cells[i].col && c !== cells[j].col && c !== cells[k].col) {
+                                    for (let n = 0; n < allNums.length; n++) {
+                                        const num = allNums[n];
+                                        const index = candidates[r][c].indexOf(num);
+                                        if (index !== -1) {
+                                            candidates[r][c].splice(index, 1);
+                                            found = true;
+                                        }
+                                    }
+                                }
+                            }
+                            if (found) techniques.nakedTriple++;
+                        }
+                    }
+                }
+            }
+        }
+       
+        return found;
+    }
+
+    // X-Wing
+    function applyXWing(candidates, techniques) {
+        let found = false;
+       
+        for (let num = 1; num <= 9; num++) {
+            // 行でX-Wingを探す
+            const rowsWithTwo = [];
+            for (let r = 0; r < 9; r++) {
+                const cols = [];
+                for (let c = 0; c < 9; c++) {
+                    if (candidates[r][c].indexOf(num) !== -1) {
+                        cols.push(c);
+                    }
+                }
+                if (cols.length === 2) {
+                    rowsWithTwo.push({ row: r, cols: cols });
+                }
+            }
+           
+            // 2つの行で同じ2列に候補がある場合
+            for (let i = 0; i < rowsWithTwo.length - 1; i++) {
+                for (let j = i + 1; j < rowsWithTwo.length; j++) {
+                    const cols1 = rowsWithTwo[i].cols;
+                    const cols2 = rowsWithTwo[j].cols;
+                   
+                    if (cols1[0] === cols2[0] && cols1[1] === cols2[1]) {
+                        // X-Wing発見！
+                        for (let r = 0; r < 9; r++) {
+                            if (r !== rowsWithTwo[i].row && r !== rowsWithTwo[j].row) {
+                                const idx1 = candidates[r][cols1[0]].indexOf(num);
+                                if (idx1 !== -1) {
+                                    candidates[r][cols1[0]].splice(idx1, 1);
+                                    found = true;
+                                }
+                                const idx2 = candidates[r][cols1[1]].indexOf(num);
+                                if (idx2 !== -1) {
+                                    candidates[r][cols1[1]].splice(idx2, 1);
+                                    found = true;
+                                }
+                            }
+                        }
+                        if (found) techniques.xWing++;
+                    }
+                }
+            }
+           
+            // 列でX-Wingを探す
+            const colsWithTwo = [];
+            for (let c = 0; c < 9; c++) {
+                const rows = [];
+                for (let r = 0; r < 9; r++) {
+                    if (candidates[r][c].indexOf(num) !== -1) {
+                        rows.push(r);
+                    }
+                }
+                if (rows.length === 2) {
+                    colsWithTwo.push({ col: c, rows: rows });
+                }
+            }
+           
+            for (let i = 0; i < colsWithTwo.length - 1; i++) {
+                for (let j = i + 1; j < colsWithTwo.length; j++) {
+                    const rows1 = colsWithTwo[i].rows;
+                    const rows2 = colsWithTwo[j].rows;
+                   
+                    if (rows1[0] === rows2[0] && rows1[1] === rows2[1]) {
+                        for (let c = 0; c < 9; c++) {
+                            if (c !== colsWithTwo[i].col && c !== colsWithTwo[j].col) {
+                                const idx1 = candidates[rows1[0]][c].indexOf(num);
+                                if (idx1 !== -1) {
+                                    candidates[rows1[0]][c].splice(idx1, 1);
+                                    found = true;
+                                }
+                                const idx2 = candidates[rows1[1]][c].indexOf(num);
+                                if (idx2 !== -1) {
+                                    candidates[rows1[1]][c].splice(idx2, 1);
+                                    found = true;
+                                }
+                            }
+                        }
+                        if (found) techniques.xWing++;
+                    }
+                }
+            }
+        }
+       
+        return found;
+    }
+
+    // XY-Wing
+    function applyXYWing(candidates, techniques) {
+        let found = false;
+       
+        // ピボットセル（2つの候補を持つセル）を探す
+        for (let pr = 0; pr < 9; pr++) {
+            for (let pc = 0; pc < 9; pc++) {
+                if (candidates[pr][pc].length !== 2) continue;
+               
+                const pivotNums = candidates[pr][pc].slice();
+                const X = pivotNums[0];
+                const Y = pivotNums[1];
+               
+                // XZを持つウィング1を探す
+                const wings1 = [];
+                // 同じ行
+                for (let c = 0; c < 9; c++) {
+                    if (c !== pc && candidates[pr][c].length === 2) {
+                        const nums = candidates[pr][c];
+                        if (nums.indexOf(X) !== -1 && nums.indexOf(Y) === -1) {
+                            const Z = nums[0] === X ? nums[1] : nums[0];
+                            wings1.push({ r: pr, c: c, Z: Z });
+                        }
+                    }
+                }
+                // 同じ列
+                for (let r = 0; r < 9; r++) {
+                    if (r !== pr && candidates[r][pc].length === 2) {
+                        const nums = candidates[r][pc];
+                        if (nums.indexOf(X) !== -1 && nums.indexOf(Y) === -1) {
+                            const Z = nums[0] === X ? nums[1] : nums[0];
+                            wings1.push({ r: r, c: pc, Z: Z });
+                        }
+                    }
+                }
+                // 同じブロック
+                const boxR = Math.floor(pr / 3) * 3;
+                const boxC = Math.floor(pc / 3) * 3;
+                for (let r = boxR; r < boxR + 3; r++) {
+                    for (let c = boxC; c < boxC + 3; c++) {
+                        if ((r !== pr || c !== pc) && candidates[r][c].length === 2) {
+                            const nums = candidates[r][c];
+                            if (nums.indexOf(X) !== -1 && nums.indexOf(Y) === -1) {
+                                const Z = nums[0] === X ? nums[1] : nums[0];
+                                wings1.push({ r: r, c: c, Z: Z });
+                            }
+                        }
+                    }
+                }
+               
+                // YZを持つウィング2を探す
+                const wings2 = [];
+                // 同じ行
+                for (let c = 0; c < 9; c++) {
+                    if (c !== pc && candidates[pr][c].length === 2) {
+                        const nums = candidates[pr][c];
+                        if (nums.indexOf(Y) !== -1 && nums.indexOf(X) === -1) {
+                            const Z = nums[0] === Y ? nums[1] : nums[0];
+                            wings2.push({ r: pr, c: c, Z: Z });
+                        }
+                    }
+                }
+                // 同じ列
+                for (let r = 0; r < 9; r++) {
+                    if (r !== pr && candidates[r][pc].length === 2) {
+                        const nums = candidates[r][pc];
+                        if (nums.indexOf(Y) !== -1 && nums.indexOf(X) === -1) {
+                            const Z = nums[0] === Y ? nums[1] : nums[0];
+                            wings2.push({ r: r, c: pc, Z: Z });
+                        }
+                    }
+                }
+                // 同じブロック
+                for (let r = boxR; r < boxR + 3; r++) {
+                    for (let c = boxC; c < boxC + 3; c++) {
+                        if ((r !== pr || c !== pc) && candidates[r][c].length === 2) {
+                            const nums = candidates[r][c];
+                            if (nums.indexOf(Y) !== -1 && nums.indexOf(X) === -1) {
+                                const Z = nums[0] === Y ? nums[1] : nums[0];
+                                wings2.push({ r: r, c: c, Z: Z });
+                            }
+                        }
+                    }
+                }
+               
+                // ウィング1とウィング2で同じZを持つペアを探す
+                for (let i = 0; i < wings1.length; i++) {
+                    for (let j = 0; j < wings2.length; j++) {
+                        if (wings1[i].Z === wings2[j].Z) {
+                            const Z = wings1[i].Z;
+                            // 両方のウィングから見えるセルからZを削除
+                            for (let r = 0; r < 9; r++) {
+                                for (let c = 0; c < 9; c++) {
+                                    const seesWing1 = (r === wings1[i].r || c === wings1[i].c ||
+                                        (Math.floor(r / 3) === Math.floor(wings1[i].r / 3) &&
+                                         Math.floor(c / 3) === Math.floor(wings1[i].c / 3)));
+                                    const seesWing2 = (r === wings2[j].r || c === wings2[j].c ||
+                                        (Math.floor(r / 3) === Math.floor(wings2[j].r / 3) &&
+                                         Math.floor(c / 3) === Math.floor(wings2[j].c / 3)));
+                                   
+                                    if (seesWing1 && seesWing2) {
+                                        const index = candidates[r][c].indexOf(Z);
+                                        if (index !== -1) {
+                                            candidates[r][c].splice(index, 1);
+                                            found = true;
+                                        }
+                                    }
+                                }
+                            }
+                            if (found) techniques.xyWing++;
+                        }
+                    }
+                }
+            }
+        }
+       
+        return found;
+    }
+
+    // 解法シミュレーター（更新版）
+    function solvePuzzleWithTechniques(puzzle) {
+        const techniques = {
+            nakedSingle: 0,
+            hiddenSingle: 0,
+            nakedPair: 0,
+            hiddenPair: 0,
+            pointingPair: 0,
+            boxLine: 0,
+            nakedTriple: 0,
+            xWing: 0,
+            xyWing: 0
+        };
+       
+        const working = [];
+        for (let i = 0; i < 9; i++) {
+            working[i] = puzzle[i].slice();
+        }
+       
+        const candidates = initCandidates(working);
+       
+        let iterations = 0;
+        const maxIterations = 300;
+       
+        while (iterations < maxIterations) {
+            iterations++;
+            let progress = false;
+           
+            // Naked Single
+            if (applyNakedSingles(working, candidates, techniques)) {
+                progress = true;
+                continue;
+            }
+           
+            // Hidden Single
+            if (applyHiddenSingles(working, candidates, techniques)) {
+                progress = true;
+                continue;
+            }
+           
+            // Naked Pairs
+            if (applyNakedPairs(candidates, techniques)) {
+                progress = true;
+                continue;
+            }
+           
+            // Hidden Pairs
+            if (applyHiddenPairs(candidates, techniques)) {
+                progress = true;
+                continue;
+            }
+           
+            // Pointing Pairs
+            if (applyPointingPairs(candidates, techniques)) {
+                progress = true;
+                continue;
+            }
+           
+            // Box/Line Reduction
+            if (applyBoxLineReduction(candidates, techniques)) {
+                progress = true;
+                continue;
+            }
+           
+            // Naked Triples
+            if (applyNakedTriples(candidates, techniques)) {
+                progress = true;
+                continue;
+            }
+           
+            // X-Wing
+            if (applyXWing(candidates, techniques)) {
+                progress = true;
+                continue;
+            }
+           
+            // XY-Wing
+            if (applyXYWing(candidates, techniques)) {
+                progress = true;
+                continue;
+            }
+           
+            if (!progress) break;
+        }
+       
+        return techniques;
+    }
+
+    // 難易度判定（更新版）
+    function isCorrectDifficulty(techniques, level) {
+        const total = techniques.nakedSingle + techniques.hiddenSingle +
+                     techniques.nakedPair + techniques.hiddenPair;
+       
+        switch(level) {
+            case 'beginner':
+                return techniques.nakedSingle >= 10 &&
+                       techniques.hiddenSingle === 0 &&
+                       techniques.nakedPair === 0;
+                      
+            case 'easy':
+                return techniques.hiddenSingle >= 3 &&
+                       techniques.nakedPair === 0 &&
+                       techniques.hiddenPair === 0;
+                      
+            case 'medium':
+                return techniques.hiddenSingle > 0 &&
+                       (techniques.nakedPair >= 1 || techniques.hiddenPair >= 1) &&
+                       techniques.pointingPair === 0 &&
+                       techniques.boxLine === 0;
+                      
+            case 'hard':
+                return (techniques.nakedPair >= 2 || techniques.hiddenPair >= 1) &&
+                       (techniques.pointingPair >= 1 || techniques.boxLine >= 1) &&
+                       techniques.nakedTriple === 0 &&
+                       techniques.xWing === 0;
+                      
+            case 'expert':
+                return (techniques.pointingPair >= 2 || techniques.boxLine >= 2) &&
+                       (techniques.xWing >= 1 || techniques.nakedTriple >= 1 || techniques.xyWing >= 1);
+                      
+            default:
+                return true;
+        }
+    }
+
+    // レベル選択
+    document.querySelectorAll('.level-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            const level = btn.dataset.level;
+            const levelNames = {
+                'beginner': '入門',
+                'easy': '初級',
+                'medium': '中級',
+                'hard': '上級',
+                'expert': '達人'
+            };
+            game.level = level;
+            game.levelName = levelNames[level];
+            startCountdown();
+        });
+    });
+
+    // カウントダウン
+    function startCountdown() {
+        showScreen('countdown-screen');
+        document.getElementById('countdown-level').textContent = game.levelName;
+        let count = 3;
+        document.getElementById('countdown-number').textContent = count;
+       
+        const interval = setInterval(function() {
+            count--;
+            if (count > 0) {
+                const el = document.getElementById('countdown-number');
+                el.textContent = count;
+                el.style.animation = 'none';
+                setTimeout(function() {
+                    el.style.animation = 'countPulse 1s';
+                }, 10);
+            } else {
+                clearInterval(interval);
+                startGame();
+            }
+        }, 1000);
+    }
+
+    // ゲーム開始
+    function startGame() {
+        const result = generateSudoku(game.level);
+        game.board = [];
+        for (let i = 0; i < 9; i++) {
+            game.board[i] = result.board[i].slice();
+        }
+        game.solution = result.solution;
+        game.initial = [];
+        for (let i = 0; i < 9; i++) {
+            game.initial[i] = result.board[i].slice();
+        }
+        game.selectedCell = null;
+        game.memoMode = false;
+        game.errorCheckMode = false;
+        game.startTime = Date.now();
+        game.elapsedTime = 0;
+        game.isPaused = false;
+       
+        document.getElementById('level-badge').textContent = game.levelName;
+        document.getElementById('memo-btn').classList.remove('active');
+        document.getElementById('error-check-btn').classList.remove('active');
+       
+        // 数字ボタンのメモモードクラスも削除
+        document.querySelectorAll('.number-btn[data-number]').forEach(function(btn) {
+            btn.classList.remove('memo-mode');
+        });
+       
+        renderBoard();
+        showScreen('game-screen');
+        startTimer();
+    }
+
+    // ボード描画
     function renderBoard() {
-      const boardElement = document.getElementById('board');
-      boardElement.innerHTML = '';
-      
-      for (let row = 0; row < 9; row++) {
-        for (let col = 0; col < 9; col++) {
-          const cell = document.createElement('div');
-          cell.className = 'cell';
-          const cellValue = gameState.board[row][col];
-          
-          if (gameState.initialBoard[row][col] !== 0) {
-            cell.classList.add('initial');
-            cell.textContent = cellValue;
-          } else {
-            cell.classList.add('editable');
-            const memoKey = `${row}-${col}`;
-            if (gameState.memos[memoKey] && gameState.memos[memoKey].length > 0) {
-              const memoGrid = document.createElement('div');
-              memoGrid.className = 'memo-grid';
-              for (let i = 1; i <= 9; i++) {
-                const memoCell = document.createElement('div');
-                memoCell.className = 'memo-cell';
-                memoCell.textContent = gameState.memos[memoKey].includes(i) ? i : '';
-                memoGrid.appendChild(memoCell);
-              }
-              cell.appendChild(memoGrid);
-            } else if (cellValue !== 0) {
-              cell.textContent = cellValue;
+        const grid = document.getElementById('board-grid');
+        grid.innerHTML = '';
+       
+        for (let row = 0; row < 9; row++) {
+            for (let col = 0; col < 9; col++) {
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+                cell.dataset.row = row;
+                cell.dataset.col = col;
+               
+                const value = game.board[row][col];
+                if (game.initial[row][col] !== 0) {
+                    cell.classList.add('fixed');
+                    cell.textContent = value;
+                } else if (value !== 0) {
+                    if (typeof value === 'object') {
+                        const notes = document.createElement('div');
+                        notes.className = 'cell-notes';
+                        for (let i = 1; i <= 9; i++) {
+                            const note = document.createElement('div');
+                            note.className = 'cell-note';
+                            if (value.indexOf(i) !== -1) {
+                                note.textContent = i;
+                            }
+                            notes.appendChild(note);
+                        }
+                        cell.appendChild(notes);
+                    } else {
+                        cell.textContent = value;
+                        // 間違いチェックモードの場合、間違いをハイライト
+                        if (game.errorCheckMode && value !== game.solution[row][col]) {
+                            cell.classList.add('error');
+                        }
+                    }
+                }
+               
+                cell.addEventListener('click', (function(r, c) {
+                    return function() {
+                        selectCell(r, c);
+                    };
+                })(row, col));
+                grid.appendChild(cell);
             }
-          }
-          
-          if (gameState.selectedCell && gameState.selectedCell[0] === row && gameState.selectedCell[1] === col) {
-            cell.classList.add('selected');
-            if (gameState.isMemoMode) {
-              cell.classList.add('memo-active');
-            }
-          }
-          
-          if (gameState.showErrors && cellValue !== 0 && cellValue !== gameState.solution[row][col]) {
-            cell.classList.add('wrong');
-          }
-          
-          cell.addEventListener('click', () => selectCell(row, col));
-          boardElement.appendChild(cell);
         }
-      }
+       
+        updateCellHighlights();
     }
 
-    function renderNumberPad() {
-      const padElement = document.getElementById('number-pad');
-      padElement.innerHTML = '';
-      
-      const isLandscape = window.matchMedia('(max-height: 600px) and (orientation: landscape)').matches;
-      
-      if (isLandscape) {
-        // 横向きレイアウト: 特別な配置
-        // 1行目: 間違い表示、ヒント、リセット
-        const errorBtn = document.createElement('button');
-        errorBtn.className = 'control-btn error-btn landscape-btn';
-        errorBtn.id = 'error-btn-landscape';
-        errorBtn.innerHTML = '<i class="material-icons-round">error_outline</i>';
-        errorBtn.addEventListener('click', toggleErrors);
-        padElement.appendChild(errorBtn);
-        
-        const hintBtn = document.createElement('button');
-        hintBtn.className = 'control-btn hint-btn landscape-btn';
-        hintBtn.innerHTML = '<i class="material-icons-round">lightbulb</i>';
-        hintBtn.addEventListener('click', getHint);
-        padElement.appendChild(hintBtn);
-        
-        const resetBtn = document.createElement('button');
-        resetBtn.className = 'control-btn reset-btn landscape-btn';
-        resetBtn.innerHTML = '<i class="material-icons-round">refresh</i>';
-        resetBtn.addEventListener('click', resetGame);
-        padElement.appendChild(resetBtn);
-        
-        // 2-4行目: 数字1-9
-        for (let i = 1; i <= 9; i++) {
-          const btn = document.createElement('button');
-          btn.className = 'number-btn landscape-btn';
-          btn.textContent = i;
-          btn.addEventListener('click', () => placeNumber(i));
-          padElement.appendChild(btn);
-        }
-        
-        // 5行目: 一時停止、メモ、削除
-        const pauseBtn = document.createElement('button');
-        pauseBtn.className = 'control-btn pause-btn landscape-btn';
-        pauseBtn.id = 'pause-btn-landscape';
-        pauseBtn.innerHTML = '<i class="material-icons-round">pause</i>';
-        pauseBtn.addEventListener('click', togglePause);
-        padElement.appendChild(pauseBtn);
-        
-        const memoBtn = document.createElement('button');
-        memoBtn.className = 'control-btn memo-btn landscape-btn';
-        memoBtn.id = 'memo-btn-landscape';
-        memoBtn.innerHTML = '<i class="material-icons-round">edit_note</i>';
-        memoBtn.addEventListener('click', toggleMemo);
-        padElement.appendChild(memoBtn);
-        
-        const deleteBtn = document.createElement('button');
-        deleteBtn.className = 'number-btn delete-btn landscape-btn';
-        deleteBtn.innerHTML = '<i class="material-icons-round">backspace</i>';
-        deleteBtn.addEventListener('click', () => placeNumber(0));
-        padElement.appendChild(deleteBtn);
-        
-        updateButtonStates();
-      } else {
-        // 縦向きレイアウト: 通常の配置
-        for (let i = 1; i <= 9; i++) {
-          const btn = document.createElement('button');
-          btn.className = 'number-btn';
-          btn.textContent = i;
-          btn.addEventListener('click', () => placeNumber(i));
-          padElement.appendChild(btn);
-        }
-        
-        const deleteBtn = document.createElement('button');
-        deleteBtn.className = 'number-btn delete-btn';
-        deleteBtn.innerHTML = '<i class="material-icons-round">backspace</i>';
-        deleteBtn.addEventListener('click', () => placeNumber(0));
-        padElement.appendChild(deleteBtn);
-      }
-    }
-
+    // セル選択
     function selectCell(row, col) {
-      if (gameState.isPaused) return;
-      if (gameState.initialBoard[row][col] !== 0) return;
-      gameState.selectedCell = [row, col];
-      renderBoard();
+        if (game.initial[row][col] !== 0) return;
+        game.selectedCell = { row: row, col: col };
+        updateCellHighlights();
     }
 
-    function placeNumber(num) {
-      if (!gameState.selectedCell || gameState.isPaused) return;
-      const [row, col] = gameState.selectedCell;
-      if (gameState.initialBoard[row][col] !== 0) return;
-      
-      const memoKey = `${row}-${col}`;
-      
-      if (gameState.isMemoMode && num !== 0) {
-        if (!gameState.memos[memoKey]) {
-          gameState.memos[memoKey] = [];
+    // ハイライト更新
+    function updateCellHighlights() {
+        document.querySelectorAll('.cell').forEach(function(cell) {
+            cell.classList.remove('selected', 'same-number', 'related', 'memo-mode');
+        });
+       
+        if (!game.selectedCell) return;
+       
+        const row = game.selectedCell.row;
+        const col = game.selectedCell.col;
+        const selectedValue = game.board[row][col];
+       
+        document.querySelectorAll('.cell').forEach(function(cell) {
+            const r = parseInt(cell.dataset.row);
+            const c = parseInt(cell.dataset.col);
+           
+            if (game.memoMode) {
+                cell.classList.add('memo-mode');
+            }
+           
+            if (r === row && c === col) {
+                cell.classList.add('selected');
+            } else if (r === row || c === col ||
+                      (Math.floor(r / 3) === Math.floor(row / 3) &&
+                       Math.floor(c / 3) === Math.floor(col / 3))) {
+                cell.classList.add('related');
+            }
+           
+            if (selectedValue && typeof selectedValue === 'number' &&
+                game.board[r][c] === selectedValue && !(r === row && c === col)) {
+                cell.classList.add('same-number');
+            }
+        });
+    }
+
+    // 数字入力
+    document.querySelectorAll('.number-btn[data-number]').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            if (!game.selectedCell || game.isPaused) return;
+            const num = parseInt(btn.dataset.number);
+            const row = game.selectedCell.row;
+            const col = game.selectedCell.col;
+           
+            if (game.initial[row][col] !== 0) return;
+           
+            if (game.memoMode) {
+                let notes = game.board[row][col];
+                if (typeof notes !== 'object') {
+                    notes = [];
+                }
+                const index = notes.indexOf(num);
+                if (index !== -1) {
+                    notes.splice(index, 1);
+                } else {
+                    notes.push(num);
+                    notes.sort();
+                }
+                game.board[row][col] = notes.length > 0 ? notes : 0;
+            } else {
+                game.board[row][col] = num;
+            }
+           
+            renderBoard();
+            checkComplete();
+        });
+    });
+
+    // 削除ボタン
+    document.getElementById('delete-btn').addEventListener('click', function() {
+        if (!game.selectedCell || game.isPaused) return;
+        const row = game.selectedCell.row;
+        const col = game.selectedCell.col;
+        if (game.initial[row][col] === 0) {
+            game.board[row][col] = 0;
+            renderBoard();
         }
-        const index = gameState.memos[memoKey].indexOf(num);
-        if (index > -1) {
-          gameState.memos[memoKey].splice(index, 1);
-        } else {
-          gameState.memos[memoKey].push(num);
-          gameState.memos[memoKey].sort();
+    });
+
+    // メモモード切り替え
+    document.getElementById('memo-btn').addEventListener('click', function() {
+        game.memoMode = !game.memoMode;
+        document.getElementById('memo-btn').classList.toggle('active');
+       
+        // 数字ボタンの色も変更
+        document.querySelectorAll('.number-btn[data-number]').forEach(function(btn) {
+            btn.classList.toggle('memo-mode');
+        });
+       
+        // ハイライトカラーを即座に更新
+        updateCellHighlights();
+    });
+
+    // 間違い表示（トグル式）
+    document.getElementById('error-check-btn').addEventListener('click', function() {
+        if (game.isPaused) return;
+        game.errorCheckMode = !game.errorCheckMode;
+        document.getElementById('error-check-btn').classList.toggle('active');
+        renderBoard();
+    });
+
+    // ヒント
+    document.getElementById('hint-btn').addEventListener('click', function() {
+        if (!game.selectedCell || game.isPaused) return;
+        const row = game.selectedCell.row;
+        const col = game.selectedCell.col;
+        if (game.initial[row][col] === 0) {
+            game.board[row][col] = game.solution[row][col];
+            renderBoard();
+            checkComplete();
         }
-      } else {
-        gameState.board[row][col] = num;
-        if (num !== 0) {
-          delete gameState.memos[memoKey];
+    });
+
+    // リセット
+    document.getElementById('reset-btn').addEventListener('click', function() {
+        if (game.isPaused) return;
+        if (confirm('ボードをリセットしますか？')) {
+            game.board = [];
+            for (let i = 0; i < 9; i++) {
+                game.board[i] = game.initial[i].slice();
+            }
+            game.selectedCell = null;
+            renderBoard();
         }
-      }
-      
-      renderBoard();
-      checkCompletion();
+    });
+
+    // 一時停止
+    document.getElementById('pause-btn').addEventListener('click', function() {
+        pauseGame();
+    });
+
+    document.getElementById('resume-btn').addEventListener('click', function() {
+        resumeGame();
+    });
+
+    function pauseGame() {
+        if (game.isPaused) return;
+        game.isPaused = true;
+        clearInterval(game.timerInterval);
+        document.getElementById('pause-overlay').classList.add('active');
     }
 
-    function checkCompletion() {
-      for (let row = 0; row < 9; row++) {
-        for (let col = 0; col < 9; col++) {
-          if (gameState.board[row][col] !== gameState.solution[row][col]) {
-            return;
-          }
-        }
-      }
-      gameComplete();
+    function resumeGame() {
+        if (!game.isPaused) return;
+        game.isPaused = false;
+        document.getElementById('pause-overlay').classList.remove('active');
+        startTimer();
     }
 
-    function gameComplete() {
-      stopTimer();
-      saveHistory();
-      showClearScreen();
-    }
-
-    function showClearScreen() {
-      document.getElementById('play-screen').style.display = 'none';
-      const clearScreen = document.getElementById('clear-screen');
-      clearScreen.classList.add('active');
-      
-      const minutes = Math.floor(gameState.timer / 60);
-      const seconds = gameState.timer % 60;
-      document.getElementById('clear-time').textContent = 
-        `${minutes}:${seconds.toString().padStart(2, '0')}`;
-      document.getElementById('clear-level').textContent = 
-        `難易度: ${LEVEL_NAMES[gameState.level]}`;
-    }
-
+    // タイマー
     function startTimer() {
-      gameState.timer = 0;
-      gameState.timerInterval = setInterval(() => {
-        if (!gameState.isPaused) {
-          gameState.timer++;
-          updateTimerDisplay();
-        }
-      }, 1000);
-    }
-
-    function stopTimer() {
-      if (gameState.timerInterval) {
-        clearInterval(gameState.timerInterval);
-        gameState.timerInterval = null;
-      }
+        clearInterval(game.timerInterval);
+        game.timerInterval = setInterval(function() {
+            if (!game.isPaused) {
+                game.elapsedTime = Math.floor((Date.now() - game.startTime) / 1000);
+                updateTimerDisplay();
+            }
+        }, 1000);
     }
 
     function updateTimerDisplay() {
-      const minutes = Math.floor(gameState.timer / 60);
-      const seconds = gameState.timer % 60;
-      document.getElementById('timer').textContent = 
-        `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        const minutes = Math.floor(game.elapsedTime / 60);
+        const seconds = game.elapsedTime % 60;
+        const secStr = seconds < 10 ? '0' + seconds : seconds;
+        document.getElementById('timer').textContent = minutes + ':' + secStr;
     }
 
-    function toggleErrors() {
-      gameState.showErrors = !gameState.showErrors;
-      updateButtonStates();
-      renderBoard();
-    }
-
-    function togglePause() {
-      gameState.isPaused = !gameState.isPaused;
-      const board = document.getElementById('board');
-      if (gameState.isPaused) {
-        board.classList.add('paused');
-      } else {
-        board.classList.remove('paused');
-      }
-      updateButtonStates();
-    }
-
-    function toggleMemo() {
-      gameState.isMemoMode = !gameState.isMemoMode;
-      const padElement = document.getElementById('number-pad');
-      if (padElement) {
-        if (gameState.isMemoMode) {
-          padElement.classList.add('memo-mode');
-        } else {
-          padElement.classList.remove('memo-mode');
+    // 完成チェック
+    function checkComplete() {
+        for (let row = 0; row < 9; row++) {
+            for (let col = 0; col < 9; col++) {
+                const value = game.board[row][col];
+                if (!value || typeof value !== 'number' || value !== game.solution[row][col]) {
+                    return;
+                }
+            }
         }
-      }
-      updateButtonStates();
-      renderBoard();
+       
+        clearInterval(game.timerInterval);
+        saveHistory();
+        showComplete();
     }
 
-    function updateButtonStates() {
-      const errorBtn = document.getElementById('error-btn');
-      const errorBtnLandscape = document.getElementById('error-btn-landscape');
-      const pauseBtn = document.getElementById('pause-btn');
-      const pauseBtnLandscape = document.getElementById('pause-btn-landscape');
-      const memoBtn = document.getElementById('memo-btn');
-      const memoBtnLandscape = document.getElementById('memo-btn-landscape');
-      
-      [errorBtn, errorBtnLandscape].forEach(btn => {
-        if (btn) {
-          if (gameState.showErrors) {
-            btn.classList.add('active');
-            const span = btn.querySelector('span');
-            if (span) span.textContent = '表示中';
-          } else {
-            btn.classList.remove('active');
-            const span = btn.querySelector('span');
-            if (span) span.textContent = '間違い表示';
-          }
-        }
-      });
-      
-      [pauseBtn, pauseBtnLandscape].forEach(btn => {
-        if (btn) {
-          if (gameState.isPaused) {
-            btn.classList.add('active');
-            const icon = btn.querySelector('i');
-            const span = btn.querySelector('span');
-            if (icon) icon.textContent = 'play_arrow';
-            if (span) span.textContent = '再開';
-          } else {
-            btn.classList.remove('active');
-            const icon = btn.querySelector('i');
-            const span = btn.querySelector('span');
-            if (icon) icon.textContent = 'pause';
-            if (span) span.textContent = '一時停止';
-          }
-        }
-      });
-      
-      [memoBtn, memoBtnLandscape].forEach(btn => {
-        if (btn) {
-          if (gameState.isMemoMode) {
-            btn.classList.add('active');
-            const span = btn.querySelector('span');
-            if (span) span.textContent = 'メモ中';
-          } else {
-            btn.classList.remove('active');
-            const span = btn.querySelector('span');
-            if (span) span.textContent = 'メモ';
-          }
-        }
-      });
+    function showComplete() {
+        const minutes = Math.floor(game.elapsedTime / 60);
+        const seconds = game.elapsedTime % 60;
+        const secStr = seconds < 10 ? '0' + seconds : seconds;
+        document.getElementById('complete-time').textContent = minutes + ':' + secStr;
+        document.getElementById('complete-overlay').classList.add('active');
     }
 
-    function getHint() {
-      if (gameState.isPaused || !gameState.selectedCell) return;
-      const [row, col] = gameState.selectedCell;
-      if (gameState.initialBoard[row][col] !== 0) return;
-      
-      gameState.board[row][col] = gameState.solution[row][col];
-      const memoKey = `${row}-${col}`;
-      delete gameState.memos[memoKey];
-      renderBoard();
-      checkCompletion();
-    }
-
-    function showConfirm(message, onConfirm) {
-      const dialog = document.getElementById('confirm-dialog');
-      const messageEl = document.getElementById('confirm-message');
-      const okBtn = document.getElementById('confirm-ok-btn');
-      
-      messageEl.textContent = message;
-      dialog.classList.add('active');
-      
-      okBtn.onclick = () => {
-        hideConfirm();
-        onConfirm();
-      };
-    }
-
-    function hideConfirm() {
-      const dialog = document.getElementById('confirm-dialog');
-      dialog.classList.remove('active');
-    }
-
-    function resetGame() {
-      if (gameState.isPaused) return;
-      
-      showConfirm('ゲームをリセットしますか?', () => {
-        gameState.board = JSON.parse(JSON.stringify(gameState.initialBoard));
-        gameState.selectedCell = null;
-        gameState.memos = {};
-        gameState.isPaused = false;
-        gameState.isMemoMode = false;
-        gameState.showErrors = false;
-        
-        stopTimer();
-        gameState.timer = 0;
-        startTimer();
-        updateTimerDisplay();
-        
-        updateButtonStates();
-        renderBoard();
-      });
-    }
-
-    function backToMenu() {
-      const clearScreen = document.getElementById('clear-screen');
-      const gameScreen = document.getElementById('game-screen');
-      const menuScreen = document.getElementById('menu-screen');
-      
-      if (clearScreen.classList.contains('active')) {
-        stopTimer();
-        gameScreen.classList.remove('active');
-        clearScreen.classList.remove('active');
-        menuScreen.style.display = 'flex';
-        loadHistory();
-        return;
-      }
-      
-      showConfirm('メニューに戻ると現在のゲームは失われます。よろしいですか？', () => {
-        stopTimer();
-        gameScreen.classList.remove('active');
-        clearScreen.classList.remove('active');
-        menuScreen.style.display = 'flex';
-        loadHistory();
-      });
-    }
-
-    function replayLevel() {
-      document.getElementById('clear-screen').classList.remove('active');
-      startGame(gameState.level);
-    }
-
+    // 履歴保存
     function saveHistory() {
-      const history = JSON.parse(localStorage.getItem('sudokuHistory') || '[]');
-      history.unshift({
-        level: gameState.level,
-        time: gameState.timer,
-        date: new Date().toISOString()
-      });
-      localStorage.setItem('sudokuHistory', JSON.stringify(history.slice(0, 50)));
+        const historyStr = localStorage.getItem('sudokuHistory') || '[]';
+        const history = JSON.parse(historyStr);
+        history.unshift({
+            level: game.levelName,
+            time: game.elapsedTime,
+            date: new Date().toISOString()
+        });
+        localStorage.setItem('sudokuHistory', JSON.stringify(history));
     }
 
+    // 履歴読み込み
     function loadHistory() {
-      const history = JSON.parse(localStorage.getItem('sudokuHistory') || '[]');
-      const content = document.getElementById('history-content');
-      const clearBtn = document.getElementById('clear-history-btn');
-      
-      if (history.length === 0) {
-        content.innerHTML = '<div class="empty-history">まだクリア履歴がありません</div>';
-        clearBtn.style.display = 'none';
-      } else {
-        clearBtn.style.display = 'flex';
-        content.innerHTML = history.map((item, index) => {
-          const date = new Date(item.date);
-          const minutes = Math.floor(item.time / 60);
-          const seconds = item.time % 60;
-          return `
-            <div class="history-item">
-              <div class="history-info">
-                <div class="history-level">${LEVEL_NAMES[item.level]}</div>
-                <div class="history-date">${date.toLocaleDateString('ja-JP')}</div>
-              </div>
-              <div class="history-time">
-                ${minutes}:${seconds.toString().padStart(2, '0')}
-                <button class="delete-history-btn" onclick="deleteHistoryItem(${index})">
-                  <i class="material-icons-round">delete</i>
-                </button>
-              </div>
-            </div>
-          `;
-        }).join('');
-      }
+        const historyStr = localStorage.getItem('sudokuHistory') || '[]';
+        const history = JSON.parse(historyStr);
+        const listEl = document.getElementById('history-list');
+        const clearBtn = document.getElementById('clear-all-btn');
+       
+        if (history.length === 0) {
+            listEl.innerHTML = '<div class="empty-history">履歴がありません</div>';
+            clearBtn.style.display = 'none';
+            return;
+        }
+       
+        clearBtn.style.display = 'block';
+        listEl.innerHTML = '';
+       
+        for (let i = 0; i < history.length; i++) {
+            const item = history[i];
+            const div = document.createElement('div');
+            div.className = 'history-item';
+           
+            const minutes = Math.floor(item.time / 60);
+            const seconds = item.time % 60;
+            const secStr = seconds < 10 ? '0' + seconds : seconds;
+            const date = new Date(item.date);
+            const dateStr = (date.getMonth() + 1) + '/' + date.getDate() + ' ' +
+                           date.getHours() + ':' + (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
+           
+            div.innerHTML =
+                '<div class="history-info">' +
+                    '<div class="history-level">' + item.level + '</div>' +
+                    '<div class="history-time">' + minutes + ':' + secStr + ' - ' + dateStr + '</div>' +
+                '</div>' +
+                '<button class="delete-btn" data-index="' + i + '">削除</button>';
+           
+            listEl.appendChild(div);
+        }
+       
+        document.querySelectorAll('.delete-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                const index = parseInt(btn.dataset.index);
+                history.splice(index, 1);
+                localStorage.setItem('sudokuHistory', JSON.stringify(history));
+                loadHistory();
+            });
+        });
     }
 
-    function deleteHistoryItem(index) {
-      if (!confirm('この履歴を削除しますか?')) return;
-      const history = JSON.parse(localStorage.getItem('sudokuHistory') || '[]');
-      history.splice(index, 1);
-      localStorage.setItem('sudokuHistory', JSON.stringify(history));
-      loadHistory();
-    }
+    // 全件削除
+    document.getElementById('clear-all-btn').addEventListener('click', function() {
+        if (confirm('全ての履歴を削除しますか？')) {
+            localStorage.setItem('sudokuHistory', '[]');
+            loadHistory();
+        }
+    });
 
-    function clearHistory() {
-      if (!confirm('全ての履歴を削除しますか?')) return;
-      localStorage.removeItem('sudokuHistory');
-      loadHistory();
-    }
+    // 完成後のボタン
+    document.getElementById('menu-btn').addEventListener('click', function() {
+        document.getElementById('complete-overlay').classList.remove('active');
+        showScreen('menu-screen');
+    });
 
-    function showTab(tabName, event) {
-      document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
-      document.querySelectorAll('.section').forEach(section => section.classList.remove('active'));
-      
-      if (event && event.target) {
-        event.target.closest('.tab').classList.add('active');
-      }
-      
-      if (tabName === 'game') {
-        document.getElementById('game-tab').classList.add('active');
-      } else {
-        document.getElementById('history-tab').classList.add('active');
-        loadHistory();
-      }
-    }
+    document.getElementById('retry-btn').addEventListener('click', function() {
+        document.getElementById('complete-overlay').classList.remove('active');
+        startCountdown();
+    });
 
-    loadHistory();
-  </script>
+    // 戻るボタン
+    document.getElementById('back-btn').addEventListener('click', function() {
+        if (confirm('ゲームを終了しますか？')) {
+            clearInterval(game.timerInterval);
+            showScreen('menu-screen');
+        }
+    });
+
+    // PWA対応
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+            navigator.serviceWorker.register('sw.js').catch(function() {});
+        });
+    }
+</script>
+
 
 </body>
 </html>
