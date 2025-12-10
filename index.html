@@ -598,7 +598,9 @@
         padding: 40px;
         border-radius: 20px;
         text-align: center;
-        max-width: 320px;
+        max-width: 360px; 
+        width: 90%; /* 画面幅の90%を使用（例） */
+        box-sizing: border-box; /* paddingを含めて幅を計算 */
     }
 
     .complete-title {
@@ -618,6 +620,8 @@
     .complete-buttons {
         display: flex;
         gap: 12px;
+        flex-wrap: nowrap; 
+        width: 100%; 
     }
 
     .complete-btn {
@@ -628,6 +632,7 @@
         font-size: 16px;
         font-weight: 600;
         cursor: pointer;
+        white-space: nowrap; 
     }
 
     .complete-btn.menu {
@@ -783,7 +788,7 @@
                     <button class="number-btn" data-number="7">7</button>
                     <button class="number-btn" data-number="8">8</button>
                     <button class="number-btn" data-number="9">9</button>
-                    <button class="number-btn delete" id="delete-btn">✕</button>
+                    <button class="number-btn delete" id="delete-btn">C</button>
                 </div>
                 
                 <div class="function-buttons">
@@ -809,10 +814,10 @@
 <!-- 完成オーバーレイ -->
 <div class="complete-overlay" id="complete-overlay">
     <div class="complete-content">
-        <div class="complete-title">🎉 完成！</div>
+        <div class="complete-title">完成！</div>
         <div class="complete-time" id="complete-time">0:00</div>
         <div class="complete-buttons">
-            <button class="complete-btn menu" id="menu-btn">メニュー</button>
+            <button class="complete-btn menu" id="menu-btn">戻る</button>
             <button class="complete-btn retry" id="retry-btn">もう一度</button>
         </div>
     </div>
