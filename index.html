@@ -304,7 +304,7 @@
 
     .game-container {
         width: 100%;
-        max-width: 500px;
+        max-width: 900px;
     }
 
     .board-container {
@@ -703,43 +703,39 @@
         <div class="timer" id="timer">0:00</div>
         <div class="level-badge" id="level-badge">入門</div>
     </div>
-   
+    
     <div class="game-content">
-        <div class="board-container">
-            <div class="sudoku-board">
-                <div class="board-grid" id="board-grid"></div>
+        <div class="game-container"> <div class="board-container">
+                <div class="sudoku-board">
+                    <div class="board-grid" id="board-grid"></div>
+                </div>
             </div>
-        </div>
-       
-        <div class="controls">
-            <div class="number-pad">
-                <button class="number-btn" data-number="1">1</button>
-                <button class="number-btn" data-number="2">2</button>
-                <button class="number-btn" data-number="3">3</button>
-                <button class="number-btn" data-number="4">4</button>
-                <button class="number-btn" data-number="5">5</button>
-                <button class="number-btn" data-number="6">6</button>
-                <button class="number-btn" data-number="7">7</button>
-                <button class="number-btn" data-number="8">8</button>
-                <button class="number-btn" data-number="9">9</button>
-                <button class="number-btn delete" id="delete-btn">✕</button>
-            </div>
-           
-            <div class="function-buttons">
-                <button class="function-btn pause" id="pause-btn"><span class="material-icons">pause</span>一時停止</button>
-                <button class="function-btn memo" id="memo-btn"><span class="material-icons">edit_note</span>メモ</button>
-            </div>
-           
-            <div class="function-buttons top-row">
-                <button class="function-btn error-check" id="error-check-btn"><span class="material-icons">error_outline</span>間違い表示</button>
-                <button class="function-btn hint" id="hint-btn"><span class="material-icons">lightbulb_outline</span>ヒント</button>
-                <button class="function-btn reset" id="reset-btn"><span class="material-icons">refresh</span>リセット</button>
-            </div>
-        </div>
-        </div>
-    </div>
+            
+            <div class="controls"> <div class="number-pad">
+                    <button class="number-btn" data-number="1">1</button>
+                    <button class="number-btn" data-number="2">2</button>
+                    <button class="number-btn" data-number="3">3</button>
+                    <button class="number-btn" data-number="4">4</button>
+                    <button class="number-btn" data-number="5">5</button>
+                    <button class="number-btn" data-number="6">6</button>
+                    <button class="number-btn" data-number="7">7</button>
+                    <button class="number-btn" data-number="8">8</button>
+                    <button class="number-btn" data-number="9">9</button>
+                    <button class="number-btn delete" id="delete-btn">✕</button>
+                </div>
+                
+                <div class="function-buttons">
+                    <button class="function-btn pause" id="pause-btn"><span class="material-icons">pause</span>一時停止</button>
+                    <button class="function-btn memo" id="memo-btn"><span class="material-icons">edit_note</span>メモ</button>
+                </div>
+                
+                <div class="function-buttons top-row">
+                    <button class="function-btn error-check" id="error-check-btn"><span class="material-icons">error_outline</span>間違い表示</button>
+                    <button class="function-btn hint" id="hint-btn"><span class="material-icons">lightbulb_outline</span>ヒント</button>
+                    <button class="function-btn reset" id="reset-btn"><span class="material-icons">refresh</span>リセット</button>
+                </div>
+            </div> </div> </div>
 </div>
-
 <!-- 一時停止オーバーレイ -->
 <div class="pause-overlay" id="pause-overlay">
     <div class="pause-content">
