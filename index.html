@@ -2162,11 +2162,19 @@
     document.getElementById('reset-btn').addEventListener('click', function() {
         if (game.isPaused) return;
         if (confirm('ボードをリセットしますか？')) {
+            // ボードをリセット
             game.board = [];
             for (let i = 0; i < 9; i++) {
                 game.board[i] = game.initial[i].slice();
             }
             game.selectedCell = null;
+            
+            // タイマーをリセット
+            game.startTime = Date.now();
+            game.elapsedTime = 0;
+            updateTimerDisplay();
+            
+            // ボードを再描画
             renderBoard();
         }
     });
@@ -2184,12 +2192,18 @@
         if (game.isPaused) return;
         game.isPaused = true;
         clearInterval(game.timerInterval);
+        // Calculate the time that has passed since the game started or was last resumed
+        const currentTime = Date.now();
+        const elapsedSinceStart = Math.floor((currentTime - game.startTime) / 1000);
+        game.elapsedTime = elapsedSinceStart;
         document.getElementById('pause-overlay').classList.add('active');
     }
 
     function resumeGame() {
         if (!game.isPaused) return;
         game.isPaused = false;
+        // Update the start time to now minus the elapsed time
+        game.startTime = Date.now() - (game.elapsedTime * 1000);
         document.getElementById('pause-overlay').classList.remove('active');
         startTimer();
     }
