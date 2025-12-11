@@ -21,8 +21,10 @@
         font-family: 'Futura', 'Arial', sans-serif;
         background: #f5f5f7;
         user-select: none;
-        overflow-y: scroll
+        overflow-y: scroll;
         height: 100vh;
+        margin: 0;
+        padding: 0;
         display: flex;
         flex-direction: column;
     }
@@ -159,6 +161,39 @@
     }
 
     /* 履歴 */
+    .history-header {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 12px;
+    }
+
+    .clear-all-btn {
+        background: white;
+        color: #FF3B30;
+        border: 2px solid #FF3B30;
+        border-radius: 25px;
+        padding: 8px 16px;
+        height: auto;
+        width: auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 14px;
+        transition: all 0.2s;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .clear-all-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .clear-all-btn .material-icons {
+        font-size: 20px;
+    }
+
     .history-list {
         display: flex;
         flex-direction: column;
@@ -179,40 +214,47 @@
         flex: 1;
     }
 
+    .history-main {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 4px;
+    }
+
     .history-level {
         font-weight: 700;
         color: #5B57D9;
-        font-size: 18px;
+        font-size: 16px;
     }
 
     .history-time {
-        color: #666;
-        font-size: 14px;
-        margin-top: 4px;
+        color: #5B57D9;
+        font-weight: 700;
+        font-size: 16px;
+        margin-left: 8px;
+    }
+
+    .history-date {
+        color: #999;
+        font-size: 12px;
     }
 
     .delete-btn {
-        background: white;
+        background: none;
         color: #FF3B30;
         border: none;
-        padding: 8px 16px;
-        border-radius: 100px;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         cursor: pointer;
-        font-size: 14px;
+        transition: background-color 0.2s;
     }
 
-    .clear-all-btn {
-        margin-top: 20px;
-        width: 100%;
-        padding: 16px;
-        background: white;
-        color: #FF3B30;
-        border: 2px solid #FF3B30;
-        border-radius: 100px;
-        font-size: 16px;
-        font-weight: 600;
-        cursor: pointer;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    .delete-btn:hover {
+        background-color: rgba(255, 59, 48, 0.1);
     }
 
     .empty-history {
@@ -755,8 +797,12 @@
     </div>
    
     <div class="tab-content" id="history-tab">
+        <div class="history-header">
+            <button class="clear-all-btn" id="clear-all-btn" style="display: none;">
+                全件削除
+            </button>
+        </div>
         <div class="history-list" id="history-list"></div>
-        <button class="clear-all-btn" id="clear-all-btn" style="display: none;">全件削除</button>
     </div>
 </div>
 
@@ -2232,10 +2278,14 @@
            
             div.innerHTML =
                 '<div class="history-info">' +
-                    '<div class="history-level">' + item.level + '</div>' +
-                    '<div class="history-time">' + minutes + ':' + secStr + ' - ' + dateStr + '</div>' +
+                    '<div class="history-main">' +
+                        '<span class="history-level">' + item.level + ' <span class="history-time">' + minutes + ':' + secStr + '</span></span>' +
+                    '</div>' +
+                    '<div class="history-date">' + dateStr + '</div>' +
                 '</div>' +
-                '<button class="delete-btn" data-index="' + i + '">削除</button>';
+                '<button class="delete-btn" data-index="' + i + '" title="削除">' +
+                    '<span class="material-icons">delete</span>' +
+                '</button>';
            
             listEl.appendChild(div);
         }
